@@ -1,0 +1,18 @@
+##gff-version 3
+# gene1 is slightly shifted and loses an exon
+chr1	fixture	gene	6	80	.	+	.	ID=gene1;Name=GeneOne
+chr1	fixture	mRNA	6	80	.	+	.	ID=tx1;Parent=gene1
+chr1	fixture	exon	6	20	.	+	.	ID=tx1_ex1;Parent=tx1
+# tx1_ex2 removed in release_B
+chr1	fixture	exon	60	80	.	+	.	ID=tx1_ex3;Parent=tx1
+
+# gene2 unchanged
+chr2	fixture	gene	1	20	.	-	.	ID=gene2;Name=GeneTwo
+chr2	fixture	mRNA	1	20	.	-	.	ID=tx2;Parent=gene2
+chr2	fixture	exon	1	10	.	-	.	ID=tx2_ex1;Parent=tx2
+chr2	fixture	exon	12	20	.	-	.	ID=tx2_ex2;Parent=tx2
+
+# new gene3 added
+chr2	fixture	gene	30	45	.	+	.	ID=gene3;Name=GeneThree
+chr2	fixture	mRNA	30	45	.	+	.	ID=tx3;Parent=gene3
+chr2	fixture	exon	30	45	.	+	.	ID=tx3_ex1;Parent=tx3
