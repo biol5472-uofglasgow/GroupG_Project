@@ -1,0 +1,43 @@
+[project]
+name = "Project_..."
+version = "0.1.0"
+description = "...."
+requires-python = ">=3.10"
+readme = "README.md"
+authors = [
+    {name = "Almarc Astorga"},
+    {name = "Ishwar Bijumon"},
+    {name = "Krishna Sameer Krothapalli"},
+    {name = "Saheshnu Sai Balaji Pillai"}
+]
+
+dependencies = ["gffutils >= 0.0.13", ...]
+
+[build-system]
+requires = ["uv-build"]
+build_backend = "uv_build"
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4", "pytest-cov>=4.1", "ruff>=0.4", "mypy>=1.6"]
+
+[project.scripts]
+toolname.. = "projectfilename___.cli:main/app"
+
+[tool.setuptools.packagesfind]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["-q"]
+
+[tool.mypy]
+python_version = "3.11"
+disallow_untyped_defs = true
+packages = ["prjectfilename.."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
