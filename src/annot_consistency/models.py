@@ -17,8 +17,8 @@ class EntitySummary:
     seqid: str
     start: int
     end: int
-    strand: str | None      # NULL if none
-    parent_id: str | None   # NULL if none
+    strand: str
+    parent_id: str
     attrs: Mapping[str, str] # Mapping for immutable dict
 
     def signature(self) -> tuple:
