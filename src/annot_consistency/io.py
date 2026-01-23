@@ -59,3 +59,18 @@ def write_summary_tsv(outdir: str, changes: List[ChangeRecord]) -> str:
         file.write(f'All_Total\t{all_added}\t{all_removed}\t{all_changed}\{all_total}')
     
     return path
+
+# Writing function to create the genome browser loadable tracks as gff3 files
+def write_genome_tracks(outdir: str, 
+                        added: List[EntitySummary], 
+                        removed: List[EntitySummary], 
+                        changed: List[EntitySummary]) -> Tuple[str, str, str]:
+    '''
+    Gives three genome browser loadable tracks as gff3 files named added.gff, removed.gff and changed.gff 
+    '''
+    added_path = os.path.join(outdir, 'added.gff3')
+    removed_path = os.path.join(outdir, 'removed.gff3')
+    changed_path = os.path.join(outdir, 'changed.gff3')
+
+    return added_path, removed_path, changed_path
+
