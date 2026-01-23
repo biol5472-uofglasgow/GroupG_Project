@@ -60,6 +60,19 @@ def write_summary_tsv(outdir: str, changes: List[ChangeRecord]) -> str:
     
     return path
 
+# Writing function to load the files that are created using the function below
+def write_tracks(path: str, change_type: str, entities: List[EntitySummary]) -> None:
+    with open(path, 'w', encoding='utf-8') as track:
+        track.write('##gff-version 3\n')
+        for e in entities:
+            # setting up column 9 of gff3 file
+            attrs_entity = [f'ID = {e.entity_id}']
+            if e.parent_id:
+                attrs_entity.append(f'Parent={e.parent_id}')
+            attrs = ';'.join(attrs_entity)
+
+            track.write(f'{e.seqid}\tgffACAKE\t{e.entity_type}\t{int(e.start)}\t{int(e.end)}\t.\t{e.strand}\t.\t{attrs}\n')
+
 # Writing function to create the genome browser loadable tracks as gff3 files
 def write_genome_tracks(outdir: str, 
                         added: List[EntitySummary], 
@@ -71,6 +84,10 @@ def write_genome_tracks(outdir: str,
     added_path = os.path.join(outdir, 'added.gff3')
     removed_path = os.path.join(outdir, 'removed.gff3')
     changed_path = os.path.join(outdir, 'changed.gff3')
+
+    write_tracks(added_path, added, track_name = 'Added features')
+    write_tracks(removed_path, removed, track_name = 'Removed features')
+    write_tracks(changed_path, changed, track_name = 'Changed features')
 
     return added_path, removed_path, changed_path
 
