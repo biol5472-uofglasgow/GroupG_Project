@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Literal, Mapping
+from typing import Literal, Mapping, Optional
 
 # Restrict types to only these
 EntityType = Literal["gene", "transcript", "exon"]
@@ -18,7 +18,7 @@ class EntitySummary:
     start: int
     end: int
     strand: str
-    parent_id: str
+    parent_id: Optional[str]
     attrs: Mapping[str, str] # Mapping for immutable dict
 
     def signature(self) -> tuple:
