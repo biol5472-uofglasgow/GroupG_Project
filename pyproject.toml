@@ -1,7 +1,7 @@
 [project]
-name = "Project_..."
+name = "gffACAKE"
 version = "0.1.0"
-description = "...."
+description = "Compares two GFF3 annotation releases and reports added/removed/changed features"
 requires-python = ">=3.10"
 readme = "README.md"
 authors = [
@@ -11,28 +11,33 @@ authors = [
     {name = "Saheshnu Sai Balaji Pillai"}
 ]
 
-dependencies = ["gffutils >= 0.0.13", ...]
+dependencies = ["gffutils >= 0.13"]
 
 [build-system]
 requires = ["uv-build"]
 build_backend = "uv_build"
 
+[project.urls]
+Homepage = "https://github.com/biol5472-uofglasgow/GroupG_Project"
+
 [project.optional-dependencies]
 dev = ["pytest>=7.4", "pytest-cov>=4.1", "ruff>=0.4", "mypy>=1.6"]
 
 [project.scripts]
-toolname.. = "projectfilename___.cli:main/app"
+gffACAKE = "annot_consistency.cli:main"
 
 [tool.setuptools.packagesfind]
 where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = ["-q"]
+addopts = "-ra --cov=annot_consistency --cov-report=ter-missing"
 
 [tool.mypy]
 python_version = "3.11"
 disallow_untyped_defs = true
+warn_return_any = true
+strict = true
 packages = ["prjectfilename.."]
 
 [tool.ruff]
@@ -41,3 +46,4 @@ target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
+ignore = []
