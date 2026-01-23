@@ -31,7 +31,7 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-ra --cov=annot_consistency --cov-report=ter-missing"
+addopts = "-ra --cov=annot_consistency --cov-report=term-missing"
 
 [tool.mypy]
 python_version = "3.11"
