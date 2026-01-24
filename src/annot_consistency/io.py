@@ -1,5 +1,5 @@
 import json
-import datetime
+from datetime import timezone, datetime
 import os
 from typing import Any, Dict, List, Optional, Tuple
 from annot_consistency.models import EntitySummary, ChangeRecord
@@ -61,7 +61,7 @@ def write_summary_tsv(outdir: str, changes: List[ChangeRecord]) -> str:
     return path
 
 # Writing function to load the files that are created using the function below
-def write_tracks(path: str, change_type: str, entities: List[EntitySummary]) -> None:
+def write_tracks(path: str, entities: List[EntitySummary]) -> None:
     with open(path, 'w', encoding='utf-8') as track:
         track.write('##gff-version 3\n')
         for e in entities:
@@ -91,3 +91,23 @@ def write_genome_tracks(outdir: str,
 
     return added_path, removed_path, changed_path
 
+# Writing function to create the run.json metadata records
+def write_run_json(outdir: str, tool_name: str, tool_version: str, release_a: str, release_b: str,
+                   outdir_str: str, extra: Optional[Dict[str, Any]] = None) -> str:
+    '''
+    Gives a record of tool metadata, timestamp, inputs used and the output filenames
+    '''
+    payload: Dict[str, Any] = {'tool': {'name':tool_name, 'version': tool_version},
+                               'timestamp_utc': datetime.now(timezone.utc).isoformat(),
+                               'inputs': {'release_a': release_a, 'release_b': release_b},
+                               'outputs': {'outdir': outdir_str, 'changes.tsv': 'changes.tsv', 'run_json': 'run.json',
+                                           'added_gff3': 'added.gff3', 'removed_gff3': 'removed.gff3', 'changed_gff3': 'changed.gff3',
+                                           'summary_tsv': 'summary.tsv', 'log_file': 'annot-consistency.log'}}
+    if extra:
+        payload['extra'] = extra
+        path = os.path.join(outdir, 'run.json')
+        with open(path, 'w', encoding='utf-8') as file:
+            json.dump(payload, file, indent=2, sort_keys=True)
+            file.write('\n')
+        
+    return path
