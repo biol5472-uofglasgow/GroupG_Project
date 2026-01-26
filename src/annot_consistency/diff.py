@@ -70,4 +70,4 @@ def diff_entity(a_entities: Dict[str, Dict[str, EntitySummary]],
                 changes.append(ChangeRecord(entity_type = entity_type, entity_id = e_id, change_type = 'changed',
                                         details = changed_details(a, b)))
         
-        return changes, added, removed, changed
+    return changes, added, removed, changed
