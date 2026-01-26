@@ -15,7 +15,7 @@ dependencies = ["gffutils >= 0.13"]
 
 [build-system]
 requires = ["uv-build"]
-build_backend = "uv_build"
+build-backend = "uv_build"
 
 [project.urls]
 Homepage = "https://github.com/biol5472-uofglasgow/GroupG_Project"
