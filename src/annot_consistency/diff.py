@@ -1,8 +1,11 @@
-from annot_consistency.models import EntitySummary
-from typing import List
+from annot_consistency.models import EntitySummary, ChangeRecord
+from typing import List, Dict, Tuple
 
 # Writing function for checking through each attribute in the signature if they are different
 def changed_details(a: EntitySummary, b: EntitySummary) -> str:
+    '''
+    Gives a string out joined from a list of strings based on the differences between the signatures of release A and release B
+    '''
     parts: List[str] = []
     if a.seqid != b.seqid:
         parts.append(f'seqid: {a.seqid} -> {b.seqid}')
@@ -23,4 +26,4 @@ def changed_details(a: EntitySummary, b: EntitySummary) -> str:
     if a.score != b.score:
         parts.append(f'Score: {a.score} -> {b.score}')
     
-    return parts
+    return '; '.join(parts)
