@@ -1,11 +1,14 @@
 import json
 from datetime import timezone, datetime
 import os
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Tuple
 from annot_consistency.models import EntitySummary, ChangeRecord
 
 # Ensuring output directory exists
 def ensure_outdir(outdir: str) -> None:
+    '''
+    Creates an output directory if it doesn't exist
+    '''
     os.makedirs(outdir, exist_ok=True)
 
 # Writing function to be used in cli.py to write changes.tsv file
@@ -13,6 +16,7 @@ def write_changes_tsv(outdir: str, changes: List[ChangeRecord]) -> str:
     '''
     Gives a tab separated file with each row having the entity type(Gene, Transcript or Exon), the ID for that entity,
     the type of change (added, removed or changed (one or more attributes)) and exactly what was changed in the details
+    One row per entity
     '''
     path = os.path.join(outdir, 'changes.tsv')
     with open(path, 'w', encoding = 'utf-8') as handle: # Using encoding for making sure it works on Windows/mac/Linux
@@ -27,7 +31,7 @@ def write_summary_tsv(outdir: str, changes: List[ChangeRecord]) -> str:
     Gives the counts for number of changes by entity type and the type of changes along with the total number of
     changes (addition and removals included) for that entity
     '''
-    counts = Dict[str, Dict[str, int]] = {}
+    counts: Dict[str, Dict[str, int]] = {}
     for c in changes:
         et = c.entity_type
         if et not in counts:
@@ -52,7 +56,7 @@ def write_summary_tsv(outdir: str, changes: List[ChangeRecord]) -> str:
             all_removed += r
             all_changed += ch
 
-            file.write(f'{et}\t{a}\t{r}\{ch}\{total}\n')
+            file.write(f'{et}\t{a}\t{r}\t{ch}\{total}\n')
         
         all_total = all_added + all_removed + all_changed
 
@@ -66,12 +70,12 @@ def write_tracks(path: str, entities: List[EntitySummary]) -> None:
         track.write('##gff-version 3\n')
         for e in entities:
             # setting up column 9 of gff3 file
-            attrs_entity = [f'ID = {e.entity_id}']
+            attrs_parts = [f'ID = {e.entity_id}']
             if e.parent_id:
-                attrs_entity.append(f'Parent={e.parent_id}')
-            attrs = ';'.join(attrs_entity)
+                attrs_parts.append(f'Parent={e.parent_id}')
+            attrs = ';'.join(attrs_parts)
 
-            track.write(f'{e.seqid}\tgffACAKE\t{e.entity_type}\t{int(e.start)}\t{int(e.end)}\t.\t{e.strand}\t.\t{attrs}\n')
+            track.write(f'{e.seqid}\tgffACAKE\t{e.entity_type}\t{int(e.start)}\t{int(e.end)}\t{float(e.score)}\t{e.strand}\t{e.phase}\t{attrs}\n')
 
 # Writing function to create the genome browser loadable tracks as gff3 files
 def write_genome_tracks(outdir: str, 
@@ -85,29 +89,27 @@ def write_genome_tracks(outdir: str,
     removed_path = os.path.join(outdir, 'removed.gff3')
     changed_path = os.path.join(outdir, 'changed.gff3')
 
-    write_tracks(added_path, added, track_name = 'Added features')
-    write_tracks(removed_path, removed, track_name = 'Removed features')
-    write_tracks(changed_path, changed, track_name = 'Changed features')
+    write_tracks(added_path, added)
+    write_tracks(removed_path, removed)
+    write_tracks(changed_path, changed)
 
     return added_path, removed_path, changed_path
 
 # Writing function to create the run.json metadata records
-def write_run_json(outdir: str, tool_name: str, tool_version: str, release_a: str, release_b: str,
-                   outdir_str: str, extra: Optional[Dict[str, Any]] = None) -> str:
+def write_run_json(tool_name: str, tool_version: str, release_a: str, release_b: str, outdir: str) -> str:
     '''
     Gives a record of tool metadata, timestamp, inputs used and the output filenames
     '''
     payload: Dict[str, Any] = {'tool': {'name':tool_name, 'version': tool_version},
                                'timestamp_utc': datetime.now(timezone.utc).isoformat(),
                                'inputs': {'release_a': release_a, 'release_b': release_b},
-                               'outputs': {'outdir': outdir_str, 'changes.tsv': 'changes.tsv', 'run_json': 'run.json',
+                               'outputs': {'outdir': outdir, 'changes_tsv': 'changes.tsv', 'run_json': 'run.json',
                                            'added_gff3': 'added.gff3', 'removed_gff3': 'removed.gff3', 'changed_gff3': 'changed.gff3',
-                                           'summary_tsv': 'summary.tsv', 'log_file': 'annot-consistency.log'}}
-    if extra:
-        payload['extra'] = extra
-        path = os.path.join(outdir, 'run.json')
-        with open(path, 'w', encoding='utf-8') as file:
-            json.dump(payload, file, indent=2, sort_keys=True)
-            file.write('\n')
+                                           'summary_tsv': 'summary.tsv'}}
+    
+    path = os.path.join(outdir, 'run.json')
+    with open(path, 'w', encoding = 'utf-8') as jsonfile:
+        json.dump(payload, jsonfile, indent = 2, sort_keys = True)
+        jsonfile.write('\n')
         
     return path
