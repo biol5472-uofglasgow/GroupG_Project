@@ -17,7 +17,7 @@ jobs:
           python-version: "3.12"
           cache: "pip"
           cache-dependency-path: pyproject.toml
-      - uses: astral-sh/setup-uv@7
+      - uses: astral-sh/setup-uv@v7
         with:
           version: "0.9.27"
 
