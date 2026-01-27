@@ -50,4 +50,41 @@ def write_htmlreport(outdir: str, changes: list[ChangeRecord], summary_result: t
     total_changed = sum(counts[et].get('changed', 0) for et in entity_types)
     total_all = total_added + total_removed + total_changed
 
-    run_meta = dict[str, object] = {}
+    with open(run_json_path, 'r', encoding='utf-8') as file:
+        run_meta = json.load(file)
+
+    tool = run_meta['tool']
+    inputs = run_meta['inputs']
+
+    tool_name = tool['name']
+    tool_version = tool['version']
+    timestamp_utc = tool['timestamp_utc']
+    release_a = tool['release_a']
+    release_b = tool['release_b']
+
+    html: list[str] = []
+    html.append('<!doctype html')
+    html.append("<html><head><meta charset='utf-8'>")
+    html.append(f'<title>{title}</title>')
+    html.append("<style>"
+        "body{font-family:system-ui,Segoe UI,Arial,sans-serif;max-width:1000px;margin:24px auto;padding:0 16px;}"
+        "table{border-collapse:collapse;width:100%;margin-top:12px;}"
+        "th,td{border:1px solid #ccc;padding:6px 8px;text-align:left;}"
+        "th{background:#f6f6f6;}"
+        ".kpi{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0;}"
+        ".card{border:1px solid #ddd;border-radius:10px;padding:10px 12px;min-width:180px;}"
+        ".muted{color:#666;}"
+        "</style>"
+    )
+    html.append("</head><body>")
+
+    html.append(f"<h1>{title}</h1>")
+    html.append(f"<p class='muted'>Generated: {datetime.utcnow().isoformat(timespec='seconds')}Z</p>")
+
+    html.append("<h2>Provenance</h2>")
+    html.append("<ul>")
+    html.append(f"<li><b>Tool</b>: {tool_name} {tool_version}</li>")
+    html.append(f"<li><b>Timestamp (UTC)</b>: {timestamp_utc}</li>")
+    html.append(f"<li><b>Release A</b>: {release_a}</li>")
+    html.append(f"<li><b>Release B</b>: {release_b}</li>")
+    html.append("</ul>")
