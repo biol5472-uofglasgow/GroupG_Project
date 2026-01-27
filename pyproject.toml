@@ -1,8 +1,8 @@
 [project]
 name = "gffACAKE"
-version = "0.1.0"
+version = "0.5.0"
 description = "Compares two GFF3 annotation releases and reports added/removed/changed features"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 readme = "README.md"
 authors = [
     {name = "Almarc Astorga"},
@@ -14,8 +14,12 @@ authors = [
 dependencies = ["gffutils >= 0.13"]
 
 [build-system]
-requires = ["uv-build"]
-build_backend = "uv_build"
+requires = ["uv_build>= 0.9.27,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = 'annot_consistency'
+module-root = 'src'
 
 [project.urls]
 Homepage = "https://github.com/biol5472-uofglasgow/GroupG_Project"
@@ -34,11 +38,13 @@ testpaths = ["tests"]
 addopts = "-ra --cov=annot_consistency --cov-report=term-missing"
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.12"
 disallow_untyped_defs = true
 warn_return_any = true
+ignore_missing_imports = true
+show_error_codes = true
+pretty = true
 strict = true
-packages = ["prjectfilename.."]
 
 [tool.ruff]
 line-length = 100
