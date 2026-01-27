@@ -33,3 +33,12 @@ def plot_counts(outdir: str, counts: dict[str, dict[str, int]]) -> str:
     plt.close()
 
     return plot_path
+
+def write_htmlreport(outdir: str, changes: list[ChangeRecord], summary_result: tuple[str, dict[str, int]],
+                     run_json_path: str, title: str = 'Two release annotation consistency report') -> str:
+    '''
+    Generate report.html and report.png. Takes in outdir: output directory, changes: ChangeRecord list from diff stage 
+    (taken from counts in io, used in cli), summary_result: (summary_path, counts) returned by io.write_summary_tsv(),
+    run_json_path: path returned by io.write_run_json() and a title: HTML title.
+    '''
+    
