@@ -109,3 +109,19 @@ def write_htmlreport(outdir: str, changes: list[ChangeRecord], summary_result: t
         ch = counts[et].get("changed", 0)
         html.append(f"<tr><td>{et}</td><td>{a}</td><td>{r}</td><td>{ch}</td><td>{a+r+ch}</td></tr>")
     html.append("</table>")
+
+    html.append("<h2>Artefacts</h2>")
+    html.append("<ul>")
+    html.append("<li><a href='changes.tsv'>changes.tsv</a></li>")
+    html.append("<li><a href='summary.tsv'>summary.tsv</a></li>")
+    html.append("<li><a href='run.json'>run.json</a></li>")
+    html.append("</ul>")
+
+    html.append("</body></html>")
+
+    report_path = os.path.join(outdir, "report.html")
+    with open(report_path, "w", encoding="utf-8") as fh:
+        fh.write("\n".join(html))
+        fh.write("\n")
+
+    return report_path
