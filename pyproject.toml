@@ -14,8 +14,11 @@ authors = [
 dependencies = ["gffutils >= 0.13"]
 
 [build-system]
-requires = ["uv-build"]
+requires = ["uv_build >= 0.9.27, <0.10.0"]
 build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = 'annot_consistency'
 
 [project.urls]
 Homepage = "https://github.com/biol5472-uofglasgow/GroupG_Project"
