@@ -2,7 +2,10 @@ from dataclasses import dataclass
 from typing import Literal, Mapping, Optional
 
 # Restrict types to only these
-EntityType = Literal["gene", "transcript", "exon"]
+EntityType = Literal["gene", "mRNA", "exon", 
+                     "protein_coding_gene", "five_prime_UTR", "three_prime_UTR",
+                      "CDS", "ncRNA", "ncRNA_gene", "pseudogene", "pseudogenic_transcript",
+                      "rRNA", "snoRNA", "snRNA", "tRNA"]
 ChangeType = Literal["added", "removed", "changed"]
 
 #Dataclasses to be immutable
