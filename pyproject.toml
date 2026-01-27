@@ -19,6 +19,7 @@ build-backend = "uv_build"
 
 [tool.uv.build-backend]
 module-name = 'annot_consistency'
+module-root = 'src'
 
 [project.urls]
 Homepage = "https://github.com/biol5472-uofglasgow/GroupG_Project"
