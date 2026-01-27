@@ -41,4 +41,13 @@ def write_htmlreport(outdir: str, changes: list[ChangeRecord], summary_result: t
     (taken from counts in io, used in cli), summary_result: (summary_path, counts) returned by io.write_summary_tsv(),
     run_json_path: path returned by io.write_run_json() and a title: HTML title.
     '''
-    
+    summary_path, counts = summary_result
+    plot_counts(outdir, counts)
+
+    entity_types = sorted(counts.keys())
+    total_added = sum(counts[et].get('added', 0) for et in entity_types)
+    total_removed = sum(counts[et].get('removed', 0) for et in entity_types)
+    total_changed = sum(counts[et].get('changed', 0) for et in entity_types)
+    total_all = total_added + total_removed + total_changed
+
+    run_meta = dict[str, object] = {}
