@@ -56,11 +56,11 @@ def write_summary_tsv(outdir: str, changes: List[ChangeRecord]) -> Tuple[str, Di
             all_removed += r
             all_changed += ch
 
-            file.write(f'{et}\t{a}\t{r}\t{ch}\{total}\n')
+            file.write(f'{et}\t{a}\t{r}\t{ch}\t{total}\n')
         
         all_total = all_added + all_removed + all_changed
 
-        file.write(f'All_Total\t{all_added}\t{all_removed}\t{all_changed}\{all_total}')
+        file.write(f'All_Total\t{all_added}\t{all_removed}\t{all_changed}\t{all_total}')
     
     return path, counts
 
