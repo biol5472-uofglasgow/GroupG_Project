@@ -191,9 +191,9 @@ def main(argv=None) -> None:
         log.info("Loading/creating gffutils DBs: %s and %s", db_path_a, db_path_b)
         db_a, db_b = load_or_create_db(release_a, release_b, db_path_a, db_path_b)
         log.info("Loaded DBs successfully")
-    except Exception as e:
+    except Exception:
         log.exception("Failed to load/create gffutils databases")
-        raise RuntimeError("Could not load or create gffutils databases") from e
+        raise RuntimeError("Could not load or create gffutils databases")
 
     # Collect EntitySummary objects
     log.info("Collecting entity summaries from both releases")
@@ -242,9 +242,9 @@ def main(argv=None) -> None:
     try:
         log.info("Writing changes.tsv")
         io.write_changes_tsv(str(outdir), changes_all)
-    except Exception as e:
+    except Exception:
         log.exception("Failed writing changes.tsv")
-        raise RuntimeError("Could not write changes.tsv") from e
+        raise RuntimeError("Could not write changes.tsv")
 
 
     # write_summary_tsv
@@ -252,9 +252,9 @@ def main(argv=None) -> None:
     try:
         log.info("Writing summary.tsv")
         io.write_summary_tsv(str(outdir), changes_all)
-    except Exception as e:
+    except Exception:
         log.exception("Failed writing summary.tsv")
-        raise RuntimeError("Could not write summary.tsv") from e
+        raise RuntimeError("Could not write summary.tsv")
 
     
     # write_genome_tracks
@@ -262,9 +262,9 @@ def main(argv=None) -> None:
     try:
         log.info("Writing genome browser tracks (added/removed/changed)")
         io.write_genome_tracks(str(outdir), added_all, removed_all, changed_all)
-    except Exception as e:
+    except Exception:
         log.exception("Failed writing genome tracks")
-        raise RuntimeError("Could not write genome tracks") from e
+        raise RuntimeError("Could not write genome tracks")
 
 
     #  write_run_json
@@ -287,9 +287,9 @@ def main(argv=None) -> None:
                 "db_b": str(db_path_b),
             },
         )
-    except Exception as e:
+    except Exception:
         log.exception("Failed writing run.json")
-        raise RuntimeError("Could not write run.json") from e
+        raise RuntimeError("Could not write run.json")
 
     log.info("Finished successfully")
 
