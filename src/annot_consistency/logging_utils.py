@@ -9,7 +9,7 @@ def logger(log_file: str) -> logging.Logger:
     filehandler = logging.FileHandler(log_file)
     filehandler.setLevel(logging.DEBUG)
     filehandler.setFormatter(format)
-    logger.addHandler(format)
+    logger.addHandler(filehandler)
     logger.propagate = False        # Prevent log records from propagating to parent loggers.
     return logger
 
