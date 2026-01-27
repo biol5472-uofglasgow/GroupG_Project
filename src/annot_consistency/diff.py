@@ -1,5 +1,5 @@
 from annot_consistency.models import EntitySummary, ChangeRecord
-from typing import List, Dict, Tuple, Optional 
+from typing import List, Dict, Tuple, Optional, Mapping 
 
 def parse_attrs(attrs: str) -> Dict[str, str]:
     """
