@@ -36,10 +36,10 @@ def diff_entity(a_entities: Dict[str, Dict[str, EntitySummary]],
     Compares the two extracted release files A and B, then two lists
     One list for the changes.tsv and another list for the tracks added, removed and changed gff files
     '''
-    changes: List[ChangeRecord]
-    added: List[EntitySummary]
-    removed: List[EntitySummary]
-    changed: List[EntitySummary]
+    changes: List[ChangeRecord] = []
+    added: List[EntitySummary] = []
+    removed: List[EntitySummary] = []
+    changed: List[EntitySummary] = []
 
     for entity_type in ('gene', 'mRNA', 'exon'):
         a_map = a_entities.get(entity_type, {})
