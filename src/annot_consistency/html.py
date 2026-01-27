@@ -88,3 +88,24 @@ def write_htmlreport(outdir: str, changes: list[ChangeRecord], summary_result: t
     html.append(f"<li><b>Release A</b>: {release_a}</li>")
     html.append(f"<li><b>Release B</b>: {release_b}</li>")
     html.append("</ul>")
+
+    html.append("<h2>Overview</h2>")
+    html.append("<div class='kpi'>")
+    html.append(f"<div class='card'><b>Total changes</b><div>{total_all}</div></div>")
+    html.append(f"<div class='card'><b>Added</b><div>{total_added}</div></div>")
+    html.append(f"<div class='card'><b>Removed</b><div>{total_removed}</div></div>")
+    html.append(f"<div class='card'><b>Changed</b><div>{total_changed}</div></div>")
+    html.append("</div>")
+
+    html.append("<h2>Summary plot</h2>")
+    html.append("<img src='report.png' alt='Change counts plot' style='max-width:100%;height:auto;'>")
+
+    html.append("<h2>Counts table</h2>")
+    html.append("<table>")
+    html.append("<tr><th>Entity type</th><th>Added</th><th>Removed</th><th>Changed</th><th>Total</th></tr>")
+    for et in entity_types:
+        a = counts[et].get("added", 0)
+        r = counts[et].get("removed", 0)
+        ch = counts[et].get("changed", 0)
+        html.append(f"<tr><td>{et}</td><td>{a}</td><td>{r}</td><td>{ch}</td><td>{a+r+ch}</td></tr>")
+    html.append("</table>")
