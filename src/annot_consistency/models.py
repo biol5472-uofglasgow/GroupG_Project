@@ -23,8 +23,10 @@ class EntitySummary:
     strand: str
     parent_id: Optional[str]
     attrs: Mapping[str, str] # Mapping for immutable dict
-    score: float        
-    pahse: Literal[0,1,2]
+    score: float
+    phase: Literal[0,1,2]
+    source: str
+
 
     def signature(self) -> tuple:
         """
