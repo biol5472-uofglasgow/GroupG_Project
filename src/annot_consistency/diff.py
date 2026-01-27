@@ -84,4 +84,4 @@ def build_entities(gff: str) -> Dict[str, Dict[str, EntitySummary]]:
                 parent_id=parent_id,
                 attrs=attrs)
 
-    return entities_featuretype
+    return entities_featuretype 
