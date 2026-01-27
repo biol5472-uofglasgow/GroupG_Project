@@ -22,7 +22,7 @@ jobs:
           version: "0.9.27"
 
       - run: python -m pip install -U pip
-      - run: uv add --dev .
+      - run: uv pip install --system -e ".[dev]""
 
       - run: uv run ruff check .
       - run: uv run mypy .
