@@ -26,7 +26,7 @@ def write_changes_tsv(outdir: str, changes: List[ChangeRecord]) -> str:
     return path 
 
 # Writing function to be used in cli.py to write summary.tsv file
-def write_summary_tsv(outdir: str, changes: List[ChangeRecord]) -> str:
+def write_summary_tsv(outdir: str, changes: List[ChangeRecord]) -> Tuple[str, Dict[str, Dict[str, int]]]:
     '''
     Gives the counts for number of changes by entity type and the type of changes along with the total number of
     changes (addition and removals included) for that entity
@@ -62,7 +62,7 @@ def write_summary_tsv(outdir: str, changes: List[ChangeRecord]) -> str:
 
         file.write(f'All_Total\t{all_added}\t{all_removed}\t{all_changed}\{all_total}')
     
-    return path
+    return path, counts
 
 # Writing function to load the files that are created using the function below
 def write_tracks(path: str, entities: List[EntitySummary]) -> None:
