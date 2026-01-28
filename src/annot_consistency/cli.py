@@ -93,9 +93,16 @@ def main(argv=None) -> None:
         len(removed_all),
         len(changed_all))
 
+    # writing the changes
+    try:
+        log.info("Writing changes.tsv")
+        write_changes_tsv(str(outdir), changes_all)
+    except Exception:
+        log.exception("Failed writing changes.tsv")
+        raise RuntimeError("Could not write changes.tsv")
+
 
     # write_summary_tsv
-
     try:
         log.info("Writing summary.tsv")
         write_summary_tsv(str(outdir), changes_all)
@@ -105,7 +112,6 @@ def main(argv=None) -> None:
 
     
     # write_genome_tracks
-
     try:
         log.info("Writing genome browser tracks (added/removed/changed)")
         write_genome_tracks(str(outdir), added_all, removed_all, changed_all)
@@ -115,7 +121,6 @@ def main(argv=None) -> None:
 
 
     #  write_run_json
-    
     try:
         log.info("Writing run.json")
         write_run_json(
