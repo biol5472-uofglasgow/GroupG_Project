@@ -98,16 +98,34 @@ def write_genome_tracks(outdir: str,
     return added_path, removed_path, changed_path
 
 # Writing function to create the run.json metadata records
-def write_run_json(tool_name: str, tool_version: str, release_a: str, release_b: str, outdir: str) -> str:
+def write_run_json(tool_name: str, 
+                   tool_version: str, 
+                   release_a: str, 
+                   release_b: str, 
+                   outdir: str) -> str:
     '''
     Gives a record of tool metadata, timestamp, inputs used and the output filenames
     '''
-    payload: dict[str, Any] = {'tool': {'name':tool_name, 'version': tool_version},
-                               'timestamp_utc': datetime.now(timezone.utc).isoformat(),
-                               'inputs': {'release_a': release_a, 'release_b': release_b},
-                               'outputs': {'outdir': outdir, 'changes_tsv': 'changes.tsv', 'run_json': 'run.json',
-                                           'added_gff3': 'added.gff3', 'removed_gff3': 'removed.gff3', 'changed_gff3': 'changed.gff3',
-                                           'summary_tsv': 'summary.tsv'}}
+    payload: dict[str, Any] = {
+        'tool': {
+            'name':tool_name,
+            'version': tool_version
+            },
+        'timestamp_utc': datetime.now(timezone.utc).isoformat(),
+        'inputs': {
+            'release_a': release_a,
+            'release_b': release_b
+        },
+        'outputs': {
+            'outdir': outdir, 
+            'changes_tsv': 'changes.tsv', 
+            'run_json': 'run.json',
+            'added_gff3': 'added.gff3', 
+            'removed_gff3': 'removed.gff3',
+            'changed_gff3': 'changed.gff3',
+            'summary_tsv': 'summary.tsv'
+        }    
+    }
 
     path = os.path.join(outdir, 'run.json')
     with open(path, 'w', encoding = 'utf-8') as jsonfile:
