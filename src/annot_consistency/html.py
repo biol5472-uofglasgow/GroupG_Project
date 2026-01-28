@@ -129,7 +129,6 @@ def write_htmlreport(outdir: str,
     html.append("<h2>Detailed changes</h2>")
     html.append("<details>")
     html.append(f"<summary>Show {prefix}_changes.tsv table</summary>")
-    
 
     with open(os.path.join(outdir, f"{prefix}_changes.tsv"), encoding="utf-8") as fh:
         header = fh.readline().rstrip("\n").split("\t")
