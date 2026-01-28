@@ -1,6 +1,6 @@
 from collections.abc import Mapping
 
-import gffutils
+import gffutils # type: ignore[import-untyped]
 
 from annot_consistency.models import ChangeRecord, EntitySummary
 
