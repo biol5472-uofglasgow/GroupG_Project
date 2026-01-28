@@ -2,7 +2,7 @@ from annot_consistency.models import EntitySummary, ChangeRecord
 from typing import List, Dict, Tuple, Optional, Mapping 
 import gffutils
 
-def choose_entity_id(featuretype: str, attrs: Mapping[str, str], seqid: str, start: int, end: int, strand: str,) -> str:
+def choose_entity_id(featuretype: str, attrs: Mapping[str, List[str]], seqid: str, start: int, end: int, strand: str,) -> str:
     """
     Prefer ID=; if missing, create a fallback ID.
     diffing uses entity IDs as dict keys; if an exon has no ID, we choose a stable key.
