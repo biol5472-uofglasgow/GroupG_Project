@@ -91,7 +91,7 @@ def write_htmlreport(outdir: str, changes: list[ChangeRecord], summary_result: t
 
     html.append("<h2>Overview</h2>")
     html.append("<div class='kpi'>")
-    html.append(f"<div class='card'><b>Total changes</b><div>{total_all}</div></div>")
+    html.append(f"<div class='card'><b>Total entities changed</b><div>{total_all}</div></div>")
     html.append(f"<div class='card'><b>Added</b><div>{total_added}</div></div>")
     html.append(f"<div class='card'><b>Removed</b><div>{total_removed}</div></div>")
     html.append(f"<div class='card'><b>Changed</b><div>{total_changed}</div></div>")
