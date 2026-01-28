@@ -39,7 +39,9 @@ class EntitySummary:
             self.end,
             self.strand,
             self.parent_id,
-        )
+            self.score,
+            self.phase,
+            self.score)
 
 @dataclass(frozen=True)
 class ChangeRecord:
