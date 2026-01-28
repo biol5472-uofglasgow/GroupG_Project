@@ -77,56 +77,7 @@ def main(argv=None) -> None:
         log.exception("Failed to load/create gffutils databases")
         raise RuntimeError("Could not load or create gffutils databases")
 
-    # Collect EntitySummary objects
-    log.info("Collecting entity summaries from both releases")
 
-    genes_a = EntitySummary.signature(db_a, ["gene"], "gene")
-    genes_b = EntitySummary.signature(db_b, ["gene"], "gene")
-
-    # Accept common transcript featuretype variants
-    tx_a = EntitySummary.signature(db_a, ["transcript", "mRNA", "mrna"], "transcript")
-    tx_b = EntitySummary.signature(db_b, ["transcript", "mRNA", "mrna"], "transcript")
-
-    ex_a = EntitySummary.signature(db_a, ["exon"], "exon")
-    ex_b = EntitySummary.signature(db_b, ["exon"], "exon")
-
-    log.info("Counts A: genes=%d transcripts=%d exons=%d", len(genes_a), len(tx_a), len(ex_a))
-    log.info("Counts B: genes=%d transcripts=%d exons=%d", len(genes_b), len(tx_b), len(ex_b))
-
-    # Differentiating A vs B
-    log.info("Differentiating releases A vs B")
-    changes_all: List[ChangeRecord] = []
-    added_all: List[EntitySummary] = []
-    removed_all: List[EntitySummary] = []
-    changed_all: List[EntitySummary] = []
-
-    for etype, a_map, b_map in [
-        ("gene", genes_a, genes_b),
-        ("transcript", tx_a, tx_b),
-        ("exon", ex_a, ex_b),
-    ]:
-        c, a, r, ch = diff_entity(etype, a_map, b_map)
-        changes_all.extend(c)
-        added_all.extend(a)
-        removed_all.extend(r)
-        changed_all.extend(ch)
-        log.info("%s: added=%d removed=%d changed=%d", etype, len(a), len(r), len(ch))
-
-    log.info(
-        "Totals: changes=%d (added=%d removed=%d changed=%d)",
-        len(changes_all),
-        len(added_all),
-        len(removed_all),
-        len(changed_all),
-    )
-
-    # write_changes_tsv
-    try:
-        log.info("Writing changes.tsv")
-        write_changes_tsv(str(outdir), changes_all)
-    except Exception:
-        log.exception("Failed writing changes.tsv")
-        raise RuntimeError("Could not write changes.tsv")
 
 
     # write_summary_tsv
