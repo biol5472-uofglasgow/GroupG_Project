@@ -20,8 +20,7 @@ def write_changes_tsv(outdir: str, changes: list[ChangeRecord], prefix: str) -> 
     the ID for that entity, the type of change (added, removed or changed (one or more attributes))
     and exactly what was changed in the details. One row per entity
     '''
-    filename = f'{prefix}_changes.tsv'
-    path = os.path.join(outdir, filename)
+    path = os.path.join(outdir, f'{prefix}_changes.tsv')
     # Using encoding for making sure it works on Windows/mac/Linux
     with open(path, 'w', encoding = 'utf-8') as handle:
         handle.write('Entity_Type\tEntity_ID\tChange_Type\tDetails\n')
@@ -45,8 +44,7 @@ def write_summary_tsv(outdir: str, prefix: str,
         if c.change_type in counts[et]:
             counts[et][c.change_type] += 1
 
-    filename = f'{prefix}_summary.tsv'
-    path = os.path.join(outdir, filename)
+    path = os.path.join(outdir, f'{prefix}_summary.tsv')
     with open(path, 'w', encoding = 'utf-8') as file:
         file.write('Entity_Type\tAdded\tRemoved\tChanged\tTotal\n')
         all_added = 0
@@ -88,14 +86,15 @@ def write_tracks(path: str, entities: list[EntitySummary]) -> None:
 def write_genome_tracks(outdir: str,
                         added: list[EntitySummary],
                         removed: list[EntitySummary],
-                        changed: list[EntitySummary]) -> tuple[str, str, str]:
+                        changed: list[EntitySummary],
+                        prefix: str) -> tuple[str, str, str]:
     '''
     Gives three genome browser loadable tracks as gff3 files named
     added.gff, removed.gff and changed.gff
     '''
-    added_path = os.path.join(outdir, 'added.gff3')
-    removed_path = os.path.join(outdir, 'removed.gff3')
-    changed_path = os.path.join(outdir, 'changed.gff3')
+    added_path = os.path.join(outdir, f'{prefix}_added.gff3')
+    removed_path = os.path.join(outdir, f'{prefix}_removed.gff3')
+    changed_path = os.path.join(outdir, f'{prefix}_changed.gff3')
 
     write_tracks(added_path, added)
     write_tracks(removed_path, removed)
