@@ -1,7 +1,7 @@
 from annot_consistency.models import ChangeRecord
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import dict, list, tuple
 import matplotlib as plt
 
@@ -79,7 +79,7 @@ def write_htmlreport(outdir: str, changes: list[ChangeRecord], summary_result: t
     html.append("</head><body>")
 
     html.append(f"<h1>{title}</h1>")
-    html.append(f"<p class='muted'>Generated: {datetime.utcnow().isoformat(timespec='seconds')}Z</p>")
+    html.append(f"<p class='muted'>Generated: {datetime.now(timezone.utc).isoformat(timespec='seconds')}Z</p>")
 
     html.append("<h2>Provenance</h2>")
     html.append("<ul>")
