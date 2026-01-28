@@ -82,6 +82,17 @@ def main(argv=None) -> None:
     log.info("Building entities for release B")
     b_entities = build_entities(db_b)
 
+    # differentiating entities 
+    log.info("Differentiating entities (A vs B)")
+    changes_all, added_all, removed_all, changed_all = diff_entity(a_entities, b_entities)
+
+    log.info(
+        "Totals: changes=%d (added=%d removed=%d changed=%d)",
+        len(changes_all),
+        len(added_all),
+        len(removed_all),
+        len(changed_all))
+
 
     # write_summary_tsv
 
