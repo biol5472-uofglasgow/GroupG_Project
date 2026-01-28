@@ -1,7 +1,9 @@
 import json
 import os
 from datetime import datetime, timezone
+
 import matplotlib.pyplot as plt
+
 
 def plot_counts(outdir: str, counts: dict[str, dict[str, int]], prefix: str) -> str:
     '''
@@ -17,9 +19,9 @@ def plot_counts(outdir: str, counts: dict[str, dict[str, int]], prefix: str) -> 
 
     plt.figure()
     plt.bar(x, added, label = 'Added')
-    plt.bar(x, removed, bottom=added, label="removed")
+    plt.bar(x, removed, bottom=added, label="Removed")
     bottoms = [a + r for a, r in zip(added, removed)]
-    plt.bar(x, changed, bottom=bottoms, label="changed")
+    plt.bar(x, changed, bottom=bottoms, label="Changed")
     plt.xticks(x, entity_types, rotation=45, ha="right")
     plt.ylabel("Count")
     plt.title("Change counts by entity type")
@@ -38,11 +40,13 @@ def write_htmlreport(outdir: str,
                     run_json_path: str,
                     title: str = 'Two release annotation consistency report') -> str:
     '''
-    Generate report.html and report.png. Takes in outdir: output directory, changes: ChangeRecord list from diff stage 
-    (taken from counts in io, used in cli), summary_result: (summary_path, counts) returned by io.write_summary_tsv(),
+    Generate report.html and report.png. Takes in outdir: output directory,
+    changes: ChangeRecord list from diff stage
+    (taken from counts in io, used in cli), summary_result: (summary_path, counts)
+    returned by io.write_summary_tsv(),
     run_json_path: path returned by io.write_run_json() and a title: HTML title.
     '''
-    summary_path, counts = summary_result
+    _, counts = summary_result
     plot_counts(outdir, counts, prefix)
 
     entity_types = sorted(counts.keys())
@@ -51,7 +55,7 @@ def write_htmlreport(outdir: str,
     total_changed = sum(counts[et].get('changed', 0) for et in entity_types)
     total_all = total_added + total_removed + total_changed
 
-    with open(run_json_path, 'r', encoding='utf-8') as file:
+    with open(run_json_path, encoding='utf-8') as file:
         run_meta = json.load(file)
 
     tool = run_meta['tool']
@@ -68,7 +72,8 @@ def write_htmlreport(outdir: str,
     html.append("<html><head><meta charset='utf-8'>")
     html.append(f'<title>{title}</title>')
     html.append("<style>"
-        "body{font-family:system-ui,Segoe UI,Arial,sans-serif;max-width:1000px;margin:24px auto;padding:0 16px;}"
+        "body{font-family:system-ui,Segoe UI,Arial,sans-serif;" \
+        "max-width:1000px;margin:24px auto;padding:0 16px;}"
         "table{border-collapse:collapse;width:100%;margin-top:12px;}"
         "th,td{border:1px solid #ccc;padding:6px 8px;text-align:left;}"
         "th{background:#f6f6f6;}"
@@ -80,7 +85,8 @@ def write_htmlreport(outdir: str,
     html.append("</head><body>")
 
     html.append(f"<h1>{title}</h1>")
-    html.append(f"<p class='muted'>Generated: {datetime.now(timezone.utc).isoformat(timespec='seconds')}Z</p>")
+    timestamp = datetime.now(timezone.utc).isoformat(timespec='seconds')
+    html.append(f"<p class='muted'>Generated: {timestamp}</p>")
 
     html.append("<h2>Provenance</h2>")
     html.append("<ul>")
@@ -99,11 +105,13 @@ def write_htmlreport(outdir: str,
     html.append("</div>")
 
     html.append("<h2>Summary plot</h2>")
-    html.append(f"<img src='{prefix}_report.png' alt='Change counts plot' style='max-width:100%;height:auto;'>")
+    html.append(f"<img src='{prefix}_report.png' alt='Change counts plot' style='max-width:100%;" \
+    "height:auto;'>")
 
     html.append("<h2>Counts table</h2>")
     html.append("<table>")
-    html.append("<tr><th>Entity type</th><th>Added</th><th>Removed</th><th>Changed</th><th>Total</th></tr>")
+    html.append("<tr><th>Entity type</th><th>Added</th><th>Removed</th><th>Changed</th><th>" \
+    "Total</th></tr>")
     for et in entity_types:
         a = counts[et].get("added", 0)
         r = counts[et].get("removed", 0)
@@ -120,10 +128,10 @@ def write_htmlreport(outdir: str,
 
     html.append("<h2>Detailed changes</h2>")
     html.append("<details>")
-    html.append("<summary>Show changes.tsv table</summary>")
-    html.append("<!details>")
+    html.append(f"<summary>Show {prefix}_changes.tsv table</summary>")
+    
 
-    with open(os.path.join(outdir, "changes.tsv"), "r", encoding="utf-8") as fh:
+    with open(os.path.join(outdir, f"{prefix}_changes.tsv"), encoding="utf-8") as fh:
         header = fh.readline().rstrip("\n").split("\t")
         html.append("<div style='overflow-x:auto;'>")
         html.append("<table>")
@@ -135,7 +143,7 @@ def write_htmlreport(outdir: str,
 
         html.append("</table>")
         html.append("</div>")
-
+    html.append("</details>")
     html.append("</body></html>")
 
     report_path = os.path.join(outdir, f"{prefix}_report.html")
