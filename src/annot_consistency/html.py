@@ -3,7 +3,7 @@ import json
 import os
 from datetime import datetime, timezone
 from typing import dict, list, tuple
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 def plot_counts(outdir: str, counts: dict[str, dict[str, int]]) -> str:
     '''
@@ -58,12 +58,12 @@ def write_htmlreport(outdir: str, changes: list[ChangeRecord], summary_result: t
 
     tool_name = tool['name']
     tool_version = tool['version']
-    timestamp_utc = tool['timestamp_utc']
-    release_a = tool['release_a']
-    release_b = tool['release_b']
+    timestamp_utc = run_meta['timestamp_utc']
+    release_a = inputs['release_a']
+    release_b = inputs['release_b']
 
     html: list[str] = []
-    html.append('<!doctype html')
+    html.append("<!doctype html>")
     html.append("<html><head><meta charset='utf-8'>")
     html.append(f'<title>{title}</title>')
     html.append("<style>"
@@ -120,6 +120,7 @@ def write_htmlreport(outdir: str, changes: list[ChangeRecord], summary_result: t
     html.append("<h2>Detailed changes</h2>")
     html.append("<details>")
     html.append("<summary>Show changes.tsv table</summary>")
+    html.append("<!details>")
 
     with open(os.path.join(outdir, "changes.tsv"), "r", encoding="utf-8") as fh:
         header = fh.readline().rstrip("\n").split("\t")
@@ -133,7 +134,7 @@ def write_htmlreport(outdir: str, changes: list[ChangeRecord], summary_result: t
 
         html.append("</table>")
         html.append("</div>")
-        
+
     html.append("</body></html>")
 
     report_path = os.path.join(outdir, "report.html")
