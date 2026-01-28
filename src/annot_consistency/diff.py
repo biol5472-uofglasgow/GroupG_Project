@@ -1,6 +1,6 @@
 from annot_consistency.models import EntitySummary, ChangeRecord
 from typing import List, Dict, Tuple, Optional, Mapping 
-
+import gffutils
 
 def choose_entity_id(featuretype: str, attrs: Mapping[str, str], seqid: str, start: int, end: int, strand: str,) -> str:
     """
@@ -24,45 +24,37 @@ def choose_entity_id(featuretype: str, attrs: Mapping[str, str], seqid: str, sta
 
     return f"{featuretype}|{seqid}:{start}-{end}:{strand}"        # Final fallback if no parents: feature type + genomic location 
 
-def build_entities(gff: str) -> Dict[str, Dict[str, EntitySummary]]:
+
+def build_entities(db: gffutils.FeatureDB) -> Dict[str, Dict[str, EntitySummary]]:
     """
     Read ONE GFF3 release file and build structure needed by diff_entity: entity_type -> entity_id -> EntitySummary
     Only keeps entity types: gene, mRNA, exon.
     """
-    entities_featuretype: Dict[str, Dict[str, EntitySummary]] = {"gene": {}, "mRNA": {}, "exon": {}}     # entity types for current fixtures
+    entities_feature_type: Dict[str, Dict[str, EntitySummary]] = {"gene": {}, "mRNA": {}, "exon": {}}     # entity types for current fixtures
 
-    with open(gff, "r") as file:
-        for line in file:
-            if not line or line.startswith("#"):        #ignore gff comments
-                continue
+    for feature in db.all_features(order_by=("seqid", "start")):
+        if feature.featuretype not in entities_feature_type:
+            continue
 
-            line = line.rstrip("\n")
-            cols = line.split("\t")
-            if len(cols) != 9:      # gff must have 9 columns
-                raise ValueError(f"Invalid GFF3 line (expected 9 columns): {line}\ncol={cols}")
+        attrs = feature.attributes
 
-            seqid, source, featuretype, start, end, score, strand, phase, attr_s = cols
-            if featuretype not in entities_featuretype:   # ignore features not being diff   
-                continue
+        entity_id = choose_entity_id(feature.featuretype, attrs, feature.seqid, feature.start, feature.end, feature.strand)
 
-            start = int(start)
-            end = int(end)
-            attrs = parse_attrs(attr_s)     # attributess into dict
-            entity_id = choose_entity_id(featuretype, attrs, seqid, start, end, strand)     # dict key for membership downstream
-            parent_id: Optional[str] = attrs.get("Parent")      
-            
-            # Summary object for one gff feature
-            entities_featuretype[featuretype][entity_id] = EntitySummary(
-                entity_type=featuretype,
-                entity_id=entity_id,
-                seqid=seqid,
-                start=start,
-                end=end,
-                strand=strand,
-                parent_id=parent_id,
-                attrs=attrs)
+        parent_id: Optional[str] = None
+        if "Parent" in attrs and attrs["Parent"]:
+            parent_id = ",".join(attrs["Parent"])
 
-    return entities_featuretype 
+        entities_feature_type[feature.featuretype][entity_id] = EntitySummary(
+            entity_type=feature.featuretype,
+            entity_id=entity_id,
+            seqid=feature.seqid,
+            start=feature.start,
+            end=feature.end,
+            strand=feature.strand,
+            parent_id=parent_id,
+            attrs={key: ",".join(value) for key, value in attrs.items()})
+
+    return entities_feature_type
 
 # Writing function for checking through each attribute in the signature if they are different
 def changed_details(a: EntitySummary, b: EntitySummary) -> str:
