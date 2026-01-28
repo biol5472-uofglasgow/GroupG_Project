@@ -4,7 +4,7 @@ import os
 from datetime import datetime, timezone
 import matplotlib.pyplot as plt
 
-def plot_counts(outdir: str, counts: dict[str, dict[str, int]]) -> str:
+def plot_counts(outdir: str, counts: dict[str, dict[str, int]], prefix: str) -> str:
     '''
     Creates a bar plot of the counts of the different changes types per entity type,
     saved as a png file to be used in the html report
@@ -27,7 +27,7 @@ def plot_counts(outdir: str, counts: dict[str, dict[str, int]]) -> str:
     plt.legend()
     plt.tight_layout()
 
-    plot_path = os.path.join(outdir, "report.png")
+    plot_path = os.path.join(outdir, f'{prefix}_report.png')
     plt.savefig(plot_path, dpi=150)
     plt.close()
 
