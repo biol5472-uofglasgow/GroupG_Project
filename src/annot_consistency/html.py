@@ -33,15 +33,18 @@ def plot_counts(outdir: str, counts: dict[str, dict[str, int]], prefix: str) -> 
 
     return plot_path
 
-def write_htmlreport(outdir: str, changes: list[ChangeRecord], summary_result: tuple[str, dict[str, dict[str, int]]],
-                     run_json_path: str, title: str = 'Two release annotation consistency report') -> str:
+def write_htmlreport(outdir: str,
+                    summary_result: tuple[str, dict[str, dict[str, int]]],
+                    prefix: str,
+                    run_json_path: str,
+                    title: str = 'Two release annotation consistency report') -> str:
     '''
     Generate report.html and report.png. Takes in outdir: output directory, changes: ChangeRecord list from diff stage 
     (taken from counts in io, used in cli), summary_result: (summary_path, counts) returned by io.write_summary_tsv(),
     run_json_path: path returned by io.write_run_json() and a title: HTML title.
     '''
     summary_path, counts = summary_result
-    plot_counts(outdir, counts)
+    plot_counts(outdir, counts, prefix)
 
     entity_types = sorted(counts.keys())
     total_added = sum(counts[et].get('added', 0) for et in entity_types)
@@ -97,7 +100,7 @@ def write_htmlreport(outdir: str, changes: list[ChangeRecord], summary_result: t
     html.append("</div>")
 
     html.append("<h2>Summary plot</h2>")
-    html.append("<img src='report.png' alt='Change counts plot' style='max-width:100%;height:auto;'>")
+    html.append(f"<img src='{prefix}_report.png' alt='Change counts plot' style='max-width:100%;height:auto;'>")
 
     html.append("<h2>Counts table</h2>")
     html.append("<table>")
@@ -111,9 +114,9 @@ def write_htmlreport(outdir: str, changes: list[ChangeRecord], summary_result: t
 
     html.append("<h2>Artefacts</h2>")
     html.append("<ul>")
-    html.append("<li><a href='changes.tsv'>changes.tsv</a></li>")
-    html.append("<li><a href='summary.tsv'>summary.tsv</a></li>")
-    html.append("<li><a href='run.json'>run.json</a></li>")
+    html.append(f"<li><a href='{prefix}_changes.tsv'>{prefix}_changes.tsv</a></li>")
+    html.append(f"<li><a href='{prefix}_summary.tsv'>{prefix}_summary.tsv</a></li>")
+    html.append(f"<li><a href='{prefix}_run.json'>{prefix}_run.json</a></li>")
     html.append("</ul>")
 
     html.append("<h2>Detailed changes</h2>")
