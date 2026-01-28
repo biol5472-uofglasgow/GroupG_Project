@@ -1,4 +1,3 @@
-from annot_consistency.models import ChangeRecord
 import json
 import os
 from datetime import datetime, timezone
@@ -139,7 +138,7 @@ def write_htmlreport(outdir: str,
 
     html.append("</body></html>")
 
-    report_path = os.path.join(outdir, "report.html")
+    report_path = os.path.join(outdir, f"{prefix}_report.html")
     with open(report_path, "w", encoding="utf-8") as fh:
         fh.write("\n".join(html))
         fh.write("\n")
