@@ -102,7 +102,7 @@ def main(argv=None) -> None:
         raise RuntimeError("Could not write changes.tsv")
 
 
-    # write_summary_tsv
+    # writing the summary
     try:
         log.info("Writing summary.tsv")
         write_summary_tsv(str(outdir), changes_all)
@@ -111,7 +111,7 @@ def main(argv=None) -> None:
         raise RuntimeError("Could not write summary.tsv")
 
     
-    # write_genome_tracks
+    # writing genome browser tracks  
     try:
         log.info("Writing genome browser tracks (added/removed/changed)")
         write_genome_tracks(str(outdir), added_all, removed_all, changed_all)
@@ -120,7 +120,7 @@ def main(argv=None) -> None:
         raise RuntimeError("Could not write genome tracks")
 
 
-    #  write_run_json
+    #  writing run.json 
     try:
         log.info("Writing run.json")
         write_run_json(
