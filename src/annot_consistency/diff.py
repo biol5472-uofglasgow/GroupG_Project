@@ -6,23 +6,24 @@ def choose_entity_id(featuretype: str, attrs: Mapping[str, List[str]], seqid: st
     """
     Prefer ID=; if missing, create a fallback ID.
     diffing uses entity IDs as dict keys; if an exon has no ID, we choose a stable key.
+    attrs comes from gffutils; values are lists because GFF3 can store multiple values per key.
     """
-    entity_id = attrs.get("ID")
-    if entity_id:       # if exists, use this ID
-        return entity_id
+    entity_id = attrs.get("ID", [])
+    if entity_id:
+        return entity_id[0]  # gffutils stores ID as a list; first element is the ID
 
-    parent = attrs.get("Parent")        # If no ID, revert to parent ID
-    if parent:
-        parent_list = parent.split(",")     # split Parent into individual IDs
-        tidy_parent = []
-        for row in parent_list:
-            if row != "":
-                tidy_parent.append(row)   # remove empty values
-        tidy_parent.sort()               # sort to prevent false positives of feature has more than 1 parent
-        parents = ",".join(tidy_parent)
-        return f"{featuretype}, parent={parents}|{seqid}:{start}-{end}:{strand}"     # parent ID alone is not stable enough
+    parents = attrs.get("Parent", [])
+    if parents:
+        tidy_parent: List[str] = []
+        for p in parents:
+            if p:
+                tidy_parent.append(p)
 
-    return f"{featuretype}|{seqid}:{start}-{end}:{strand}"        # Final fallback if no parents: feature type + genomic location 
+        tidy_parent.sort()
+        parent = ",".join(tidy_parent)
+        return f"{featuretype}|parent={parent}|{seqid}:{start}-{end}:{strand}"
+
+    return f"{featuretype}|{seqid}:{start}-{end}:{strand}"
 
 
 def build_entities(db: gffutils.FeatureDB) -> Dict[str, Dict[str, EntitySummary]]:
