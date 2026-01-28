@@ -23,14 +23,20 @@ def parse_args(argv=None) -> argparse.Namespace:
     # 3 arguments total (A, B, outdir). outdir optional with default.
     p.add_argument("releaseA", help="Annotation release A in GFF3 format")
     p.add_argument("releaseB", help="Annotation release B in GFF3 format")
-    p.add_argument(
-        "outDir",
-        nargs="?",
-        default=default_outdir,
-        help=f"Directory for output files (default: {default_outdir})",
-    )
+    p.add_argument("outDir", nargs="?", default=default_outdir,
+        help=f"Directory for output files (default: {default_outdir})")
     return p.parse_args(argv)
 
+def validate_inputs(release_a: Path, release_b: Path) -> None:
+    if not release_a.is_file():
+        raise FileNotFoundError(f"releaseA not found: {release_a}")
+    if not release_b.is_file():
+        raise FileNotFoundError(f"releaseB not found: {release_b}")
+
+    if release_a.suffix.lower() not in {".gff3", ".gff"}:
+        raise ValueError(f"releaseA must be a .gff or .gff3 file, got: {release_a.name}")
+    if release_b.suffix.lower() not in {".gff3", ".gff"}:
+        raise ValueError(f"releaseB must be a .gff or .gff3 file, got: {release_b.name}")
 
 
 def main(argv=None) -> None:
