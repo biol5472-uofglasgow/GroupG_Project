@@ -2,7 +2,6 @@ from annot_consistency.models import ChangeRecord
 import json
 import os
 from datetime import datetime, timezone
-from typing import dict, list, tuple
 import matplotlib.pyplot as plt
 
 def plot_counts(outdir: str, counts: dict[str, dict[str, int]]) -> str:
@@ -34,7 +33,7 @@ def plot_counts(outdir: str, counts: dict[str, dict[str, int]]) -> str:
 
     return plot_path
 
-def write_htmlreport(outdir: str, changes: list[ChangeRecord], summary_result: tuple[str, dict[str, int]],
+def write_htmlreport(outdir: str, changes: list[ChangeRecord], summary_result: tuple[str, dict[str, dict[str, int]]],
                      run_json_path: str, title: str = 'Two release annotation consistency report') -> str:
     '''
     Generate report.html and report.png. Takes in outdir: output directory, changes: ChangeRecord list from diff stage 
