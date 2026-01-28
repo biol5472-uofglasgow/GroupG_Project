@@ -16,21 +16,24 @@ def ensure_outdir(outdir: str) -> None:
 # Writing function to be used in cli.py to write changes.tsv file
 def write_changes_tsv(outdir: str, changes: list[ChangeRecord]) -> str:
     '''
-    Gives a tab separated file with each row having the entity type(Gene, Transcript or Exon), the ID for that entity,
-    the type of change (added, removed or changed (one or more attributes)) and exactly what was changed in the details
-    One row per entity
+    Gives a tab separated file with each row having the entity type(Gene, Transcript or Exon),
+    the ID for that entity, the type of change (added, removed or changed (one or more attributes))
+    and exactly what was changed in the details. One row per entity
     '''
     path = os.path.join(outdir, 'changes.tsv')
-    with open(path, 'w', encoding = 'utf-8') as handle: # Using encoding for making sure it works on Windows/mac/Linux
+    # Using encoding for making sure it works on Windows/mac/Linux
+    with open(path, 'w', encoding = 'utf-8') as handle:
         handle.write('Entity_Type\tEntity_ID\tChange_Type\tDetails\n')
         for c in changes:
             handle.write(f'{c.entity_type}\t{c.entity_id}\t{c.change_type}\t{c.details}\n')
     return path
 
 # Writing function to be used in cli.py to write summary.tsv file
-def write_summary_tsv(outdir: str, changes: list[ChangeRecord]) -> tuple[str, dict[str, dict[str, int]]]:
+def write_summary_tsv(outdir: str,
+                      changes: list[ChangeRecord]) -> tuple[str, dict[str, dict[str, int]]]:
     '''
-    Gives the counts for number of changes by entity type and the type of changes along with the total number of
+    Gives the counts for number of changes by entity type and
+    the type of changes along with the total number of
     changes (addition and removals included) for that entity
     '''
     counts: dict[str, dict[str, int]] = {}
@@ -85,7 +88,8 @@ def write_genome_tracks(outdir: str,
                         removed: list[EntitySummary],
                         changed: list[EntitySummary]) -> tuple[str, str, str]:
     '''
-    Gives three genome browser loadable tracks as gff3 files named added.gff, removed.gff and changed.gff 
+    Gives three genome browser loadable tracks as gff3 files named
+    added.gff, removed.gff and changed.gff
     '''
     added_path = os.path.join(outdir, 'added.gff3')
     removed_path = os.path.join(outdir, 'removed.gff3')
@@ -98,10 +102,10 @@ def write_genome_tracks(outdir: str,
     return added_path, removed_path, changed_path
 
 # Writing function to create the run.json metadata records
-def write_run_json(tool_name: str, 
-                   tool_version: str, 
-                   release_a: str, 
-                   release_b: str, 
+def write_run_json(tool_name: str,
+                   tool_version: str,
+                   release_a: str,
+                   release_b: str,
                    outdir: str) -> str:
     '''
     Gives a record of tool metadata, timestamp, inputs used and the output filenames
@@ -117,14 +121,14 @@ def write_run_json(tool_name: str,
             'release_b': release_b
         },
         'outputs': {
-            'outdir': outdir, 
-            'changes_tsv': 'changes.tsv', 
+            'outdir': outdir,
+            'changes_tsv': 'changes.tsv',
             'run_json': 'run.json',
-            'added_gff3': 'added.gff3', 
+            'added_gff3': 'added.gff3',
             'removed_gff3': 'removed.gff3',
             'changed_gff3': 'changed.gff3',
             'summary_tsv': 'summary.tsv'
-        }    
+        }
     }
 
     path = os.path.join(outdir, 'run.json')
