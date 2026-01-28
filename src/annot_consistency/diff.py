@@ -1,6 +1,9 @@
-from annot_consistency.models import EntitySummary, ChangeRecord
-from typing import Optional, Mapping 
+from collections.abc import Mapping
+
 import gffutils
+
+from annot_consistency.models import ChangeRecord, EntitySummary
+
 
 def choose_entity_id(featuretype: str,
                     attrs: Mapping[str, list[str]],
@@ -33,11 +36,15 @@ def choose_entity_id(featuretype: str,
 
 def build_entities(db: gffutils.FeatureDB) -> dict[str, dict[str, EntitySummary]]:
     """
-    Read ONE GFF3 release file and build structure needed by 
+    Read ONE GFF3 release file and build structure needed by
     diff_entity: entity_type -> entity_id -> EntitySummary
     Only keeps entity types: gene, mRNA, exon.
     """
-    entities_feature_type: dict[str, dict[str, EntitySummary]] = {"gene": {}, "mRNA": {}, "exon": {}}     
+    entities_feature_type: dict[str, dict[str, EntitySummary]] = {
+        "gene": {},
+        "mRNA": {},
+        "exon": {}
+        }
     # entity types for current fixtures
 
     for feature in db.all_features(order_by=("seqid", "start")):
@@ -46,13 +53,15 @@ def build_entities(db: gffutils.FeatureDB) -> dict[str, dict[str, EntitySummary]
 
         attrs = feature.attributes
 
-        entity_id = choose_entity_id(feature.featuretype, attrs, feature.seqid, feature.start, feature.end, feature.strand)
+        entity_id = choose_entity_id(feature.featuretype, attrs, feature.seqid,
+                                    feature.start, feature.end, feature.strand)
 
-        parent_id: Optional[str] = None     # parent not guaranted
+        parent_id: str | None     # parent not guaranted
         if "Parent" in attrs and attrs["Parent"]:
             parent_id = ",".join(attrs["Parent"])
 
-        # create immutable summary object for diffing; store it under its feature type and stable entity_id key.
+        # create immutable summary object for diffing; store it under its feature type
+        # and stable entity_id key.
         entities_feature_type[feature.featuretype][entity_id] = EntitySummary(
             entity_type = feature.featuretype,
             entity_id = entity_id,
@@ -62,7 +71,7 @@ def build_entities(db: gffutils.FeatureDB) -> dict[str, dict[str, EntitySummary]
             end = feature.end,
             score = feature.score,
             strand = feature.strand,
-            phase = feature.frame,     
+            phase = feature.frame,
             parent_id = parent_id,
             attrs = {key: ",".join(value) for key, value in attrs.items()})
 
@@ -71,7 +80,7 @@ def build_entities(db: gffutils.FeatureDB) -> dict[str, dict[str, EntitySummary]
 # Writing function for checking through each attribute in the signature if they are different
 def changed_details(a: EntitySummary, b: EntitySummary) -> str:
     '''
-    Gives a string out joined from a list of strings based on the differences 
+    Gives a string out joined from a list of strings based on the differences
     between the signatures of release A and release B
     '''
     parts: list[str] = []
@@ -93,16 +102,20 @@ def changed_details(a: EntitySummary, b: EntitySummary) -> str:
         parts.append(f'Phase: {a.phase} -> {b.phase}')
     if a.score != b.score:
         parts.append(f'Score: {a.score} -> {b.score}')
-    
+
     return '; '.join(parts)
 
 def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                 b_entities: dict[str, dict[str, EntitySummary]]) -> tuple[
-                    list[ChangeRecord], list[EntitySummary], list[EntitySummary], list[EntitySummary],
+                    list[ChangeRecord],
+                    list[EntitySummary],
+                    list[EntitySummary],
+                    list[EntitySummary],
                 ]:
     '''
     Compares the two extracted release files A and B, then two lists
-    One list for the changes.tsv and another list for the tracks added, removed and changed gff files
+    One list for the changes.tsv and
+    another list for the tracks added, removed and changed gff files
     '''
     changes: list[ChangeRecord] = []
     added: list[EntitySummary] = []
@@ -112,31 +125,43 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
     for entity_type in ('gene', 'mRNA', 'exon'):
         a_map = a_entities.get(entity_type, {})
         b_map = b_entities.get(entity_type, {})
-        
+
         a_id = set(a_map.keys())
         b_id = set(b_map.keys())
 
         # Added entities: If the ID is present only in release B and not in release A
         for e_id in b_id - a_id:
             added.append(b_map[e_id])
-            changes.append(ChangeRecord(entity_type = entity_type, entity_id = e_id, change_type = 'added',
-                                        details = 'Entity present only in release B'))
-        
+            changes.append(ChangeRecord(
+                entity_type = entity_type,
+                entity_id = e_id,
+                change_type = 'added',
+                details = 'Entity present only in release B')
+                )
+
         # Removed entities: If the ID is present only in release A and not in release B
         for e_id in a_id - b_id:
             removed.append(a_map[e_id])
-            changes.append(ChangeRecord(entity_type = entity_type, entity_id = e_id, change_type = 'removed',
-                                        details = 'Entity present only in release A'))
-        
-        # Changed entities: First check if the entities are present in both, then see if signatures are different
+            changes.append(ChangeRecord(
+                entity_type = entity_type,
+                entity_id = e_id,
+                change_type = 'removed',
+                details = 'Entity present only in release A')
+                )
+
+        # Changed entities: First check if the entities are present in both,
+        # then see if signatures are different
         for e_id in (a_id & b_id):
             a = a_map[e_id]
             b = b_map[e_id]
             if a.signature() != b.signature():
                 # Using the release B signatures for track output
                 changed.append(b)
-                changes.append(ChangeRecord(entity_type = entity_type, entity_id = e_id, change_type = 'changed',
-                                        details = changed_details(a, b)))
-        
-    return changes, added, removed, changed
+                changes.append(ChangeRecord(
+                    entity_type = entity_type,
+                    entity_id = e_id,
+                    change_type = 'changed',
+                    details = changed_details(a, b))
+                    )
 
+    return changes, added, removed, changed
