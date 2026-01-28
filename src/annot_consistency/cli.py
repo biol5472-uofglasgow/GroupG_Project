@@ -27,6 +27,7 @@ def parse_args(argv=None) -> argparse.Namespace:
         help=f"Directory for output files (default: {default_outdir})")
     return p.parse_args(argv)
 
+#validate input files 
 def validate_inputs(release_a: Path, release_b: Path) -> None:
     if not release_a.is_file():
         raise FileNotFoundError(f"releaseA not found: {release_a}")
@@ -46,17 +47,8 @@ def main(argv=None) -> None:
     release_b = Path(args.releaseB)
     outdir = Path(args.outDir)
 
-    # Input validation (raising specific error types)
-    if not release_a.is_file():
-        raise FileNotFoundError(f"releaseA not found: {release_a}")
-    if not release_b.is_file():
-        raise FileNotFoundError(f"releaseB not found: {release_b}")
-
-    # Optional validation: ensure file extensions look like GFF3/GFF
-    if release_a.suffix.lower() not in {".gff3", ".gff"}:
-        raise ValueError(f"releaseA must be a .gff or .gff3 file, got: {release_a.name}")
-    if release_b.suffix.lower() not in {".gff3", ".gff"}:
-        raise ValueError(f"releaseB must be a .gff or .gff3 file, got: {release_b.name}")
+    #validate input files 
+    validate_inputs(release_a, release_b)
 
     # Ensure outdir exists
     ensure_outdir(str(outdir))
@@ -69,7 +61,7 @@ def main(argv=None) -> None:
     log.info("releaseB=%s", release_b)
     log.info("outDir=%s", outdir)
 
-    # DBs persisted in outdir for reuse
+    # DBs stored in in outdir for reuse
     db_path_a = outdir / "releaseA.db"
     db_path_b = outdir / "releaseB.db"
 
@@ -83,7 +75,12 @@ def main(argv=None) -> None:
         log.exception("Failed to load/create gffutils databases")
         raise RuntimeError("Could not load or create gffutils databases")
 
+    # build entities
+    log.info("Building entities for release A")
+    a_entities = build_entities(db_a)
 
+    log.info("Building entities for release B")
+    b_entities = build_entities(db_b)
 
 
     # write_summary_tsv
