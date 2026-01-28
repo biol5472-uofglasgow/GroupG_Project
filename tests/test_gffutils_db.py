@@ -7,7 +7,7 @@ from src.annot_consistency.gffutils_db import load_or_create_db
 
 def test_create_and_check_db(tmp_path: Path) -> None:
     gff_1 = tmp_path.joinpath("test1_gff.gff")
-    gff_2 = tmp_path.joinpath("test2_gff.db")
+    gff_2 = tmp_path.joinpath("test2_gff.gff")
     db_path_1= tmp_path.joinpath("test1_db.db")
     db_path_2 = tmp_path.joinpath("test2_db.db")
 
