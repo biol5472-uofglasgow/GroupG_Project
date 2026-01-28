@@ -117,6 +117,23 @@ def write_htmlreport(outdir: str, changes: list[ChangeRecord], summary_result: t
     html.append("<li><a href='run.json'>run.json</a></li>")
     html.append("</ul>")
 
+    html.append("<h2>Detailed changes</h2>")
+    html.append("<details>")
+    html.append("<summary>Show changes.tsv table</summary>")
+
+    with open(os.path.join(outdir, "changes.tsv"), "r", encoding="utf-8") as fh:
+        header = fh.readline().rstrip("\n").split("\t")
+        html.append("<div style='overflow-x:auto;'>")
+        html.append("<table>")
+        html.append("<tr>" + "".join(f"<th>{h}</th>" for h in header) + "</tr>")
+
+        for line in fh:
+            cols = line.rstrip("\n").split("\t")
+            html.append("<tr>" + "".join(f"<td>{c}</td>" for c in cols) + "</tr>")
+
+        html.append("</table>")
+        html.append("</div>")
+        
     html.append("</body></html>")
 
     report_path = os.path.join(outdir, "report.html")
