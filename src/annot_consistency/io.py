@@ -14,13 +14,14 @@ def ensure_outdir(outdir: str) -> None:
     os.makedirs(outdir, exist_ok=True)
 
 # Writing function to be used in cli.py to write changes.tsv file
-def write_changes_tsv(outdir: str, changes: list[ChangeRecord]) -> str:
+def write_changes_tsv(outdir: str, changes: list[ChangeRecord], prefix: str) -> str:
     '''
     Gives a tab separated file with each row having the entity type(Gene, Transcript or Exon),
     the ID for that entity, the type of change (added, removed or changed (one or more attributes))
     and exactly what was changed in the details. One row per entity
     '''
-    path = os.path.join(outdir, 'changes.tsv')
+    filename = f'{prefix}_changes.tsv'
+    path = os.path.join(outdir, filename)
     # Using encoding for making sure it works on Windows/mac/Linux
     with open(path, 'w', encoding = 'utf-8') as handle:
         handle.write('Entity_Type\tEntity_ID\tChange_Type\tDetails\n')
