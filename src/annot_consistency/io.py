@@ -107,10 +107,12 @@ def write_run_json(tool_name: str,
                    tool_version: str,
                    release_a: str,
                    release_b: str,
-                   outdir: str) -> str:
+                   outdir: str,
+                   prefix: str) -> str:
     '''
     Gives a record of tool metadata, timestamp, inputs used and the output filenames
     '''
+    path = os.path.join(outdir, f'{prefix}_run.json')
     payload: dict[str, Any] = {
         'tool': {
             'name':tool_name,
@@ -123,16 +125,17 @@ def write_run_json(tool_name: str,
         },
         'outputs': {
             'outdir': outdir,
-            'changes_tsv': 'changes.tsv',
-            'run_json': 'run.json',
-            'added_gff3': 'added.gff3',
-            'removed_gff3': 'removed.gff3',
-            'changed_gff3': 'changed.gff3',
-            'summary_tsv': 'summary.tsv'
+            'changes_tsv': f'{prefix}_changes.tsv',
+            'run_json': f'{prefix}_run.json',
+            'added_gff3': f'{prefix}_added.gff3',
+            'removed_gff3': f'{prefix}_removed.gff3',
+            'changed_gff3': f'{prefix}_changed.gff3',
+            'summary_tsv': f'{prefix}_summary.tsv',
+            'report_html': f'{prefix}_report.html',
+            'report_png': f'{prefix}_report.png'
         }
     }
 
-    path = os.path.join(outdir, 'run.json')
     with open(path, 'w', encoding = 'utf-8') as jsonfile:
         json.dump(payload, jsonfile, indent = 2, sort_keys = True)
         jsonfile.write('\n')
