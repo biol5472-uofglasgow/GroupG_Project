@@ -103,7 +103,7 @@ def main(argv=None) -> None:
     # writing the changes
     try:
         log.info("Writing changes.tsv")
-        write_changes_tsv(str(outdir), changes_all)
+        write_changes_tsv(str(outdir), changes_all, prefix)
     except Exception:
         log.exception("Failed writing changes.tsv")
         raise RuntimeError("Could not write changes.tsv")
@@ -112,7 +112,8 @@ def main(argv=None) -> None:
     # writing the summary
     try:
         log.info("Writing summary.tsv")
-        write_summary_tsv(str(outdir), changes_all)
+        summary_file, counts= write_summary_tsv(str(outdir), changes_all, prefix)
+        summary_result= (summary_file, counts)
     except Exception:
         log.exception("Failed writing summary.tsv")
         raise RuntimeError("Could not write summary.tsv")
@@ -121,7 +122,8 @@ def main(argv=None) -> None:
     # writing genome browser tracks  
     try:
         log.info("Writing genome browser tracks (added/removed/changed)")
-        write_genome_tracks(str(outdir), added_all, removed_all, changed_all)
+        added_path, removed_path, changed_path= write_genome_tracks(
+            str(outdir), added_all, removed_all, changed_all, prefix)
     except Exception:
         log.exception("Failed writing genome tracks")
         raise RuntimeError("Could not write genome tracks")
@@ -130,16 +132,31 @@ def main(argv=None) -> None:
     #  writing run.json 
     try:
         log.info("Writing run.json")
-        write_run_json(
+        run_json_path=write_run_json(
             outdir=str(outdir),
             tool_name="gffacake",
             tool_version="1.0",
             release_a=str(release_a),
             release_b=str(release_b),
-            outdir_str=str(outdir))
+            outdir_str=str(outdir),
+            prefix=prefix)
     except Exception:
         log.exception("Failed writing run.json")
         raise RuntimeError("Could not write run.json")
+    
+    # HTML report
+    try:
+        log.info("Writing HTML report")
+        report_path = write_htmlreport(
+            outdir=str(outdir),
+            summary_result=summary_result,
+            prefix=prefix,
+            run_json_path=run_json_path,
+        )
+        log.info("Wrote report: %s", report_path)
+    except Exception:
+        log.exception("Failed writing HTML report")
+        raise RuntimeError("Could not write HTML report")
 
     log.info("Finished successfully")
 
