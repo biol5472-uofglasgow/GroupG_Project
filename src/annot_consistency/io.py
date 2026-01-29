@@ -29,8 +29,9 @@ def write_changes_tsv(outdir: str, changes: list[ChangeRecord], prefix: str) -> 
     return path
 
 # Writing function to be used in cli.py to write summary.tsv file
-def write_summary_tsv(outdir: str, prefix: str,
-                      changes: list[ChangeRecord]) -> tuple[str, dict[str, dict[str, int]]]:
+def write_summary_tsv(outdir: str,
+                    changes: list[ChangeRecord],
+                    prefix: str,) -> tuple[str, dict[str, dict[str, int]]]:
     '''
     Gives the counts for number of changes by entity type and
     the type of changes along with the total number of
