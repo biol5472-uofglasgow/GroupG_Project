@@ -1,6 +1,6 @@
 from src.annot_consistency.diff import changed_details, choose_entity_id, build_entities
 from src.annot_consistency.models import EntitySummary
-from typing import Mapping, Literal, List
+from typing import Mapping, Literal, List, Iterator, Any
 from dataclasses import dataclass
 
 #### tests for choosing the entity ID ####
@@ -28,7 +28,7 @@ def test_final_fallback() -> None:
 # create test DB and features
 # TestFeature = one row of GFF file
 @dataclass
-class FakeFeature:
+class TestFeature:
     featuretype: str
     seqid: str
     start: int
@@ -41,13 +41,24 @@ class FakeFeature:
 
 # TestDB  for gffutils.featureDB
 class TestDB:
-    def __init__(self, features: List[FakeFeature]) -> None:
+    def __init__(self, features: List[TestFeature]) -> None:
         self._features = features
 
-    def all_features(self, order_by: Any = None) -> Iterator[FakeFeature]:
+    def all_features(self, order_by: Any = None) -> Iterator[TestFeature]:
         # build_entities for order_by=("seqid","start");
         for feature in sorted(self._features, key=lambda x: (x.seqid, x.start)):
             yield feature
+
+# Test for filtering, IDs/keys, parent handling and attrs joining as expecteed
+def test_expected_types_and_builds_summaries() -> None:
+    features = [
+        TestFeature("gene", "chr1", 1, 100, "+", "fixture", 0.0, 0, {"ID": ["gene1"]}),     # a gene with a normal ID
+        TestFeature("mRNA", "chr1", 5, 80, "+", "fixture", 0.0, 0, {"ID": ["tx1"], "Parent": ["gene1"]}),   # transcript has ID and Parent
+        TestFeature("exon", "chr1", 5, 20, "+", "fixture", 0.0, 0, {"Parent": ["tx1", "", "tx0"]}), # exon has no ID, fallback is forced;  "" to check empty parents are filtered in the fallback key
+        TestFeature("CDS",  "chr1", 5, 20, "+", "fixture", 0.0, 0, {"ID": ["cds1"], "Parent": ["tx1"]}),    # ignores feature types outside
+    ]
+    out = build_entities(TestDB(features))
+
 
 
 def make_EntitySummary_instance(entity_type: str, entity_id: str, seqid:str, start:int,
