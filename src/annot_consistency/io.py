@@ -75,7 +75,7 @@ def write_tracks(path: str, entities: list[EntitySummary]) -> None:
         track.write('##gff-version 3\n')
         for e in entities:
             # setting up column 9 of gff3 file
-            attrs_parts = [f'ID = {e.entity_id}']
+            attrs_parts = [f'ID={e.entity_id}']
             if e.parent_id:
                 attrs_parts.append(f'Parent={e.parent_id}')
             attrs = ';'.join(attrs_parts)
