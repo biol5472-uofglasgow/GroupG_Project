@@ -8,6 +8,7 @@ from pathlib import Path
 
 
 from annot_consistency.io import ensure_outdir, write_changes_tsv, write_summary_tsv ,write_genome_tracks, write_run_json
+from annot_consistency.html import write_htmlreport
 from annot_consistency.logging_utils import logger
 from annot_consistency.gffutils_db import load_or_create_db
 from annot_consistency.diff import build_entities, diff_entity
@@ -50,16 +51,22 @@ def main(argv=None) -> None:
     #validate input files 
     validate_inputs(release_a, release_b)
 
-    # Ensure outdir exists
+    # ensure outdir exists
     ensure_outdir(str(outdir))
 
+    # prefix 
+    rel_a = os.path.splitext(os.path.basename(str(release_a)))[0]
+    rel_b = os.path.splitext(os.path.basename(str(release_b)))[0]
+    prefix = f"{rel_a}_{rel_b}"
+
     # Logging setup 
-    log_file = outdir / "annot-consistency.log"
+    log_file = outdir / f"{prefix}_annot-consistency.log"
     log = logger(str(log_file))
     log.info("Starting gffacake annotation consistency tool")
     log.info("releaseA=%s", release_a)
     log.info("releaseB=%s", release_b)
     log.info("outDir=%s", outdir)
+    log.info("prefix=%s", prefix)
 
     # DBs stored in in outdir for reuse
     db_path_a = outdir / "releaseA.db"
