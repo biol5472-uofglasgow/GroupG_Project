@@ -29,8 +29,9 @@ def write_changes_tsv(outdir: str, changes: list[ChangeRecord], prefix: str) -> 
     return path
 
 # Writing function to be used in cli.py to write summary.tsv file
-def write_summary_tsv(outdir: str, prefix: str,
-                      changes: list[ChangeRecord]) -> tuple[str, dict[str, dict[str, int]]]:
+def write_summary_tsv(outdir: str,
+                    changes: list[ChangeRecord],
+                    prefix: str,) -> tuple[str, dict[str, dict[str, int]]]:
     '''
     Gives the counts for number of changes by entity type and
     the type of changes along with the total number of
@@ -75,7 +76,7 @@ def write_tracks(path: str, entities: list[EntitySummary]) -> None:
         track.write('##gff-version 3\n')
         for e in entities:
             # setting up column 9 of gff3 file
-            attrs_parts = [f'ID = {e.entity_id}']
+            attrs_parts = [f'ID={e.entity_id}']
             if e.parent_id:
                 attrs_parts.append(f'Parent={e.parent_id}')
             attrs = ';'.join(attrs_parts)
