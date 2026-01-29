@@ -4,6 +4,7 @@ version = "0.5.0"
 description = "Compares two GFF3 annotation releases and reports added/removed/changed features"
 requires-python = ">=3.12"
 readme = "README.md"
+license = {text = "Apache-2.0"}
 authors = [
     {name = "Almarc Astorga"},
     {name = "Ishwar Bijumon"},
