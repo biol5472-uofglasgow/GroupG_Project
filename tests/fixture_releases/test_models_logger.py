@@ -1,0 +1,58 @@
+import logging
+from annot_consistency.logging_utils import logger
+from annot_consistency.models import EntitySummary, ChangeRecord
+
+#### Unit testing for logger and models ####
+
+## logger test ##
+def test_logger(test_path):
+    # create temporary log file path
+    log_file = test_path / "test.log"
+
+    # create logger and output message
+    log = logger(str(log_file))
+    log.info("the numbers mason, what do they mean")
+
+    # Test suite 1; logger identity and level
+    assert isinstance(log, logging.Logger)
+    assert log.name == "gffACAKE"
+    assert log.level == logging.DEBUG
+    assert log.propagate is False
+
+    # Suite 2: handler configs
+    assert len(log.handlers) == 1
+    handler = log.handlers[0]
+    assert isinstance(handler, logging.FileHandler)
+    assert handler.level == logging.DEBUG
+
+    # Suite 3: formatter configs
+    format = handler.formatter
+    assert format is not None
+    assert "%(levelname)s" in format
+    assert "%(asctime)s" in format
+    assert "%(message)s" in format
+
+    # Suite 4: message written to file
+    output = log_file.read_text()
+    assert "INFO" in output
+    assert "the numbers mason, what do they mean" in output 
+
+#### models testing ####
+
+# EntitySummary stores values correctly
+def test_ES_storing():
+
+# ChangeRecord stores values correctly
+def test_CR_storing():
+
+
+
+# EntitySummary is immutable
+def test_ES_immutable():
+
+# ChangeRecord is immutable
+def test_CR_immutable():
+
+
+# signature changes only when a signature field changes
+def test_signature_FieldChange():
