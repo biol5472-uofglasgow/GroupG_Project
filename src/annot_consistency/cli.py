@@ -138,7 +138,6 @@ def main(argv=None) -> None:
             tool_version="1.0",
             release_a=str(release_a),
             release_b=str(release_b),
-            outdir_str=str(outdir),
             prefix=prefix)
     except Exception:
         log.exception("Failed writing run.json")
