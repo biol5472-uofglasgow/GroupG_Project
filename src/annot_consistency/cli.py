@@ -59,7 +59,7 @@ def main(argv=None) -> None:
     rel_b = os.path.splitext(os.path.basename(str(release_b)))[0]
     prefix = f"{rel_a}_{rel_b}"
 
-    # Logging setup 
+    # logging setup 
     log_file = outdir / f"{prefix}_annot-consistency.log"
     log = logger(str(log_file))
     log.info("Starting gffacake annotation consistency tool")
@@ -69,8 +69,8 @@ def main(argv=None) -> None:
     log.info("prefix=%s", prefix)
 
     # DBs stored in in outdir for reuse
-    db_path_a = outdir / "releaseA.db"
-    db_path_b = outdir / "releaseB.db"
+    db_path_a = outdir / f"{prefix}_releaseA.db"
+    db_path_b = outdir / f"{prefix}_releaseB.db"
 
 
     # gffutils loading (load_or_create_db)
