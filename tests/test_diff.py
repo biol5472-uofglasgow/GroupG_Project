@@ -17,3 +17,9 @@ def test_logger(test_path):
     assert log.name == "gffACAKE"
     assert log.level == logging.DEBUG
     assert log.propagate is False
+
+    # Suite 2: handler configs
+    assert len(log.handlers) == 1
+    handler = log.handlers[0]
+    assert isinstance(handler, logging.FileHandler)
+    assert handler.level == logging.INFO
