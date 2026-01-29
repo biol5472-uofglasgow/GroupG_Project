@@ -11,3 +11,9 @@ def test_logger(test_path):
     # create logger and output message
     log = logger(str(log_file))
     log.info("the numbers mason, what do they mean")
+
+    # Test suite 1; logger identity and level
+    assert isinstance(log, logging.Logger)
+    assert log.name == "gffACAKE"
+    assert log.level == logging.DEBUG
+    assert log.propagate is False
