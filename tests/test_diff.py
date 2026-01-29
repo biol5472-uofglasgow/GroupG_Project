@@ -59,6 +59,24 @@ def test_expected_types_and_builds_summaries() -> None:
     ]
     out = build_entities(TestDB(features))
 
+    # check the overall structure is correct
+    assert set(out) == {"gene", "mRNA", "exon"} 
+
+    # gene was stored correctly
+    assert "gene1" in out["gene"]
+    assert out["gene"]["gene1"].parent_id is None
+    assert out["gene"]["gene1"].attrs["ID"] == "gene1"
+
+    # mRNA parent behaviour and attrs join
+    assert "tx1" in out["mRNA"]
+    assert out["mRNA"]["tx1"].parent_id == "gene1"
+    assert out["mRNA"]["tx1"].attrs["Parent"] == "gene1"
+
+    # exon fallback ID and Parent handling
+    exon_key = "exon|parent=tx0,tx1|chr1:5-20:+"
+    assert exon_key in out["exon"]
+    assert out["exon"][exon_key].parent_id == "tx1,,tx0"
+    assert out["exon"][exon_key].attrs["Parent"] == "tx1,,tx0"
 
 
 def make_EntitySummary_instance(entity_type: str, entity_id: str, seqid:str, start:int,
