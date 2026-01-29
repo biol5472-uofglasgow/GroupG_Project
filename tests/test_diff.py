@@ -1,15 +1,12 @@
-from collections.abc import Mapping
-from typing import Literal
-
-from src.annot_consistency.diff import changed_details, diff_entity
+from src.annot_consistency.diff import changed_details
 from src.annot_consistency.models import EntitySummary
+from typing import Mapping, Literal
 
 
-# Making a function to create instances of the EntitySummary class
-def make_entity_summary_instance(entity_type: str, entity_id: str, seqid:str, start:int,
-                        end:int, strand:str, parent_id:str | None, attrs:Mapping[str,str],
-                        score:float, phase:Literal[0,1,2], source:str) -> EntitySummary:
-
+def make_EntitySummary_instance(entity_type: str, entity_id: str, seqid:str, start:int,
+                        end:int, strand:str, parent_id:str, attrs:Mapping[str,str], score:float, phase:Literal[0,1,2],
+                        source:str):
+    
     return EntitySummary(
         entity_type = entity_type,
         entity_id = entity_id,
