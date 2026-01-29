@@ -1,19 +1,21 @@
 # annot_consistency/cli.py
 # CLI for Project 6: compare two annotation releases (A vs B).
 
-
 import argparse
 import os
 from pathlib import Path
 
-
-from annot_consistency.io import ensure_outdir, write_changes_tsv, write_summary_tsv ,write_genome_tracks, write_run_json
-from annot_consistency.html import write_htmlreport
-from annot_consistency.logging_utils import logger
-from annot_consistency.gffutils_db import load_or_create_db
 from annot_consistency.diff import build_entities, diff_entity
-
-
+from annot_consistency.gffutils_db import load_or_create_db
+from annot_consistency.html import write_htmlreport
+from annot_consistency.io import (
+    ensure_outdir,
+    write_changes_tsv,
+    write_genome_tracks,
+    write_run_json,
+    write_summary_tsv,
+)
+from annot_consistency.logging_utils import logger
 
 # Default output directory: ~/app/gffacake
 default_outdir = os.path.join(os.path.expanduser("~"), "app", "gffacake")
@@ -28,7 +30,7 @@ def parse_args(argv=None) -> argparse.Namespace:
                    help=f"Directory for output files (default: {default_outdir})")
     return p.parse_args(argv)
 
-#validate input files 
+#validate input files
 def validate_inputs(release_a: Path, release_b: Path) -> None:
     if not release_a.is_file():
         raise FileNotFoundError(f"releaseA not found: {release_a}")
@@ -48,18 +50,18 @@ def main(argv=None) -> None:
     release_b = Path(args.releaseB)
     outdir = Path(args.outDir)
 
-    #validate input files 
+    #validate input files
     validate_inputs(release_a, release_b)
 
     # ensure outdir exists
     ensure_outdir(str(outdir))
 
-    # prefix 
+    # prefix
     rel_a = os.path.splitext(os.path.basename(str(release_a)))[0]
     rel_b = os.path.splitext(os.path.basename(str(release_b)))[0]
     prefix = f"{rel_a}_{rel_b}"
 
-    # logging setup 
+    # logging setup
     log_file = outdir / f"{prefix}_annot-consistency.log"
     log = logger(str(log_file))
     log.info("Starting gffacake annotation consistency tool")
@@ -89,7 +91,7 @@ def main(argv=None) -> None:
     log.info("Building entities for release B")
     b_entities = build_entities(db_b)
 
-    # differentiating entities 
+    # differentiating entities
     log.info("Differentiating entities (A vs B)")
     changes_all, added_all, removed_all, changed_all = diff_entity(a_entities, b_entities)
 
@@ -118,8 +120,8 @@ def main(argv=None) -> None:
         log.exception("Failed writing summary.tsv")
         raise RuntimeError("Could not write summary.tsv")
 
-    
-    # writing genome browser tracks  
+
+    # writing genome browser tracks
     try:
         log.info("Writing genome browser tracks (added/removed/changed)")
         added_path, removed_path, changed_path= write_genome_tracks(
@@ -129,7 +131,7 @@ def main(argv=None) -> None:
         raise RuntimeError("Could not write genome tracks")
 
 
-    #  writing run.json 
+    #  writing run.json
     try:
         log.info("Writing run.json")
         run_json_path=write_run_json(
@@ -142,7 +144,7 @@ def main(argv=None) -> None:
     except Exception:
         log.exception("Failed writing run.json")
         raise RuntimeError("Could not write run.json")
-    
+
     # HTML report
     try:
         log.info("Writing HTML report")
