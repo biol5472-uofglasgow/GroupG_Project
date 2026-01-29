@@ -23,3 +23,10 @@ def test_logger(test_path):
     handler = log.handlers[0]
     assert isinstance(handler, logging.FileHandler)
     assert handler.level == logging.INFO
+
+    # Suite 3: Assert 3; formatter configuration
+    format = handler.formatter
+    assert format is not None
+    assert "%(levelname)s" in format
+    assert "%(asctime)s" in format
+    assert "%(message)s" in format
