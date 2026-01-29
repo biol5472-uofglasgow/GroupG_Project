@@ -1,6 +1,7 @@
 from src.annot_consistency.diff import changed_details, choose_entity_id, build_entities
 from src.annot_consistency.models import EntitySummary
 from typing import Mapping, Literal, List
+from dataclasses import dataclass
 
 #### tests for choosing the entity ID ####
 # ID is present - priority
@@ -22,6 +23,21 @@ def test_final_fallback() -> None:
     e_id = choose_entity_id("gene", attrs, "chrVII", 1000, 1000, "+")
     assert e_id == "gene|chrVII:1-100:+"
 
+#### Tests for building entity structure ####
+
+# create test DB and features
+# TestFeature = one row of GFF file
+@dataclass
+class FakeFeature:
+    featuretype: str
+    seqid: str
+    start: int
+    end: int
+    strand: str
+    attrs: Mapping[str, List[str]]
+    score: float
+    phase: Literal[0,1,2]
+    source: str
 
 def make_EntitySummary_instance(entity_type: str, entity_id: str, seqid:str, start:int,
                         end:int, strand:str, parent_id:str, attrs:Mapping[str,str], score:float, phase:Literal[0,1,2],
