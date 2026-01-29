@@ -22,11 +22,16 @@ def test_logger(test_path):
     assert len(log.handlers) == 1
     handler = log.handlers[0]
     assert isinstance(handler, logging.FileHandler)
-    assert handler.level == logging.INFO
+    assert handler.level == logging.DEBUG
 
-    # Suite 3: Assert 3; formatter configuration
+    # Suite 3: formatter configs
     format = handler.formatter
     assert format is not None
     assert "%(levelname)s" in format
     assert "%(asctime)s" in format
     assert "%(message)s" in format
+
+    # Suite 4: message written to file
+    output = log_file.read_text()
+    assert "INFO" in output
+    assert "the numbers mason, what do they mean" in output 
