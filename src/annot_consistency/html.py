@@ -121,8 +121,9 @@ def write_htmlreport(outdir: str,
 
     html.append("<h2>Artefacts</h2>")
     html.append("<ul>")
-    html.append(f"<li><a href='{prefix}_changes.tsv'>{prefix}_changes.tsv</a></li>")
-    html.append(f"<li><a href='{prefix}_summary.tsv'>{prefix}_summary.tsv</a></li>")
+    html.append(f"<li><a href='{prefix}_added.gff3'>{prefix}_added.gff3</a></li>")
+    html.append(f"<li><a href='{prefix}_removed.gff3'>{prefix}_removed.gff3</a></li>")
+    html.append(f"<li><a href='{prefix}_changed.gff3'>{prefix}_changed.gff3</a></li>")
     html.append(f"<li><a href='{prefix}_run.json'>{prefix}_run.json</a></li>")
     html.append("</ul>")
 
