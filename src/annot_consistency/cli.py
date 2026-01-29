@@ -24,7 +24,7 @@ def parse_args(argv=None) -> argparse.Namespace:
     p.add_argument("releaseA", help="Annotation release A in GFF3 format")
     p.add_argument("releaseB", help="Annotation release B in GFF3 format")
     p.add_argument("outDir", nargs="?", default=default_outdir,
-        help=f"Directory for output files (default: {default_outdir})")
+                   help=f"Directory for output files (default: {default_outdir})")
     return p.parse_args(argv)
 
 #validate input files 
@@ -129,16 +129,7 @@ def main(argv=None) -> None:
             tool_version="1.0",
             release_a=str(release_a),
             release_b=str(release_b),
-            outdir_str=str(outdir),
-            extra={
-                "n_changes": len(changes_all),
-                "n_added": len(added_all),
-                "n_removed": len(removed_all),
-                "n_changed": len(changed_all),
-                "db_a": str(db_path_a),
-                "db_b": str(db_path_b),
-            },
-        )
+            outdir_str=str(outdir))
     except Exception:
         log.exception("Failed writing run.json")
         raise RuntimeError("Could not write run.json")
