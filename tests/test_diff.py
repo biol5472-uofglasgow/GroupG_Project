@@ -10,6 +10,11 @@ def test_first_id() -> None:
     e_id = choose_entity_id("exon", attrs, "chr1", 100, 200, "-")
     assert e_id == "exon1"
 
+# ID not present; Parent taken as fall back
+def test_parent_fallback() -> None:
+    attrs: Mapping[str, List[str]] = {"Parent": ["tx20", "", "tx1"]}
+    e_id = choose_entity_id("mRNA", attrs, "chr1", 100, 200, "+")
+    assert e_id == "mRNA|parent=tx1,tx2|chr1:10-20:+"
 
 
 def make_EntitySummary_instance(entity_type: str, entity_id: str, seqid:str, start:int,
