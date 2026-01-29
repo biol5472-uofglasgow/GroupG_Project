@@ -95,6 +95,7 @@ def test_diff_entity() -> None:
 
     assert len(changes) == 3
 
+
     # Asserting the correct change types associated with the correct entities in the changes var
     change_types = {(c.entity_id, c.change_type) for c in changes}
     assert ("gene1", "removed") in change_types
