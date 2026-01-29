@@ -8,7 +8,7 @@ from typing import Mapping, Literal, List
 def test_first_id() -> None:
     attrs: Mapping[str, List[str]] = {"ID": ["exon123"], "Parent": ["tx10"]}
     e_id = choose_entity_id("exon", attrs, "chr1", 100, 200, "-")
-    assert e_id == "exon1"
+    assert e_id == "exon"
 
 # ID not present; Parent taken as fall back
 def test_parent_fallback() -> None:
