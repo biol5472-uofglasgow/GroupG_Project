@@ -16,6 +16,12 @@ def test_parent_fallback() -> None:
     e_id = choose_entity_id("mRNA", attrs, "chr1", 100, 200, "+")
     assert e_id == "mRNA|parent=tx1,tx2|chr1:10-20:+"
 
+# ID and parent not present; final fallback option
+def test_final_fallback() -> None:
+    attrs: Mapping[str, List[str]] = {}
+    e_id = choose_entity_id("gene", attrs, "chrVII", 1000, 1000, "+")
+    assert e_id == "gene|chrVII:1-100:+"
+
 
 def make_EntitySummary_instance(entity_type: str, entity_id: str, seqid:str, start:int,
                         end:int, strand:str, parent_id:str, attrs:Mapping[str,str], score:float, phase:Literal[0,1,2],
