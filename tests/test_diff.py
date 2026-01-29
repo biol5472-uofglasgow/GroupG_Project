@@ -39,6 +39,17 @@ class FakeFeature:
     phase: Literal[0,1,2]
     source: str
 
+# TestDB  for gffutils.featureDB
+class TestDB:
+    def __init__(self, features: List[FakeFeature]) -> None:
+        self._features = features
+
+    def all_features(self, order_by: Any = None) -> Iterator[FakeFeature]:
+        # build_entities for order_by=("seqid","start");
+        for feature in sorted(self._features, key=lambda x: (x.seqid, x.start)):
+            yield feature
+
+
 def make_EntitySummary_instance(entity_type: str, entity_id: str, seqid:str, start:int,
                         end:int, strand:str, parent_id:str, attrs:Mapping[str,str], score:float, phase:Literal[0,1,2],
                         source:str):
