@@ -1,6 +1,15 @@
-from src.annot_consistency.diff import changed_details
+from src.annot_consistency.diff import changed_details, choose_entity_id, build_entities
 from src.annot_consistency.models import EntitySummary
-from typing import Mapping, Literal
+from typing import Mapping, Literal, List
+
+#### tests for choosing the entity ID ####
+# ID is present - priority
+# Parent also present
+def test_first_id() -> None:
+    attrs: Mapping[str, List[str]] = {"ID": ["exon123"], "Parent": ["tx10"]}
+    e_id = choose_entity_id("exon", attrs, "chr1", 100, 200, "-")
+    assert e_id == "exon1"
+
 
 
 def make_EntitySummary_instance(entity_type: str, entity_id: str, seqid:str, start:int,
