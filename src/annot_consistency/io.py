@@ -83,7 +83,7 @@ def write_tracks(path: str, entities: list[EntitySummary]) -> None:
             score = "." if e.score in (None, ".", "") else str(float(e.score))
             phase = "." if e.phase in (None, ".", "") else str(e.phase)
             strand = "." if e.strand in (None, "", ".") else e.strand
-            track.write(f'{e.seqid}\tgffACAKE\t{e.entity_type}\t{int(e.start)}\t{int(e.end)}\t{float(score)}\t{strand}\t{phase}\t{attrs}\n')
+            track.write(f'{e.seqid}\tgffACAKE\t{e.entity_type}\t{int(e.start)}\t{int(e.end)}\t{score}\t{strand}\t{phase}\t{attrs}\n')
 
 # Writing function to create the genome browser loadable tracks as gff3 files
 def write_genome_tracks(outdir: str,
