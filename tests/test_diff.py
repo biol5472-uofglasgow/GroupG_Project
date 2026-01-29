@@ -1,9 +1,10 @@
 import logging
 from annot_consistency.logging_utils import logger
+from annot_consistency.models import EntitySummary, ChangeRecord
 
 #### Unit testing for logger and models ####
 
-# logger test
+## logger test ##
 def test_logger(test_path):
     # create temporary log file path
     log_file = test_path / "test.log"
@@ -35,3 +36,23 @@ def test_logger(test_path):
     output = log_file.read_text()
     assert "INFO" in output
     assert "the numbers mason, what do they mean" in output 
+
+#### models testing ####
+
+# EntitySummary stores values correctly
+def test_ES_storing():
+
+# ChangeRecord stores values correctly
+def test_CR_storing():
+
+
+
+# EntitySummary is immutable
+def test_ES_immutable():
+
+# ChangeRecord is immutable
+def test_CR_immutable():
+
+
+# signature changes only when a signature field changes
+def test_signature_FieldChange():
