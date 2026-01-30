@@ -139,3 +139,30 @@ def test_signature_storing():
 
 # signature changes only when a signature field changes
 def test_signature_FieldChange():
+    test_ES = EntitySummary(
+        entity_type="gene",
+        entity_id="gene5",
+        seqid="chrviii",
+        start=100,
+        end=400,
+        strand="+",
+        parent_id=None,
+        attrs={"ID": "gene3"},
+        score=1,
+        phase=0,
+        source="test",
+    )
+    test_ES_modified = EntitySummary(
+        entity_type="gene",
+        entity_id="gene5",
+        seqid="chrviii",
+        start=100,
+        end=400,
+        strand="+",
+        parent_id=None,
+        attrs={"ID": "gene3"},
+        score=5,
+        phase=1,
+        source="Dragovich, Kravchenko, Steiner",
+    )
+    assert test_ES != test_ES_modified
