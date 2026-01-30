@@ -18,6 +18,6 @@ def logger(log_file: str) -> logging.Logger:
     filehandler.setFormatter(format)
     logger.addHandler(filehandler)
     # Prevent log records from propagating to parent loggers
-    logger.propagate = False  
+    logger.propagate = False
     return logger
 
