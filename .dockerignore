@@ -1,0 +1,16 @@
+.git/
+.github/
+.venv/
+__pycache__/
+*.pyc
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+gff_files/
+nextflow/
+tests/

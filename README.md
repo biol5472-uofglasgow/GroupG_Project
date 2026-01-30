@@ -43,7 +43,7 @@ We track changes for:
 1. Open a terminal window in the directory containing the two input GFF files you wish to compare 
 
 2. Copy-Paste and run the following docker command onto the command line to run gffACAKE on your GFF files:
-**docker run --rm -v "$PWD:/data" ghcr.io/group_name/gffACAKE:0.5.0/data/release_A.gff /data/release_B.gff**
+**docker run --rm -v "$PWD:/data" ghcr.io/group_g_project/gffACAKE:0.5.0/data/release_A.gff /data/release_B.gff**
 
 
 	  
@@ -52,9 +52,8 @@ We track changes for:
 1. Open a Powershell window in the directory containing the two input GFF files you wish to compare 
 
 2. Copy-Paste and run the following docker command onto the command line to run gffACAKE on your GFF files:
-**docker run --rm -v ${PWD}:/data ghcr.io/group_name/gffACAKE:0.5.0/data/release_A.gff /data/release_B.gff**
+**docker run --rm -v ${PWD}:/data ghcr.io/group_g_project/gffACAKE:0.5.0/data/release_A.gff /data/release_B.gff**
 
-...
 
 ### Requirements
 - Docker
