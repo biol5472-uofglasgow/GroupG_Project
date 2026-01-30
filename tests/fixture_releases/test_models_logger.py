@@ -165,4 +165,4 @@ def test_signature_FieldChange():
         phase=1,
         source="Dragovich, Kravchenko, Steiner",
     )
-    assert test_ES != test_ES_modified
+    assert test_ES.signature() != test_ES_modified.signature()
