@@ -83,9 +83,25 @@ def test_CR_storing():
 
 # EntitySummary is immutable
 def test_ES_immutable():
+    ES=EntitySummary(
+        entity_type="gene",
+        entity_id="gene5",
+        seqid="chrviii",
+        start=100,
+        end=400,
+        strand="+",
+        parent_id=None,
+        attrs={"ID": "gene3"},
+        score=1,
+        phase=0,
+        source="test",
+    )
+    with pytest.raises(dataclasses.FrozenInstanceError):
+        ES.start = 5000
 
 # ChangeRecord is immutable
 def test_CR_immutable():
+
 
 
 # signature changes only when a signature field changes
