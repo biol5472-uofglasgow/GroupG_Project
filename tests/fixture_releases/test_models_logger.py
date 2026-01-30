@@ -41,6 +41,31 @@ def test_logger(test_path):
 
 # EntitySummary stores values correctly
 def test_ES_storing():
+    test_ES = EntitySummary(
+        entity_type="gene",
+        entity_id="gene5",
+        seqid="chrviii",
+        start=100,
+        end=400,
+        strand="+",
+        parent_id=None,
+        attrs={"ID": "gene3"},
+        score=1,
+        phase=0,
+        source="test",
+    )
+
+    assert test_ES.entity_type == "gene"
+    assert test_ES.entity_id == "gene5"
+    assert test_ES.seqid == "chrviii"
+    assert test_ES.start == 100
+    assert test_ES.end == 400
+    assert test_ES.strand == "+"
+    assert test_ES.parent_id is None
+    assert test_ES.attrs["ID"] == "gene3"
+    assert test_ES.score == 1
+    assert test_ES.phase == 0
+    assert test_ES.source == "test"
 
 # ChangeRecord stores values correctly
 def test_CR_storing():
