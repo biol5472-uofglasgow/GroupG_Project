@@ -1,6 +1,8 @@
 from pathlib import Path
 
-from annot_consistency.cli import main
+from src.annot_consistency.cli import main
+
+from src.annot_consistency.diff import build_entities, diff_entity
 
 
 def test_cli_integration_custom_sample(tmp_path: Path) -> None:
