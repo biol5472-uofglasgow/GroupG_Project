@@ -1,8 +1,8 @@
 [project]
-name = "Project_..."
-version = "0.1.0"
-description = "...."
-requires-python = ">=3.10"
+name = "gffACAKE"
+version = "0.5.0"
+description = "Compares two GFF3 annotation releases and reports added/removed/changed features"
+requires-python = ">=3.12"
 readme = "README.md"
 authors = [
     {name = "Almarc Astorga"},
@@ -11,29 +11,40 @@ authors = [
     {name = "Saheshnu Sai Balaji Pillai"}
 ]
 
-dependencies = ["gffutils >= 0.0.13", ...]
+dependencies = ["gffutils >= 0.13"]
 
 [build-system]
-requires = ["uv-build"]
-build_backend = "uv_build"
+requires = ["uv_build>= 0.9.27,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = 'annot_consistency'
+module-root = 'src'
+
+[project.urls]
+Homepage = "https://github.com/biol5472-uofglasgow/GroupG_Project"
 
 [project.optional-dependencies]
 dev = ["pytest>=7.4", "pytest-cov>=4.1", "ruff>=0.4", "mypy>=1.6"]
 
 [project.scripts]
-toolname.. = "projectfilename___.cli:main/app"
+gffACAKE = "annot_consistency.cli:main"
 
 [tool.setuptools.packagesfind]
 where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = ["-q"]
+addopts = "-ra --cov=annot_consistency --cov-report=term-missing"
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.12"
 disallow_untyped_defs = true
-packages = ["prjectfilename.."]
+warn_return_any = true
+ignore_missing_imports = true
+show_error_codes = true
+pretty = true
+strict = true
 
 [tool.ruff]
 line-length = 100
@@ -41,3 +52,4 @@ target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
+ignore = []
