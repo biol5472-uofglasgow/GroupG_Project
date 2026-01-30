@@ -41,7 +41,7 @@ class EntitySummary:
             self.parent_id,
             self.score,
             self.phase,
-            self.score)
+            self.source)
 
 @dataclass(frozen=True)
 class ChangeRecord:
