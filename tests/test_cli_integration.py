@@ -1,8 +1,10 @@
+import pathlib
+import sys
 from pathlib import Path
 
-from src.annot_consistency.cli import main
+sys.path.append(str(pathlib.Path(__file__).resolve().parent.parent / "src"))
 
-from src.annot_consistency.diff import build_entities, diff_entity
+from src.annot_consistency.cli import main
 
 
 def test_cli_integration_custom_sample(tmp_path: Path) -> None:
