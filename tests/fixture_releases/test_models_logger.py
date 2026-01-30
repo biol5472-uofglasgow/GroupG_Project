@@ -69,7 +69,16 @@ def test_ES_storing():
 
 # ChangeRecord stores values correctly
 def test_CR_storing():
+    CR= ChangeRecord(
+        entity_type="exon",
+        entity_id="exon3",
+        change_type="changed",
+        details="start coordinate changed")
 
+    assert CR.entity_type == "exon"
+    assert CR.entity_id == "exon3"
+    assert CR.change_type == "changed"
+    assert CR.details == "start coordinate changed"
 
 
 # EntitySummary is immutable
