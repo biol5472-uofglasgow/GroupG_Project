@@ -1,4 +1,6 @@
 import logging
+import dataclasses
+import pytest
 from annot_consistency.logging_utils import logger
 from annot_consistency.models import EntitySummary, ChangeRecord
 
@@ -101,7 +103,14 @@ def test_ES_immutable():
 
 # ChangeRecord is immutable
 def test_CR_immutable():
-
+    CR= ChangeRecord(
+        entity_type="exon",
+        entity_id="exon3",
+        change_type="changed",
+        details="start coordinate changed")
+    
+    with pytest.raises(dataclasses.FrozenInstanceError):
+        CR.details = "changed"
 
 
 # signature changes only when a signature field changes
