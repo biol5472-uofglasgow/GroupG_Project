@@ -1,8 +1,9 @@
+from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Literal, Mapping, Optional
+from typing import Literal
 
 # Restrict types to only these
-EntityType = Literal["gene", "mRNA", "exon", 
+EntityType = Literal["gene", "mRNA", "exon",
                      "protein_coding_gene", "five_prime_UTR", "three_prime_UTR",
                       "CDS", "ncRNA", "ncRNA_gene", "pseudogene", "pseudogenic_transcript",
                       "rRNA", "snoRNA", "snRNA", "tRNA"]
@@ -21,7 +22,7 @@ class EntitySummary:
     start: int
     end: int
     strand: str
-    parent_id: Optional[str]
+    parent_id: str | None
     attrs: Mapping[str, str] # Mapping for immutable dict
     score: float
     phase: Literal[0,1,2]
