@@ -112,6 +112,30 @@ def test_CR_immutable():
     with pytest.raises(dataclasses.FrozenInstanceError):
         CR.details = "changed"
 
+# Signature returns expected values
+def test_signature_storing():
+    test_ES = EntitySummary(
+        entity_type="gene",
+        entity_id="gene5",
+        seqid="chrviii",
+        start=100,
+        end=400,
+        strand="+",
+        parent_id=None,
+        attrs={"ID": "gene3"},
+        score=1,
+        phase=0,
+        source="test",
+    )
+    assert test_ES.signature() == (
+        "chrviii",
+        100,
+        400,
+        "+",
+        None,
+        1,
+        0,
+        "test")
 
 # signature changes only when a signature field changes
 def test_signature_FieldChange():
