@@ -2,6 +2,7 @@ from pathlib import Path
 
 from annot_consistency.cli import main
 
+
 def test_cli_integration_custom_sample(tmp_path: Path) -> None:
     release_a = tmp_path / 'sample_a.gff3'
     release_b = tmp_path / 'sample_b.gff3'
@@ -32,12 +33,12 @@ def test_cli_fixtures(tmp_path: Path) -> None:
 
     main([str(gff_a), str(gff_b), str(outdir)])
 
-    # expected prefix 
-    release_a = gff_a.stem 
-    release_b = gff_b.stem 
-    prefix = f"{release_a}_{release_b}"  
+    # expected prefix
+    release_a = gff_a.stem
+    release_b = gff_b.stem
+    prefix = f"{release_a}_{release_b}"
 
-    # Test: expected output files exist 
+    # Test: expected output files exist
     added_gff = outdir / f"{prefix}_added.gff3"
     removed_gff = outdir / f"{prefix}_removed.gff3"
     changed_gff = outdir / f"{prefix}_changed.gff3"
