@@ -117,6 +117,11 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
     Compares the two extracted release files A and B, then two lists
     One list for the changes.tsv and
     another list for the tracks added, removed and changed gff files
+    Threshold:
+    - start_threshold if abs(start_B - start_A) > threshold
+    - end_threshold if abs(end_B - end_A) > threshold
+        = high_shift True if either threshold exceeded
+    - if signature differs but no threshold exceeded, continue with change_type="changed"
     '''
     changes: list[ChangeRecord] = []
     added: list[EntitySummary] = []
