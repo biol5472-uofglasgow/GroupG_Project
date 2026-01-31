@@ -1,22 +1,39 @@
 # tests/test_io.py
 
-from __future__ import annotations
+# tests/test_io.py
 
 import json
 from pathlib import Path
-from typing import List
 
-import pytest
-
-from annot_consistency import io
+from annot_consistency.io import (
+    ensure_outdir,
+    write_changes_tsv,
+    write_summary_tsv,
+    write_tracks,
+    write_genome_tracks,
+    write_run_json,
+)
 from annot_consistency.models import ChangeRecord, EntitySummary
 
-@pytest.fixture
-def sample_changes() -> List[ChangeRecord]:
-    return [
-        ChangeRecord(entity_type="gene", entity_id="gene1", change_type="added", details="Added gene1"),
-        ChangeRecord(entity_type="gene", entity_id="gene2", change_type="removed", details="Removed gene2"),
-        ChangeRecord(entity_type="exon", entity_id="exon1", change_type="changed", details="Coords changed"),
+
+def test_ensure_outdir(tmp_path: Path) -> None:
+    outdir = tmp_path / "out"
+    ensure_outdir(str(outdir))
+    assert outdir.exists()
+    assert outdir.is_dir()
+
+
+def test_write_changes_tsv(tmp_path: Path) -> None:
+    changes = [
+        ChangeRecord("gene", "gene1", "added", "Added gene1"),
+        ChangeRecord("exon", "exon1", "changed", "Coords changed"),
     ]
+    prefix = "A_B"
+
+    path = write_changes_tsv(str(tmp_path), changes, prefix)
+
+    assert Path(path).exists()
+    assert Path(path).name == f"{prefix}_changes.tsv"
+
 
 
