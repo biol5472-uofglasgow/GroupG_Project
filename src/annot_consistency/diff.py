@@ -146,6 +146,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                 entity_id = e_id,
                 change_type = 'added',
                 details = 'Entity present only in release B')
+                high_shift = False
                 )
 
         # Removed entities: If the ID is present only in release A and not in release B
