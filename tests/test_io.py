@@ -87,3 +87,32 @@ def test_write_tracks(tmp_path: Path) -> None:
     first_line = outpath.read_text().splitlines()[0]
     assert first_line == "##gff-version 3"
 
+
+def test_write_genome_tracks(tmp_path: Path) -> None:
+    entity = EntitySummary(
+        entity_type="gene",
+        entity_id="gene1",
+        seqid="chr1",
+        start=1,
+        end=10,
+        strand="+",
+        parent_id=None,
+        attrs={"ID": "gene1"},
+        score=0.0,
+        phase=0,
+        source="test",
+    )
+
+    prefix = "A_B"
+
+    added, removed, changed = write_genome_tracks(
+        str(tmp_path),
+        [entity],
+        [],
+        [],
+        prefix,
+    )
+
+    assert Path(added).exists()
+    assert Path(removed).exists()
+    assert Path(changed).exists()
