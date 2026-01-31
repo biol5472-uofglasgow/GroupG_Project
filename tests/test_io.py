@@ -116,3 +116,21 @@ def test_write_genome_tracks(tmp_path: Path) -> None:
     assert Path(added).exists()
     assert Path(removed).exists()
     assert Path(changed).exists()
+
+def test_write_run_json(tmp_path: Path) -> None:
+    prefix = "A_B"
+
+    path = write_run_json(
+        tool_name="gffacake",
+        tool_version="1.0",
+        release_a="releaseA.gff3",
+        release_b="releaseB.gff3",
+        outdir=str(tmp_path),
+        prefix=prefix,
+    )
+
+    assert Path(path).exists()
+
+    data = json.loads(Path(path).read_text())
+    assert data["tool"]["name"] == "gffacake"
+    assert data["inputs"]["release_a"] == "releaseA.gff3"
