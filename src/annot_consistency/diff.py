@@ -199,3 +199,10 @@ def deltas_coords(a: EntitySummary, b: EntitySummary) -> tuple[int, int, int, in
     delta_A_end = b.end - a.end
     delta_B_end = a.end - b.end
     return delta_A_start, delta_B_start, delta_A_end, delta_B_end
+
+def delta_of_deltas(delta_A_start: int, delta_B_start: int) -> int:
+    """
+    The largest coordinate shift the entity has went between the two releases
+    delta A_start is the start coordinate shift changed between release A and B
+    delta_B_end is the end coordinate shift change between release A and B
+    """
