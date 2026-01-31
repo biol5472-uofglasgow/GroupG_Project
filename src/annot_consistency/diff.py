@@ -123,6 +123,9 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
         = high_shift True if either threshold exceeded
     - if signature differs but no threshold exceeded, continue with change_type="changed"
     '''
+    if threshold < 0:
+        raise ValueError("threshold must be > 0 ")
+    
     changes: list[ChangeRecord] = []
     added: list[EntitySummary] = []
     removed: list[EntitySummary] = []
