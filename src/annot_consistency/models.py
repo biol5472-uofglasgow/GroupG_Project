@@ -52,3 +52,4 @@ class ChangeRecord:
     entity_id: str
     change_type: ChangeType
     details: str
+    high_shift: bool = False
