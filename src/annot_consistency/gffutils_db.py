@@ -17,14 +17,16 @@ def load_or_create_db(
         db_a = gffutils.FeatureDB(str(db_path_a))
 
     except ValueError:
-        db_a = gffutils.create_db(str(gff_file_a), dbfn = str(db_path_a), keep_order = True, merge_strategy="create_unique" )
+        db_a = gffutils.create_db(str(gff_file_a), dbfn = str(db_path_a),
+                                  keep_order = True, merge_strategy="create_unique" )
 
 
     try:
         db_b = gffutils.FeatureDB(str(db_path_b))
 
     except ValueError:
-       db_b = gffutils.create_db(str(gff_file_b), dbfn = str(db_path_b), keep_order = True, merge_strategy="create_unique")
+       db_b = gffutils.create_db(str(gff_file_b), dbfn = str(db_path_b),
+                                 keep_order = True, merge_strategy="create_unique")
 
 
     return db_a, db_b
