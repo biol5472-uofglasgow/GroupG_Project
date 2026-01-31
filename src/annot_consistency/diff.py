@@ -188,10 +188,14 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
 def deltas_coords(a: EntitySummary, b: EntitySummary) -> tuple[int, int, int, int]:
     """
     get deltas for release A and release B; start and end.
-    Returns:
-      delta_A_start = start_B - start_A
-      delta_B_start = start_A - start_B
-      delta_A_end   = end_B - end_A
-      delta_B_end   = end_A - end_B
+    Returns 4 ints for downstream calculation:
+      delta_A_start
+      delta_B_start
+      delta_A_end
+      delta_B_end
     """
-
+    delta_A_start = b.start - a.start
+    delta_B_start = a.start - b.start
+    delta_A_end = b.end - a.end
+    delta_B_end = a.end - b.end
+    return delta_A_start, delta_B_start, delta_A_end, delta_B_end
