@@ -206,3 +206,4 @@ def delta_of_deltas(delta_A_start: int, delta_B_start: int) -> int:
     delta A_start is the start coordinate shift changed between release A and B
     delta_B_end is the end coordinate shift change between release A and B
     """
+    return max(abs(delta_A_start), abs(delta_B_start))
