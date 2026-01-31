@@ -106,7 +106,8 @@ def changed_details(a: EntitySummary, b: EntitySummary) -> str:
     return '; '.join(parts)
 
 def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
-                b_entities: dict[str, dict[str, EntitySummary]]) -> tuple[
+                b_entities: dict[str, dict[str, EntitySummary]],
+                threshold: int) -> tuple[
                     list[ChangeRecord],
                     list[EntitySummary],
                     list[EntitySummary],
@@ -165,3 +166,6 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                     )
 
     return changes, added, removed, changed
+
+#### Live change addition ####
+# 
