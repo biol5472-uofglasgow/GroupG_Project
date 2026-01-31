@@ -50,3 +50,40 @@ def test_write_summary_tsv(tmp_path: Path) -> None:
     assert counts["gene"]["removed"] == 1
     assert counts["exon"]["changed"] == 1
 
+def test_write_tracks(tmp_path: Path) -> None:
+    entities = [
+        EntitySummary(
+            entity_type="gene",
+            entity_id="gene1",
+            seqid="chr1",
+            start=10,
+            end=50,
+            strand="+",
+            parent_id=None,
+            attrs={"ID": "gene1"},
+            score=0.0,
+            phase=0,
+            source="test",
+        ),
+        EntitySummary(
+            entity_type="exon",
+            entity_id="exon1",
+            seqid="chr1",
+            start=15,
+            end=20,
+            strand="+",
+            parent_id="tx1",
+            attrs={"ID": "exon1", "Parent": "tx1"},
+            score=1.0,
+            phase=1,
+            source="test",
+        ),
+    ]
+
+    outpath = tmp_path / "track.gff3"
+    write_tracks(str(outpath), entities)
+
+    assert outpath.exists()
+    first_line = outpath.read_text().splitlines()[0]
+    assert first_line == "##gff-version 3"
+
