@@ -35,5 +35,18 @@ def test_write_changes_tsv(tmp_path: Path) -> None:
     assert Path(path).exists()
     assert Path(path).name == f"{prefix}_changes.tsv"
 
+def test_write_summary_tsv(tmp_path: Path) -> None:
+    changes = [
+        ChangeRecord("gene", "gene1", "added", "Added gene1"),
+        ChangeRecord("gene", "gene2", "removed", "Removed gene2"),
+        ChangeRecord("exon", "exon1", "changed", "Coords changed"),
+    ]
+    prefix = "A_B"
 
+    path, counts = write_summary_tsv(str(tmp_path), prefix, changes)
+
+    assert Path(path).exists()
+    assert counts["gene"]["added"] == 1
+    assert counts["gene"]["removed"] == 1
+    assert counts["exon"]["changed"] == 1
 
