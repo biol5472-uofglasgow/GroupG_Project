@@ -177,5 +177,21 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
 
     return changes, added, removed, changed
 
+
 #### Live change addition ####
-# 
+# Edit later, have meeting to reconfirm how to add this logic
+
+
+
+
+# Get delta coordinates 
+def deltas_coords(a: EntitySummary, b: EntitySummary) -> tuple[int, int, int, int]:
+    """
+    get deltas for release A and release B; start and end.
+    Returns:
+      delta_A_start = start_B - start_A
+      delta_B_start = start_A - start_B
+      delta_A_end   = end_B - end_A
+      delta_B_end   = end_A - end_B
+    """
+
