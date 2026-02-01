@@ -179,7 +179,10 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
 
 
 #### Live change addition ####
-# Edit later, have meeting to reconfirm how to add this logic
+# Edit later, have meeting to reconfirm how to add this logic; add onto 
+# Delta logic: 
+    delta_A_start, delta_B_start, delta_A_end, delta_B_end = deltas_coords(a, b)
+    delta_of_deltas = delta_of_deltas(d_a_start, d_a_end)
 
 
 
