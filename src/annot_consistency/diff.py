@@ -189,6 +189,9 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
     end_exceeds = abs(delta_A_end) > threshold
     high_shift = start_exceeds or end_exceeds
 
+    # release B signature for track output
+    changes.append(b)
+
     # Start exceeds logic
     if start_exceeds:
                 changes.append(
