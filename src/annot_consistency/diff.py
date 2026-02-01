@@ -227,7 +227,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                     )
                 )
 # add these on to the Changed entities return later
-return start_exceeds, end_exceeds, high_shift, 
+return high_shift, 
             
 
 
