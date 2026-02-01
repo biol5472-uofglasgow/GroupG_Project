@@ -184,10 +184,20 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
     delta_A_start, delta_B_start, delta_A_end, delta_B_end = deltas_coords(a, b)
     delta_of_deltas = delta_of_deltas(delta_A_start, delta_A_end)
 
-    # Check threshold
+    # Check threshold: based on user input for threshold
     start_exceeds = abs(delta_A_start) > threshold
     end_exceeds = abs(delta_A_end) > threshold
     high_shift = start_exceeds or end_exceeds
+
+    # Start exceeds logic
+    if start_exceeds:
+                changes.append(
+                    ChangeRecord(
+                        entity_type=entity_type,
+                        entity_id=e_id,
+                        change_type="start_threshold"
+                    )
+                )
 
 
 
