@@ -208,7 +208,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
      if end_exceeds:
                 changes.append(
                     ChangeRecord(
-                        entity_type = entity_type,  # type: ignore[arg-type]
+                        entity_type = entity_type,
                         entity_id = e_id,
                         change_type = "end_threshold",
                         details =
@@ -219,13 +219,15 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
     else high_shift:
                 changes.append(
                     ChangeRecord(
-                        entity_type = entity_type,  # type: ignore[arg-type]
+                        entity_type = entity_type,
                         entity_id = e_id,
                         change_type = "changed",
                         details = 
                         high_shift = False
                     )
                 )
+# add these on to the Changed entities return later
+return start_exceeds, end_exceeds, high_shift, 
             
 
 
