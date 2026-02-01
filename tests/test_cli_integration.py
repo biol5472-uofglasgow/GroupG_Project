@@ -1,8 +1,4 @@
-import pathlib
-import sys
 from pathlib import Path
-
-sys.path.append(str(pathlib.Path(__file__).resolve().parent.parent / "src"))
 
 from src.annot_consistency.cli import main
 
