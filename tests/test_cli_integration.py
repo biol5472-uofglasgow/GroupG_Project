@@ -23,6 +23,15 @@ def test_cli_integration_custom_sample(tmp_path: Path) -> None:
         encoding='utf-8'
     )
 
+    outdir = tmp_path / 'out'
+    outdir.mkdir(parents=True, exist_ok=True)
+    main([str(release_a), str(release_b), str(outdir)])
+    prefix = f'{release_a}_{release_b}'
+    changes_path = outdir / f'{prefix}_changes.tsv'
+    assert changes_path.is_file()
+    text = changes_path.read_text(encoding='utf-8')
+    assert '\tchanged' in text
+    
 # Test fixture releases
 def test_cli_fixtures(tmp_path: Path) -> None:
     fixture = Path("tests/fixture_releases")
