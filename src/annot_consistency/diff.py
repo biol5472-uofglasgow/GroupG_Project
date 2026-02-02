@@ -208,7 +208,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                     ChangeRecord(
                         entity_type = entity_type,
                         entity_id = e_id,
-                        change_type = "start_threshold",
+                        change_type = 'start_threshold',
                         details = (f'Release A start delta = {delta_A_start}; Release B start delta = {delta_B_start};\
                                    delta of deltas = {delta_of_deltas}; threshold = {threshold}; differences = \
                                     {changed_details(a, b)}'),
@@ -222,45 +222,22 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                     ChangeRecord(
                         entity_type = entity_type,
                         entity_id = e_id,
-                        change_type = "end_threshold",
+                        change_type = 'end_threshold',
                         details = (f'Release A end delta = {delta_A_end}; Release B end delta = {delta_B_end};\
                                    delta of deltas = {delta_of_deltas}; threshold = {threshold}; differences = \
                                     {changed_details(a, b)}'),
                         high_shift = True
                     )
                 )
-
-
-                # # Using the release B signatures for track output
-                # changed.append(b)
-                # changes.append(ChangeRecord(
-                #     entity_type = entity_type,
-                #     entity_id = e_id,
-                #     change_type = 'changed',
-                #     details = changed_details(a, b))
-                #     )
-
-    return changes, added, removed, changed
-
-
-#### Live change addition ####
-# Edit later, have meeting to reconfirm how to add this logic; add onto 
-
-    # release B signature for track output
-    changes.append(b)
-
-
             
-    else high_shift:
+            # No threshold exceeded: other signature changes
+            else high_shift:
                 changes.append(
                     ChangeRecord(
                         entity_type = entity_type,
                         entity_id = e_id,
-                        change_type = "changed",
-                        details = 
+                        change_type = 'changed',
+                        details = changed_details(a,b),
                         high_shift = False
                     )
-                )
-# add these on to the Changed entities return later
-return high_shift, 
-            
+    return changes, added, removed, changed
