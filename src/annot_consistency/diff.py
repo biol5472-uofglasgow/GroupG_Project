@@ -215,6 +215,20 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                         high_shift = True
                     )
                 )
+            
+            # End threshold: if end coord > threshold
+            if end_exceeds:
+                changes.append(
+                    ChangeRecord(
+                        entity_type = entity_type,
+                        entity_id = e_id,
+                        change_type = "end_threshold",
+                        details = (f'Release A end delta = {delta_A_end}; Release B end delta = {delta_B_end};\
+                                   delta of deltas = {delta_of_deltas}; threshold = {threshold}; differences = \
+                                    {changed_details(a, b)}'),
+                        high_shift = True
+                    )
+                )
 
 
                 # # Using the release B signatures for track output
@@ -236,17 +250,6 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
     changes.append(b)
 
 
-    
-     if end_exceeds:
-                changes.append(
-                    ChangeRecord(
-                        entity_type = entity_type,
-                        entity_id = e_id,
-                        change_type = "end_threshold",
-                        details =
-                        high_shift = False
-                    )
-                )
             
     else high_shift:
                 changes.append(
