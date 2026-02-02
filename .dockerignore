@@ -1,0 +1,7 @@
+_pycache_/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.vscode/
+.git/
+.DS_Store
