@@ -105,6 +105,31 @@ def changed_details(a: EntitySummary, b: EntitySummary) -> str:
 
     return '; '.join(parts)
 
+# Get delta coordinates 
+def deltas_coords(a: EntitySummary, b: EntitySummary) -> tuple[int, int, int, int]:
+    """
+    get deltas for release A and release B; start and end.
+    Returns 4 ints for downstream calculation:
+      delta_A_start
+      delta_B_start
+      delta_A_end
+      delta_B_end
+    """
+    delta_A_start = b.start - a.start
+    delta_B_start = a.start - b.start
+    delta_A_end = b.end - a.end
+    delta_B_end = a.end - b.end
+    return delta_A_start, delta_B_start, delta_A_end, delta_B_end
+
+def delta_of_deltas(delta_A_start: int, delta_B_start: int) -> int:
+    """
+    The largest coordinate shift the entity has went between the two releases
+    delta A_start is the start coordinate shift changed between release A and B
+    delta_B_end is the end coordinate shift change between release A and B
+    """
+    return max(abs(delta_A_start), abs(delta_B_start))
+
+
 def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                 b_entities: dict[str, dict[str, EntitySummary]],
                 threshold: int) -> tuple[
@@ -165,45 +190,52 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
         for e_id in (a_id & b_id):
             a = a_map[e_id]
             b = b_map[e_id]
-            if a.signature() != b.signature():
-                # Using the release B signatures for track output
-                changed.append(b)
-                changes.append(ChangeRecord(
-                    entity_type = entity_type,
-                    entity_id = e_id,
-                    change_type = 'changed',
-                    details = changed_details(a, b))
+            if a.signature() == b.signature():
+                continue
+            
+            # Delta logic: 
+            delta_A_start, delta_B_start, delta_A_end, delta_B_end = deltas_coords(a, b)
+            delta_of_deltas = delta_of_deltas(delta_A_start, delta_A_end)
+
+            # Check threshold: based on user input for threshold
+            start_exceeds = abs(delta_A_start) > threshold
+            end_exceeds = abs(delta_A_end) > threshold
+            high_shift = start_exceeds or end_exceeds
+
+            # Start threshold: if start coord > threshold 
+            if start_exceeds:
+                changes.append(
+                    ChangeRecord(
+                        entity_type = entity_type,
+                        entity_id = e_id,
+                        change_type = "start_threshold",
+                        details = (f'Release A start delta = {delta_A_start}; Release B start delta = {delta_B_start};\
+                                   delta of deltas = {delta_of_deltas}; threshold = {threshold}; differences = \
+                                    {changed_details(a, b)}'),
+                        high_shift = True
                     )
+                )
+
+
+                # # Using the release B signatures for track output
+                # changed.append(b)
+                # changes.append(ChangeRecord(
+                #     entity_type = entity_type,
+                #     entity_id = e_id,
+                #     change_type = 'changed',
+                #     details = changed_details(a, b))
+                #     )
 
     return changes, added, removed, changed
 
 
 #### Live change addition ####
 # Edit later, have meeting to reconfirm how to add this logic; add onto 
-# Delta logic: 
-    delta_A_start, delta_B_start, delta_A_end, delta_B_end = deltas_coords(a, b)
-    delta_of_deltas = delta_of_deltas(delta_A_start, delta_A_end)
-
-    # Check threshold: based on user input for threshold
-    start_exceeds = abs(delta_A_start) > threshold
-    end_exceeds = abs(delta_A_end) > threshold
-    high_shift = start_exceeds or end_exceeds
 
     # release B signature for track output
     changes.append(b)
 
-    # Start exceeds logic
-    if start_exceeds:
-                changes.append(
-                    ChangeRecord(
-                        entity_type = entity_type,
-                        entity_id = e_id,
-                        change_type = "start_threshold"
-                        details = 
-                        high_shift = False
 
-                    )
-                )
     
      if end_exceeds:
                 changes.append(
@@ -229,29 +261,3 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
 # add these on to the Changed entities return later
 return high_shift, 
             
-
-
-
-# Get delta coordinates 
-def deltas_coords(a: EntitySummary, b: EntitySummary) -> tuple[int, int, int, int]:
-    """
-    get deltas for release A and release B; start and end.
-    Returns 4 ints for downstream calculation:
-      delta_A_start
-      delta_B_start
-      delta_A_end
-      delta_B_end
-    """
-    delta_A_start = b.start - a.start
-    delta_B_start = a.start - b.start
-    delta_A_end = b.end - a.end
-    delta_B_end = a.end - b.end
-    return delta_A_start, delta_B_start, delta_A_end, delta_B_end
-
-def delta_of_deltas(delta_A_start: int, delta_B_start: int) -> int:
-    """
-    The largest coordinate shift the entity has went between the two releases
-    delta A_start is the start coordinate shift changed between release A and B
-    delta_B_end is the end coordinate shift change between release A and B
-    """
-    return max(abs(delta_A_start), abs(delta_B_start))
