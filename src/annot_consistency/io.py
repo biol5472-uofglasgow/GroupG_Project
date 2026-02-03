@@ -29,8 +29,9 @@ def write_changes_tsv(outdir: str, changes: list[ChangeRecord], prefix: str) -> 
     return path
 
 # Writing function to be used in cli.py to write summary.tsv file
-def write_summary_tsv(outdir: str, prefix: str,
-                      changes: list[ChangeRecord]) -> tuple[str, dict[str, dict[str, int]]]:
+def write_summary_tsv(outdir: str,
+                    changes: list[ChangeRecord],
+                    prefix: str,) -> tuple[str, dict[str, dict[str, int]]]:
     '''
     Gives the counts for number of changes by entity type and
     the type of changes along with the total number of
@@ -51,17 +52,17 @@ def write_summary_tsv(outdir: str, prefix: str,
         all_removed = 0
         all_changed = 0
 
-        for et in sorted(counts.keys()):
-            a = counts[et]['added']
-            r = counts[et]['removed']
-            ch = counts[et]['changed']
+        for entity_type in sorted(counts.keys()):
+            a = counts[entity_type]['added']
+            r = counts[entity_type]['removed']
+            ch = counts[entity_type]['changed']
             total = a + r + ch
 
             all_added += a
             all_removed += r
             all_changed += ch
 
-            file.write(f'{et}\t{a}\t{r}\t{ch}\t{total}\n')
+            file.write(f'{entity_type}\t{a}\t{r}\t{ch}\t{total}\n')
 
         all_total = all_added + all_removed + all_changed
 
@@ -75,12 +76,14 @@ def write_tracks(path: str, entities: list[EntitySummary]) -> None:
         track.write('##gff-version 3\n')
         for e in entities:
             # setting up column 9 of gff3 file
-            attrs_parts = [f'ID = {e.entity_id}']
+            attrs_parts = [f'ID={e.entity_id}']
             if e.parent_id:
                 attrs_parts.append(f'Parent={e.parent_id}')
             attrs = ';'.join(attrs_parts)
-
-            track.write(f'{e.seqid}\tgffACAKE\t{e.entity_type}\t{int(e.start)}\t{int(e.end)}\t{float(e.score)}\t{e.strand}\t{e.phase}\t{attrs}\n')
+            score = "." if e.score in (None, ".", "") else str(e.score)
+            phase = "." if e.phase in (None, ".", "") else str(e.phase)
+            strand = "." if e.strand in (None, "", ".") else e.strand
+            track.write(f'{e.seqid}\tgffACAKE\t{e.entity_type}\t{int(e.start)}\t{int(e.end)}\t{score}\t{strand}\t{phase}\t{attrs}\n')
 
 # Writing function to create the genome browser loadable tracks as gff3 files
 def write_genome_tracks(outdir: str,
