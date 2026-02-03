@@ -209,9 +209,11 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                         entity_type = entity_type,
                         entity_id = e_id,
                         change_type = 'start_threshold',
-                        details = (f'Release A start delta = {delta_A_start}; Release B start delta = {delta_B_start};\
-                                   delta of deltas = {delta_shift}; threshold = {threshold}; differences = \
-                                    {changed_details(a, b)}'),
+                        details = (f'Release A start delta = {delta_A_start};\
+                                   Release B start delta = {delta_B_start};\
+                                   delta of deltas = {delta_shift};\
+                                    threshold = {threshold};\
+                                    differences = {changed_details(a, b)}'),
                         high_shift = True
                     )
                 )
@@ -223,9 +225,11 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                         entity_type = entity_type,
                         entity_id = e_id,
                         change_type = 'end_threshold',
-                        details = (f'Release A end delta = {delta_A_end}; Release B end delta = {delta_B_end};\
-                                   delta of deltas = {delta_shift}; threshold = {threshold}; differences = \
-                                    {changed_details(a, b)}'),
+                        details = (f'Release A end delta = {delta_A_end};\
+                                   Release B end delta = {delta_B_end};\
+                                   delta of deltas = {delta_shift};\
+                                    threshold = {threshold};\
+                                    differences = {changed_details(a, b)}'),
                         high_shift = True
                     )
                 )
