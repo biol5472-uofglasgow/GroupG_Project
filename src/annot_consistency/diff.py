@@ -49,6 +49,7 @@ def build_entities(db: gffutils.FeatureDB) -> dict[str, dict[str, EntitySummary]
         "five_prime_UTR": {},
         "three_prime_UTR": {},
         "ncRNA": {},
+        "ncRNA_gene": {},
         "pseudogene": {},
         "pseudogenic_transcript": {},
         "rRNA": {},
