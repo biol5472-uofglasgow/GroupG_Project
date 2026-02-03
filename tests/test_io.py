@@ -7,21 +7,22 @@ from pathlib import Path
 from annot_consistency.io import (
     ensure_outdir,
     write_changes_tsv,
-    write_summary_tsv,
-    write_tracks,
     write_genome_tracks,
     write_run_json,
+    write_summary_tsv,
+    write_tracks,
 )
 from annot_consistency.models import ChangeRecord, EntitySummary
 
-#test to ensure that directory exists 
+
+#test to ensure that directory exists
 def test_ensure_outdir(tmp_path: Path) -> None:
     outdir = tmp_path / "out"
     ensure_outdir(str(outdir))
     assert outdir.exists()
     assert outdir.is_dir()
 
-#test to check whether the function generates a TSV file with the same name 
+#test to check whether the function generates a TSV file with the same name
 def test_write_changes_tsv(tmp_path: Path) -> None:
     changes = [
         ChangeRecord("gene", "gene1", "added", "Added gene1"),
@@ -55,19 +56,19 @@ def test_write_summary_tsv(tmp_path: Path) -> None:
     assert p.exists()
     assert p.name == f"{prefix}_summary.tsv"
 
-    # check returned counts 
+    # check returned counts
     assert counts["gene"]["added"] == 1
     assert counts["gene"]["removed"] == 1
     assert counts["gene"]["changed"] == 0
     assert counts["exon"]["changed"] == 1
 
-    
+
     lines = p.read_text(encoding="utf-8").splitlines()
     assert lines[0] == "Entity_Type\tAdded\tRemoved\tChanged\tTotal"
-    
+
     assert lines[-1].startswith("All_Total\t")
 
-#testing the function to check whether it creates a valid GFF3 file 
+#testing the function to check whether it creates a valid GFF3 file
 def test_write_tracks(tmp_path: Path) -> None:
     entities = [
         EntitySummary(
@@ -145,7 +146,7 @@ def test_write_genome_tracks(tmp_path: Path) -> None:
     added_lines = Path(added).read_text(encoding="utf-8").splitlines()
     assert added_lines[0] == "##gff-version 3"
 
-#testing the function to ensure it creates a valid JSON file 
+#testing the function to ensure it creates a valid JSON file
 def test_write_run_json(tmp_path: Path) -> None:
     prefix = "A_B"
 
