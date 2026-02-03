@@ -115,19 +115,19 @@ def deltas_coords(a: EntitySummary, b: EntitySummary) -> tuple[int, int, int, in
       delta_A_end
       delta_B_end
     """
-    delta_A_start = b.start - a.start
-    delta_B_start = a.start - b.start
-    delta_A_end = b.end - a.end
-    delta_B_end = a.end - b.end
-    return delta_A_start, delta_B_start, delta_A_end, delta_B_end
+    delta_a_start = b.start - a.start
+    delta_b_start = a.start - b.start
+    delta_a_end = b.end - a.end
+    delta_b_end = a.end - b.end
+    return delta_a_start, delta_b_start, delta_a_end, delta_b_end
 
-def delta_of_deltas(delta_A_start: int, delta_A_end: int) -> int:
+def delta_of_deltas(delta_a_start: int, delta_a_end: int) -> int:
     """
     The largest coordinate shift the entity has went between the two releases
     delta A_start is the start coordinate shift changed between release A and B
     delta_A_end is the end coordinate shift change between release A and B
     """
-    return max(abs(delta_A_start), abs(delta_A_end))
+    return max(abs(delta_a_start), abs(delta_a_end))
 
 
 def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
@@ -194,12 +194,12 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                 continue
             changed.append(b)
             # Delta logic:
-            delta_A_start, delta_B_start, delta_A_end, delta_B_end = deltas_coords(a, b)
-            delta_shift= delta_of_deltas(delta_A_start, delta_A_end)
+            delta_a_start, delta_b_start, delta_a_end, delta_b_end = deltas_coords(a, b)
+            delta_shift= delta_of_deltas(delta_a_start, delta_a_end)
 
             # Check threshold: based on user input for threshold
-            start_exceeds = abs(delta_A_start) > threshold
-            end_exceeds = abs(delta_A_end) > threshold
+            start_exceeds = abs(delta_a_start) > threshold
+            end_exceeds = abs(delta_a_end) > threshold
             high_shift = start_exceeds or end_exceeds
 
             # Start threshold: if start coord > threshold
@@ -209,8 +209,8 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                         entity_type = entity_type,
                         entity_id = e_id,
                         change_type = 'start_threshold',
-                        details = (f'Release A start delta = {delta_A_start};\
-                                   Release B start delta = {delta_B_start};\
+                        details = (f'Release A start delta = {delta_a_start};\
+                                   Release B start delta = {delta_b_start};\
                                    delta of deltas = {delta_shift};\
                                     threshold = {threshold};\
                                     differences = {changed_details(a, b)}'),
@@ -225,8 +225,8 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                         entity_type = entity_type,
                         entity_id = e_id,
                         change_type = 'end_threshold',
-                        details = (f'Release A end delta = {delta_A_end};\
-                                   Release B end delta = {delta_B_end};\
+                        details = (f'Release A end delta = {delta_a_end};\
+                                   Release B end delta = {delta_b_end};\
                                    delta of deltas = {delta_shift};\
                                     threshold = {threshold};\
                                     differences = {changed_details(a, b)}'),
