@@ -102,8 +102,9 @@ def test_write_tracks(tmp_path: Path) -> None:
     write_tracks(str(outpath), entities)
 
     assert outpath.exists()
-    first_line = outpath.read_text().splitlines()[0]
-    assert first_line == "##gff-version 3"
+    lines = outpath.read_text(encoding="utf-8").splitlines()
+    assert lines[0] == "##gff-version 3"
+    assert "ID=gene1" in lines[1]
 
 
 #testing the function that creates three GFF3 files (added, removed, and changed)
