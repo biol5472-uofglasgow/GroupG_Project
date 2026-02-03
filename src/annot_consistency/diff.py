@@ -121,13 +121,13 @@ def deltas_coords(a: EntitySummary, b: EntitySummary) -> tuple[int, int, int, in
     delta_B_end = a.end - b.end
     return delta_A_start, delta_B_start, delta_A_end, delta_B_end
 
-def delta_of_deltas(delta_A_start: int, delta_B_start: int) -> int:
+def delta_of_deltas(delta_A_start: int, delta_A_end: int) -> int:
     """
     The largest coordinate shift the entity has went between the two releases
     delta A_start is the start coordinate shift changed between release A and B
-    delta_B_end is the end coordinate shift change between release A and B
+    delta_A_end is the end coordinate shift change between release A and B
     """
-    return max(abs(delta_A_start), abs(delta_B_start))
+    return max(abs(delta_A_start), abs(delta_A_end))
 
 
 def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
@@ -148,7 +148,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
         = high_shift True if either threshold exceeded
     - if signature differs but no threshold exceeded, continue with change_type="changed"
     '''
-    if threshold > 0:
+    if threshold < 0:
         raise ValueError("threshold must be > 0 ")
     
     changes: list[ChangeRecord] = []
@@ -240,4 +240,5 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                         details = changed_details(a,b),
                         high_shift = False
                     )
+                )
     return changes, added, removed, changed
