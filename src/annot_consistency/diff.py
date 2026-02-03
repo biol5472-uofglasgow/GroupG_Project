@@ -231,7 +231,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                 )
             
             # No threshold exceeded: other signature changes
-            else high_shift:
+            if not high_shift:
                 changes.append(
                     ChangeRecord(
                         entity_type = entity_type,
