@@ -26,7 +26,7 @@ def test_cli_integration_custom_sample(tmp_path: Path) -> None:
     outdir = tmp_path / 'out'
     outdir.mkdir(parents=True, exist_ok=True)
     main([str(release_a), str(release_b), str(outdir)])
-    prefix = f'{release_a}_{release_b}'
+    prefix = f'{release_a.stem}_{release_b.stem}'
     changes_path = outdir / f'{prefix}_changes.tsv'
     assert changes_path.is_file()
     text = changes_path.read_text(encoding='utf-8')
