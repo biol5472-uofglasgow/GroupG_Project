@@ -3,9 +3,8 @@
 
 import argparse
 import os
+from collections.abc import Sequence
 from pathlib import Path
-from typing import Optional, Sequence
-
 
 from annot_consistency.diff import build_entities, diff_entity
 from annot_consistency.gffutils_db import load_or_create_db
@@ -23,7 +22,7 @@ from annot_consistency.logging_utils import logger
 default_outdir = os.path.join(os.path.expanduser("~"), "app", "gffacake")
 
 
-def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
+def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Compare two annotation releases (A vs B)")
     # 3 arguments total (A, B, outdir). outdir optional with default.
     p.add_argument("releaseA", help="Annotation release A in GFF3 format")
@@ -45,7 +44,7 @@ def validate_inputs(release_a: Path, release_b: Path) -> None:
         raise ValueError(f"releaseB must be a .gff or .gff3 file, got: {release_b.name}")
 
 
-def main(argv: Optional[Sequence[str]] = None) -> None:
+def main(argv: Sequence[str] | None = None) -> None:
     args = parse_args(argv)
 
     release_a = Path(args.releaseA)
@@ -126,23 +125,23 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     # writing genome browser tracks
     try:
         log.info("Writing genome browser tracks (added/removed/changed)")
-        added_path, removed_path, changed_path= write_genome_tracks(
-            str(outdir), added_all, removed_all, changed_all, prefix)
+        write_genome_tracks(str(outdir), added_all, removed_all, changed_all, prefix)
     except Exception:
         log.exception("Failed writing genome tracks")
         raise RuntimeError("Could not write genome tracks")
 
 
-    #  writing run.json
+    # write run.json
     try:
         log.info("Writing run.json")
-        run_json_path=write_run_json(
-            outdir=str(outdir),
+        run_json_path = write_run_json(
             tool_name="gffacake",
             tool_version="1.0",
             release_a=str(release_a),
             release_b=str(release_b),
-            prefix=prefix)
+            outdir=str(outdir),
+            prefix=prefix,
+        )
     except Exception:
         log.exception("Failed writing run.json")
         raise RuntimeError("Could not write run.json")
