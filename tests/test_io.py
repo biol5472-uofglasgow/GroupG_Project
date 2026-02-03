@@ -80,8 +80,8 @@ def test_write_tracks(tmp_path: Path) -> None:
             strand="+",
             parent_id=None,
             attrs={"ID": "gene1"},
-            score=0.0,
-            phase=0,
+            score="0.0",
+            phase="0",
             source="test",
         ),
         EntitySummary(
@@ -93,8 +93,8 @@ def test_write_tracks(tmp_path: Path) -> None:
             strand="+",
             parent_id="tx1",
             attrs={"ID": "exon1", "Parent": "tx1"},
-            score=1.0,
-            phase=1,
+            score="1.0",
+            phase="1",
             source="test",
         ),
     ]
@@ -119,8 +119,8 @@ def test_write_genome_tracks(tmp_path: Path) -> None:
         strand="+",
         parent_id=None,
         attrs={"ID": "gene1"},
-        score=0.0,
-        phase=0,
+        score="0.0",
+        phase="0",
         source="test",
     )
 
