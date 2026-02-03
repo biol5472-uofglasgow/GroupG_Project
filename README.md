@@ -1,14 +1,10 @@
-# GroupG_Project
-HELLO I AM UNDER THE WATER
-
+# Group G, Project 6 - Two-release annotation comparison (A vs B)
 Contributors: Almarc Astorga, Ishwar Bijumon, Krishna Sameer Krothapalli, Saheshnu Sai Balaji Pillai
 
-# Project 6: Two-release annotation consistency (A vs B)
+### Purpose of project
+This project compares two genome annotation releases of the same organism (Release A vs Release B) to identify differences; it will produce a HTML report which includes: a summary outputs describing additions; removals; and changes across entity types between releases.
+In version 1.1, a live change request was implemented to update the changes output to include a new change category: genomic coordinate shift above a threshold (based on user input). 
 
-### Goal: Purpose of project
-This project compares two genome annotation releases (Release A vs Release B, or more) to identify differences; it will produce a  "issues ledger" and summary outputs describing additions; removals; and changes across entity types between releases
-
-### Process: What are the projects inputs and outputs
 ### Inputs; required 
 - 'release_A.gff3': annotation release A in GFF3 format  
 - 'release_B.gff3': annotation release B in GFF3 format  
