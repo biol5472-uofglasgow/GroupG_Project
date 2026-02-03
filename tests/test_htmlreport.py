@@ -47,3 +47,29 @@ def test_write_htmlreport_writes_html_and_references_outputs(tmp_path: Path) -> 
         },
     }
     run_json_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+    # Summary result returned by write_summary_tsv
+    summary_path = outdir / f"{prefix}_summary.tsv"
+    summary_path.write_text(
+        "Entity_Type\tAdded\tRemoved\tChanged\tTotal\n"
+        "gene\t1\t0\t2\t3\n"
+        "All_Total\t1\t0\t2\t3\n",
+        encoding="utf-8",
+    )
+
+    counts = {"gene": {"added": 1, "removed": 0, "changed": 2}}
+    summary_result = (str(summary_path), counts)
+
+    # changes.tsv is read by the HTML report
+    changes_path = outdir / f"{prefix}_changes.tsv"
+    changes_path.write_text(
+        "Entity_Type\tEntity_ID\tChange_Type\tDetails\n"
+        "gene\tgene1\tchanged\tStart: 1 -> 2\n",
+        encoding="utf-8",
+    )
+
+    # Dummy genome browser tracks (linked in artefacts)
+    (outdir / f"{prefix}_added.gff3").write_text("##gff-version 3\n", encoding="utf-8")
+    (outdir / f"{prefix}_removed.gff3").write_text("##gff-version 3\n", encoding="utf-8")
+    (outdir / f"{prefix}_changed.gff3").write_text("##gff-version 3\n", encoding="utf-8")
+    
