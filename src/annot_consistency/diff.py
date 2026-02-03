@@ -144,7 +144,7 @@ def delta_of_deltas(delta_a_start: int, delta_a_end: int) -> int:
 
 def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                 b_entities: dict[str, dict[str, EntitySummary]],
-                threshold: int) -> tuple[
+                threshold: int | None = None) -> tuple[
                     list[ChangeRecord],
                     list[EntitySummary],
                     list[EntitySummary],
@@ -205,59 +205,76 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
         for e_id in (a_id & b_id):
             a = a_map[e_id]
             b = b_map[e_id]
-            if a.signature() == b.signature():
-                continue
-            changed.append(b)
+            if a.signature() != b.signature():
+                changes.append(b)
             # Delta logic:
-            delta_a_start, delta_b_start, delta_a_end, delta_b_end = deltas_coords(a, b)
-            delta_shift= delta_of_deltas(delta_a_start, delta_a_end)
+                delta_a_start, delta_b_start, delta_a_end, delta_b_end = deltas_coords(a, b)
+                delta_shift= delta_of_deltas(delta_a_start, delta_a_end)
+                start_and_end_exceeds = max(abs(a.start - b.start), abs(a.end - b.end)) > threshold
 
-            # Check threshold: based on user input for threshold
-            start_exceeds = abs(delta_a_start) > threshold
-            end_exceeds = abs(delta_a_end) > threshold
-            high_shift = start_exceeds or end_exceeds
+                # Check threshold: based on user input for threshold
+                start_exceeds = abs(delta_a_start) > threshold
+                end_exceeds = abs(delta_a_end) > threshold
+                high_shift = start_exceeds or end_exceeds
 
-            # Start threshold: if start coord > threshold
-            if start_exceeds:
-                changes.append(
-                    ChangeRecord(
-                        entity_type = entity_type,
-                        entity_id = e_id,
-                        change_type = 'start_threshold',
-                        details = (f'Release A start delta = {delta_a_start};\
-                                   Release B start delta = {delta_b_start};\
-                                   delta of deltas = {delta_shift};\
-                                    threshold = {threshold};\
-                                    differences = {changed_details(a, b)}'),
-                        high_shift = True
+                # Start threshold: if start coord > threshold
+                if start_exceeds:
+                    changes.append(
+                        ChangeRecord(
+                            entity_type = entity_type,
+                            entity_id = e_id,
+                            change_type = 'start_threshold',
+                            details = (f'Release A start delta = {delta_a_start};\
+                                    Release B start delta = {delta_b_start};\
+                                    delta of deltas = {delta_shift};\
+                                        threshold = {threshold};\
+                                        differences = {changed_details(a, b)}'),
+                            high_shift = True
+                        )
                     )
-                )
 
-            # End threshold: if end coord > threshold
-            if end_exceeds:
-                changes.append(
-                    ChangeRecord(
-                        entity_type = entity_type,
-                        entity_id = e_id,
-                        change_type = 'end_threshold',
-                        details = (f'Release A end delta = {delta_a_end};\
-                                   Release B end delta = {delta_b_end};\
-                                   delta of deltas = {delta_shift};\
-                                    threshold = {threshold};\
-                                    differences = {changed_details(a, b)}'),
-                        high_shift = True
+                # End threshold: if end coord > threshold
+                if end_exceeds:
+                    changes.append(
+                        ChangeRecord(
+                            entity_type = entity_type,
+                            entity_id = e_id,
+                            change_type = 'end_threshold',
+                            details = (f'Release A end delta = {delta_a_end};\
+                                    Release B end delta = {delta_b_end};\
+                                    delta of deltas = {delta_shift};\
+                                        threshold = {threshold};\
+                                        differences = {changed_details(a, b)}'),
+                            high_shift = True
+                        )
                     )
-                )
+                if start_and_end_exceeds:
+                    changes.append(
+                        ChangeRecord(
+                            entity_type = entity_type,
+                            entity_id = e_id,
+                            change_type = 'combined_threshold',
+                            details = (f'Release A end delta = {delta_a_end};\
+                                    Release B end delta = {delta_b_end};\
+                                    Release A start delta = {delta_a_start};\
+                                    Release B end delta = {delta_b_end};\
+                                    delta of deltas = {delta_shift};\
+                                        threshold = {threshold};\
+                                        differences = {changed_details(a, b)}'),
+                            high_shift = True
+                        )
+                    )
 
-            # No threshold exceeded: other signature changes
-            if not high_shift:
-                changes.append(
-                    ChangeRecord(
-                        entity_type = entity_type,
-                        entity_id = e_id,
-                        change_type = 'changed',
-                        details = changed_details(a,b),
-                        high_shift = False
+
+                # No threshold exceeded: other signature changes
+                if not high_shift:
+                    changes.append(
+                        ChangeRecord(
+                            entity_type = entity_type,
+                            entity_id = e_id,
+                            change_type = 'changed',
+                            details = changed_details(a,b),
+                            high_shift = False
+                        )
                     )
-                )
     return changes, added, removed, changed
