@@ -140,7 +140,7 @@ def write_run_json(tool_name: str,
     }
 
     with open(path, 'w', encoding = 'utf-8') as jsonfile:
-        json.dump(payload, jsonfile, indent = 2, sort_keys = True)
+        json.dump(payload, jsonfile, indent = 2)
         jsonfile.write('\n')
 
     return path
