@@ -55,6 +55,5 @@ We track changes for:
 
 ### Requirements
 - Python 3.10+ recommended  
-- Suggested library; 'gffutils' (optional but recommended); for indexing and querying GFF3  
-- Standard library modules as needed; 'argparse'; 'json'; 'csv'; 'logging'  
+- 'gffutils' for indexing and querying GFF3
 
