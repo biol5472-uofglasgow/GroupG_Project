@@ -57,6 +57,27 @@ We track changes for:
 
 
 ### Option 2: Python + UV
+Required- Python 3.10+ and uv (python environment manager)
+1. Install Python
+
+To check if Python is installed, run the following command in bash:
+
+python3 --version
+
+If not installed:
+
+for macOS (Homebrew)-
+brew install python
+
+for Ubuntu/Debian-
+sudo apt update
+sudo apt install python3 python3-venv python3-pip
+
+for Windows-
+Download from:
+https://www.python.org/downloads/
+
+Make sure python or python3 works in your terminal after installation.
 
 
 
