@@ -4,6 +4,8 @@
 import argparse
 import os
 from pathlib import Path
+from typing import Optional, Sequence
+
 
 from annot_consistency.diff import build_entities, diff_entity
 from annot_consistency.gffutils_db import load_or_create_db
@@ -21,7 +23,7 @@ from annot_consistency.logging_utils import logger
 default_outdir = os.path.join(os.path.expanduser("~"), "app", "gffacake")
 
 
-def parse_args(argv=None) -> argparse.Namespace:
+def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Compare two annotation releases (A vs B)")
     # 3 arguments total (A, B, outdir). outdir optional with default.
     p.add_argument("releaseA", help="Annotation release A in GFF3 format")
@@ -43,7 +45,7 @@ def validate_inputs(release_a: Path, release_b: Path) -> None:
         raise ValueError(f"releaseB must be a .gff or .gff3 file, got: {release_b.name}")
 
 
-def main(argv=None) -> None:
+def main(argv: Optional[Sequence[str]] = None) -> None:
     args = parse_args(argv)
 
     release_a = Path(args.releaseA)
@@ -164,4 +166,3 @@ def main(argv=None) -> None:
 
 if __name__ == "__main__":
     main()
-

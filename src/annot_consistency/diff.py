@@ -43,7 +43,18 @@ def build_entities(db: gffutils.FeatureDB) -> dict[str, dict[str, EntitySummary]
     entities_feature_type: dict[str, dict[str, EntitySummary]] = {
         "gene": {},
         "mRNA": {},
-        "exon": {}
+        "exon": {},
+        "protein_coding_gene": {},
+        "CDS": {},
+        "five_prime_UTR": {},
+        "three_prime_UTR": {},
+        "ncRNA": {},
+        "pseudogene": {},
+        "pseudogenic_transcript": {},
+        "rRNA": {},
+        "snoRNA": {},
+        "snRNA": {},
+        "tRNA": {}
         }
     # entity types for current fixtures
 
@@ -122,7 +133,10 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
     removed: list[EntitySummary] = []
     changed: list[EntitySummary] = []
 
-    for entity_type in ('gene', 'mRNA', 'exon'):
+    for entity_type in ("gene", "mRNA", "exon",
+                    "protein_coding_gene", "five_prime_UTR", "three_prime_UTR",
+                    "CDS", "ncRNA", "ncRNA_gene", "pseudogene", "pseudogenic_transcript",
+                    "rRNA", "snoRNA", "snRNA", "tRNA"):
         a_map = a_entities.get(entity_type, {})
         b_map = b_entities.get(entity_type, {})
 
