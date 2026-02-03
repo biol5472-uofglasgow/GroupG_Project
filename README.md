@@ -79,6 +79,17 @@ https://www.python.org/downloads/
 
 Make sure python or python3 works in your terminal after installation.
 
+2. Install uv
+
+To install uv using pip, run the following command in bash:
+
+pip install uv
+
+To verify installation:
+
+uv --version
+
+
 
 
 
