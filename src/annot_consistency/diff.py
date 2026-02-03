@@ -192,7 +192,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
             b = b_map[e_id]
             if a.signature() == b.signature():
                 continue
-            
+            changed.append(b)
             # Delta logic: 
             delta_A_start, delta_B_start, delta_A_end, delta_B_end = deltas_coords(a, b)
             delta_shift= delta_of_deltas(delta_A_start, delta_A_end)
