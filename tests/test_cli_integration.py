@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from src.annot_consistency.cli import main
+from annot_consistency.cli import main
 
 
 def test_cli_integration_custom_sample(tmp_path: Path) -> None:
