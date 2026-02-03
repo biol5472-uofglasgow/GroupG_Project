@@ -51,7 +51,7 @@ def write_summary_tsv(outdir: str,
         all_added = 0
         all_removed = 0
         all_changed = 0
-        et: str
+        
         for et in sorted(counts.keys()):
             a = counts[et]['added']
             r = counts[et]['removed']
