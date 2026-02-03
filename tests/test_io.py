@@ -49,12 +49,23 @@ def test_write_summary_tsv(tmp_path: Path) -> None:
     ]
     prefix = "A_B"
 
-    path, counts = write_summary_tsv(str(tmp_path), prefix, changes)
+    path, counts = write_summary_tsv(str(tmp_path), changes, prefix)
 
-    assert Path(path).exists()
+    p = Path(path)
+    assert p.exists()
+    assert p.name == f"{prefix}_summary.tsv"
+
+    # check returned counts 
     assert counts["gene"]["added"] == 1
     assert counts["gene"]["removed"] == 1
+    assert counts["gene"]["changed"] == 0
     assert counts["exon"]["changed"] == 1
+
+    
+    lines = p.read_text(encoding="utf-8").splitlines()
+    assert lines[0] == "Entity_Type\tAdded\tRemoved\tChanged\tTotal"
+    
+    assert lines[-1].startswith("All_Total\t")
 
 #testing the function to check whether it creates a valid GFF3 file 
 def test_write_tracks(tmp_path: Path) -> None:
