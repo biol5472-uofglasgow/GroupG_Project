@@ -80,7 +80,7 @@ def write_tracks(path: str, entities: list[EntitySummary]) -> None:
             if e.parent_id:
                 attrs_parts.append(f'Parent={e.parent_id}')
             attrs = ';'.join(attrs_parts)
-            score = "." if e.score in (None, ".", "") else str(float(e.score))
+            score = "." if e.score in (None, ".", "") else str(e.score)
             phase = "." if e.phase in (None, ".", "") else str(e.phase)
             strand = "." if e.strand in (None, "", ".") else e.strand
             track.write(f'{e.seqid}\tgffACAKE\t{e.entity_type}\t{int(e.start)}\t{int(e.end)}\t{score}\t{strand}\t{phase}\t{attrs}\n')
