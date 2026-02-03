@@ -29,6 +29,7 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     p.add_argument("releaseB", help="Annotation release B in GFF3 format")
     p.add_argument("outDir", nargs="?", default=default_outdir,
                    help=f"Directory for output files (default: {default_outdir})")
+    p.add_argument("--threshold", type=int, default=None, help="If set, also classify coordinate shifts above threshold")
     return p.parse_args(argv)
 
 #validate input files
@@ -94,7 +95,7 @@ def main(argv: Sequence[str] | None = None) -> None:
 
     # differentiating entities
     log.info("Differentiating entities (A vs B)")
-    changes_all, added_all, removed_all, changed_all = diff_entity(a_entities, b_entities)
+    changes_all, added_all, removed_all, changed_all = diff_entity(a_entities, b_entities, threshold=args.threshold)
 
     log.info(
         "Totals: changes=%d (added=%d removed=%d changed=%d)",
