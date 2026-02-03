@@ -1,4 +1,16 @@
-# Python caches
+
 __pycache__/
 *.pyc
 .mypy_cache/
+.mypy_cache/
+.vscode/
+.DS_Store
+
+
+*.tsv
+*.json
+*.gff3
+*.png
+*.html
+*.db
+*.log
