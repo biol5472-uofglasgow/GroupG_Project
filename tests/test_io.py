@@ -14,14 +14,14 @@ from annot_consistency.io import (
 )
 from annot_consistency.models import ChangeRecord, EntitySummary
 
-
+#test to ensure that directory exists 
 def test_ensure_outdir(tmp_path: Path) -> None:
     outdir = tmp_path / "out"
     ensure_outdir(str(outdir))
     assert outdir.exists()
     assert outdir.is_dir()
 
-
+#test to check whether the function generates a TSV file with the same name 
 def test_write_changes_tsv(tmp_path: Path) -> None:
     changes = [
         ChangeRecord("gene", "gene1", "added", "Added gene1"),
@@ -34,6 +34,7 @@ def test_write_changes_tsv(tmp_path: Path) -> None:
     assert Path(path).exists()
     assert Path(path).name == f"{prefix}_changes.tsv"
 
+#test to check whether the function generates a summary file as well as the correct counts
 def test_write_summary_tsv(tmp_path: Path) -> None:
     changes = [
         ChangeRecord("gene", "gene1", "added", "Added gene1"),
@@ -49,6 +50,7 @@ def test_write_summary_tsv(tmp_path: Path) -> None:
     assert counts["gene"]["removed"] == 1
     assert counts["exon"]["changed"] == 1
 
+#testing the function to check whether it creates a valid GFF3 file 
 def test_write_tracks(tmp_path: Path) -> None:
     entities = [
         EntitySummary(
@@ -87,6 +89,7 @@ def test_write_tracks(tmp_path: Path) -> None:
     assert first_line == "##gff-version 3"
 
 
+#testing the function that creates three GFF3 files (added, removed, and changed)
 def test_write_genome_tracks(tmp_path: Path) -> None:
     entity = EntitySummary(
         entity_type="gene",
@@ -116,6 +119,7 @@ def test_write_genome_tracks(tmp_path: Path) -> None:
     assert Path(removed).exists()
     assert Path(changed).exists()
 
+#testing the function to ensure it creates a valid JSON file 
 def test_write_run_json(tmp_path: Path) -> None:
     prefix = "A_B"
 
