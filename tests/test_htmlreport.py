@@ -72,4 +72,33 @@ def test_write_htmlreport_writes_html_and_references_outputs(tmp_path: Path) -> 
     (outdir / f"{prefix}_added.gff3").write_text("##gff-version 3\n", encoding="utf-8")
     (outdir / f"{prefix}_removed.gff3").write_text("##gff-version 3\n", encoding="utf-8")
     (outdir / f"{prefix}_changed.gff3").write_text("##gff-version 3\n", encoding="utf-8")
-    
+
+    # Generate report
+    report_path = write_htmlreport(
+        outdir=str(outdir),
+        summary_result=summary_result,
+        prefix=prefix,
+        run_json_path=str(run_json_path),
+        title="Test report",
+    )
+
+    report = Path(report_path)
+    assert report.is_file()
+    assert report.name == f"{prefix}_report.html"
+
+    # PNG created by plot_counts
+    assert (outdir / f"{prefix}_report.png").is_file()
+
+    html = report.read_text(encoding="utf-8")
+
+    # Basic structural checks
+    assert "<h1>" in html
+    assert "Provenance" in html
+    assert "Overview" in html
+
+    # Output references
+    assert f"{prefix}_report.png" in html
+    assert f"{prefix}_added.gff3" in html
+    assert f"{prefix}_removed.gff3" in html
+    assert f"{prefix}_changed.gff3" in html
+    assert f"{prefix}_run.json" in html
