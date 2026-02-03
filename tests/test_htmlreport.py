@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from annot_consistency.htmlreport import plot_counts, write_htmlreport
+from annot_consistency.html import plot_counts, write_htmlreport
 
 
 def test_plot_counts_writes_png(tmp_path: Path) -> None:
