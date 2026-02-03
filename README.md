@@ -46,7 +46,7 @@ We track changes for:
 - 'changed'
 
 ### Example of changed details
-
+![Changed details on the HTML webpage](images/DetailedChanges.png)
 
 # Installation
 ### How to install 
