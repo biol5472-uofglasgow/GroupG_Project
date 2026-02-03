@@ -67,7 +67,7 @@ def build_entities(db: gffutils.FeatureDB) -> dict[str, dict[str, EntitySummary]
         entity_id = choose_entity_id(feature.featuretype, attrs, feature.seqid,
                                     feature.start, feature.end, feature.strand)
 
-        parent_id: str | None     # parent not guaranted
+        parent_id: str | None = None
         if "Parent" in attrs and attrs["Parent"]:
             parent_id = ",".join(attrs["Parent"])
 
