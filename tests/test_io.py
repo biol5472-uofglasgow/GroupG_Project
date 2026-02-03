@@ -31,8 +31,14 @@ def test_write_changes_tsv(tmp_path: Path) -> None:
 
     path = write_changes_tsv(str(tmp_path), changes, prefix)
 
-    assert Path(path).exists()
-    assert Path(path).name == f"{prefix}_changes.tsv"
+    p = Path(path)
+    assert p.exists()
+    assert p.name == f"{prefix}_changes.tsv"
+
+    lines = p.read_text(encoding="utf-8").splitlines()
+    assert lines[0] == "Entity_Type\tEntity_ID\tChange_Type\tDetails"
+    assert "gene\tgene1\tadded\tAdded gene1" in lines
+    assert "exon\texon1\tchanged\tCoords changed" in lines
 
 #test to check whether the function generates a summary file as well as the correct counts
 def test_write_summary_tsv(tmp_path: Path) -> None:
