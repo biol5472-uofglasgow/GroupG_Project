@@ -133,16 +133,17 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         raise RuntimeError("Could not write genome tracks")
 
 
-    #  writing run.json
+    # write run.json
     try:
         log.info("Writing run.json")
-        run_json_path=write_run_json(
-            outdir=str(outdir),
+        run_json_path = write_run_json(
             tool_name="gffacake",
             tool_version="1.0",
             release_a=str(release_a),
             release_b=str(release_b),
-            prefix=prefix)
+            outdir=str(outdir),
+            prefix=prefix,
+        )
     except Exception:
         log.exception("Failed writing run.json")
         raise RuntimeError("Could not write run.json")
