@@ -60,7 +60,7 @@ We track changes for:
 Required- Python 3.10+ and uv (python environment manager)
 1. Install Python
 
-To check if Python is installed, run the following command in bash:
+To check if Python is installed, run the following command in terminal:
 
 python3 --version
 
@@ -81,13 +81,30 @@ Make sure python or python3 works in your terminal after installation.
 
 2. Install uv
 
-To install uv using pip, run the following command in bash:
+To install uv using pip, run the following command in terminal:
 
 pip install uv
 
 To verify installation:
 
 uv --version
+
+3. Clone the Repository 
+
+Run the following command in terminal :
+
+git clone https://github.com/biol5472-uofglasgow/GroupG_Project.git
+cd GroupG_Project
+
+or use SSH key : git@github.com:biol5472-uofglasgow/GroupG_Project.git
+
+4. Install Dependencies
+
+Use uv to install dependencies from pyproject.toml . Run the following command in terminal :
+
+uv sync
+
+This will create a virtual environment and install all required packages.
 
 
 
