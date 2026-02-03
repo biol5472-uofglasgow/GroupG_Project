@@ -126,8 +126,7 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     # writing genome browser tracks
     try:
         log.info("Writing genome browser tracks (added/removed/changed)")
-        added_path, removed_path, changed_path= write_genome_tracks(
-            str(outdir), added_all, removed_all, changed_all, prefix)
+        write_genome_tracks(str(outdir), added_all, removed_all, changed_all, prefix)
     except Exception:
         log.exception("Failed writing genome tracks")
         raise RuntimeError("Could not write genome tracks")
