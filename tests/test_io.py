@@ -137,6 +137,14 @@ def test_write_genome_tracks(tmp_path: Path) -> None:
     assert Path(removed).exists()
     assert Path(changed).exists()
 
+    assert Path(added).name == f"{prefix}_added.gff3"
+    assert Path(removed).name == f"{prefix}_removed.gff3"
+    assert Path(changed).name == f"{prefix}_changed.gff3"
+
+    # the file should contain the GFF3 header
+    added_lines = Path(added).read_text(encoding="utf-8").splitlines()
+    assert added_lines[0] == "##gff-version 3"
+
 #testing the function to ensure it creates a valid JSON file 
 def test_write_run_json(tmp_path: Path) -> None:
     prefix = "A_B"
