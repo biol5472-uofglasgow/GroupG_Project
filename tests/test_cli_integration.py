@@ -31,7 +31,7 @@ def test_cli_integration_custom_sample(tmp_path: Path) -> None:
     assert changes_path.is_file()
     text = changes_path.read_text(encoding='utf-8')
     assert '\tchanged' in text
-    
+
 # Test fixture releases
 def test_cli_fixtures(tmp_path: Path) -> None:
     fixture = Path("tests/fixture_releases")
