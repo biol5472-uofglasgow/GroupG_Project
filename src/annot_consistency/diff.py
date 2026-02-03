@@ -105,7 +105,7 @@ def changed_details(a: EntitySummary, b: EntitySummary) -> str:
 
     return '; '.join(parts)
 
-# Get delta coordinates 
+# Get delta coordinates
 def deltas_coords(a: EntitySummary, b: EntitySummary) -> tuple[int, int, int, int]:
     """
     get deltas for release A and release B; start and end.
@@ -150,7 +150,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
     '''
     if threshold < 0:
         raise ValueError("threshold must be > 0 ")
-    
+
     changes: list[ChangeRecord] = []
     added: list[EntitySummary] = []
     removed: list[EntitySummary] = []
@@ -193,7 +193,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
             if a.signature() == b.signature():
                 continue
             changed.append(b)
-            # Delta logic: 
+            # Delta logic:
             delta_A_start, delta_B_start, delta_A_end, delta_B_end = deltas_coords(a, b)
             delta_shift= delta_of_deltas(delta_A_start, delta_A_end)
 
@@ -202,7 +202,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
             end_exceeds = abs(delta_A_end) > threshold
             high_shift = start_exceeds or end_exceeds
 
-            # Start threshold: if start coord > threshold 
+            # Start threshold: if start coord > threshold
             if start_exceeds:
                 changes.append(
                     ChangeRecord(
@@ -215,7 +215,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                         high_shift = True
                     )
                 )
-            
+
             # End threshold: if end coord > threshold
             if end_exceeds:
                 changes.append(
@@ -229,7 +229,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                         high_shift = True
                     )
                 )
-            
+
             # No threshold exceeded: other signature changes
             if not high_shift:
                 changes.append(
