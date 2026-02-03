@@ -2,7 +2,7 @@ from pathlib import Path
 
 from gffutils import FeatureDB
 
-from src.annot_consistency.gffutils_db import load_or_create_db
+from annot_consistency.gffutils_db import load_or_create_db
 
 
 def test_create_and_check_db(tmp_path: Path) -> None:
