@@ -52,17 +52,17 @@ def write_summary_tsv(outdir: str,
         all_removed = 0
         all_changed = 0
 
-        for et in sorted(counts.keys()):
-            a = counts[et]['added']
-            r = counts[et]['removed']
-            ch = counts[et]['changed']
+        for entity_type in sorted(counts.keys()):
+            a = counts[entity_type]['added']
+            r = counts[entity_type]['removed']
+            ch = counts[entity_type]['changed']
             total = a + r + ch
 
             all_added += a
             all_removed += r
             all_changed += ch
 
-            file.write(f'{et}\t{a}\t{r}\t{ch}\t{total}\n')
+            file.write(f'{entity_type}\t{a}\t{r}\t{ch}\t{total}\n')
 
         all_total = all_added + all_removed + all_changed
 
