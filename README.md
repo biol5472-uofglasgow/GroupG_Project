@@ -1,4 +1,6 @@
-# Group G, Project 6 - Two-release annotation comparison (A vs B)
+# gFFACAKE
+***A two-release annotation comparison software (A vs B)***
+
 Contributors: Almarc Astorga, Ishwar Bijumon, Krishna Sameer Krothapalli, Saheshnu Sai Balaji Pillai
 
 ## Purpose of project
@@ -35,7 +37,7 @@ We track changes for:
 -  "ncRNA_gene"
 -  "pseudogene"
 -  "pseudogenic_transcript"
-- "rRNA"
+-  "rRNA"
 -  "snoRNA"
 -  "snRNA"
 -  "tRNA"
@@ -49,11 +51,22 @@ We track changes for:
 ![Changed details on the HTML webpage](images/DetailedChanges.png)
 
 # Installation
-### How to install 
+## How to install and run the software
+### Option 1: Docker
 
-...
+
+
+### Option 2: Python + UV
+
+
+
+
+
+# How the software works
+
 
 ### Requirements
 - Python 3.10+ recommended  
-- 'gffutils' for indexing and querying GFF3
+- Docker Version 27.1.1
+- gffutils
 
