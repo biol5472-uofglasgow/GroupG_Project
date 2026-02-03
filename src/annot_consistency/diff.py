@@ -170,10 +170,10 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                 entity_type = entity_type,
                 entity_id = e_id,
                 change_type = 'added',
-                details = 'Entity present only in release B'),
+                details = 'Entity present only in release B',
                 high_shift = False
                 )
-
+            )
         # Removed entities: If the ID is present only in release A and not in release B
         for e_id in a_id - b_id:
             removed.append(a_map[e_id])
@@ -181,10 +181,10 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                 entity_type = entity_type,
                 entity_id = e_id,
                 change_type = 'removed',
-                details = 'Entity present only in release A'),
+                details = 'Entity present only in release A',
                 high_shift = False
                 )
-
+            )
         # Changed entities: First check if the entities are present in both,
         # then see if signatures are different
         for e_id in (a_id & b_id):
