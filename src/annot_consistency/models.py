@@ -24,13 +24,13 @@ class EntitySummary:
     strand: str
     parent_id: str | None
     attrs: Mapping[str, str] # Mapping for immutable dict
-    score: float | str | None
-    phase: Literal[0,1,2] | str | None
+    score: str | None
+    phase: str | None
     source: str
 
 
     def signature(self) -> tuple [str, int, int, str, str | None,\
-                                  float | str | None, Literal[0,1,2] |\
+                                  str | None,\
                                       str | None, str]:
         """
         Defines what counts as 'changed' for this entity.
