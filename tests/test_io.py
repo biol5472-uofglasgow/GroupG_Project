@@ -158,8 +158,11 @@ def test_write_run_json(tmp_path: Path) -> None:
         prefix=prefix,
     )
 
-    assert Path(path).exists()
+    p = Path(path)
+    assert p.exists()
+    assert p.name == f"{prefix}_run.json"
 
-    data = json.loads(Path(path).read_text())
+    data = json.loads(p.read_text(encoding="utf-8"))
     assert data["tool"]["name"] == "gffacake"
     assert data["inputs"]["release_a"] == "releaseA.gff3"
+    assert data["outputs"]["changes_tsv"] == f"{prefix}_changes.tsv"
