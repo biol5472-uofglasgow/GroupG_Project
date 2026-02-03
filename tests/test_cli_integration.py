@@ -9,7 +9,7 @@ def test_cli_integration_custom_sample(tmp_path: Path) -> None:
 
     release_a.write_text(
         "##gff-version 3\n"
-        'chr1\tsrcA\tprotein_coding_gene\t1.0\t100\t0\t+\t2\tID=gene1\n'
+        'chr1\tsrcA\tprotein_coding_gene\t1\t100\t0\t+\t2\tID=gene1\n'
         'chr1\tsrcA\tmRNA\t1\t100\t.\t+\t.\tID=tx1;Parent=gene1\n'
         'chr1\tsrcA\tCDS\t10\t40\t.\t+\t0\tID=cds1;Parent=tx1\n',
         encoding='utf-8'
