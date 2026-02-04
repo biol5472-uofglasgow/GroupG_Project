@@ -225,12 +225,9 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                                 entity_type = entity_type,
                                 entity_id = e_id,
                                 change_type = 'start_threshold',
-                                details = (f'Release A start delta = {delta_a_start};\
-                                        Release B start delta = {delta_b_start};\
+                                details = (f'start delta = {delta_start};\
                                         delta of deltas = {delta_shift};\
-                                            threshold = {threshold};\
-                                            differences = {changed_details(a, b)}'),
-                                high_shift = True
+                                            threshold = {threshold}')
                             )
                         )
 
