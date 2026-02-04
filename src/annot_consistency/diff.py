@@ -131,13 +131,13 @@ def deltas_coords(a: EntitySummary, b: EntitySummary) -> tuple[int, int]:
     delta_end = b.end - a.end
     return delta_start, delta_end
 
-def delta_of_deltas(delta_a_start: int, delta_a_end: int) -> int:
+def delta_of_deltas(delta_start: int, delta_end: int) -> int:
     """
     The largest coordinate shift the entity has went between the two releases
     delta A_start is the start coordinate shift changed between release A and B
     delta_A_end is the end coordinate shift change between release A and B
     """
-    return max(abs(delta_a_start), abs(delta_a_end))
+    return max(abs(delta_start), abs(delta_end))
 
 
 def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
