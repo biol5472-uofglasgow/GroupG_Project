@@ -120,12 +120,8 @@ def changed_details(a: EntitySummary, b: EntitySummary) -> str:
 # Get delta coordinates
 def deltas_coords(a: EntitySummary, b: EntitySummary) -> tuple[int, int]:
     """
-    get deltas for release A and release B; start and end.
-    Returns 4 ints for downstream calculation:
-      delta_A_start
-      delta_B_start
-      delta_A_end
-      delta_B_end
+    get start and end deltas for release A and release B.
+    calculates coordinate displacement of the same genomic entity;
     """
     delta_start = b.start - a.start
     delta_end = b.end - a.end
@@ -134,8 +130,7 @@ def deltas_coords(a: EntitySummary, b: EntitySummary) -> tuple[int, int]:
 def delta_of_deltas(delta_start: int, delta_end: int) -> int:
     """
     The largest coordinate shift the entity has went between the two releases
-    delta A_start is the start coordinate shift changed between release A and B
-    delta_A_end is the end coordinate shift change between release A and B
+    applies absolute values to remove direction; selects the maximum of the two magnitude
     """
     return max(abs(delta_start), abs(delta_end))
 
