@@ -121,18 +121,6 @@ Where:
 - releaseB.gff3 = second annotation file
 - outDir (optional) = directory for output files (default directory: ~/app/gffacake)
 
-The program produces:
-- TSV summary of changes
-- GFF3 genome browser tracks
-- JSON metadata file
-- HTML report with plots
-- Log file
-All outputs are prefixed using the input filenames
-
-
-
-
-
 
 # How the software works
 
