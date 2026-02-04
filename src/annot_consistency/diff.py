@@ -204,7 +204,8 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                             entity_type = entity_type,
                             entity_id = e_id,
                             change_type = 'changed',
-                            details = changed_details(a,b)
+                            details = changed_details(a,b),
+                            high_shift = False
                         )
                     )
                 else:
@@ -224,10 +225,11 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                             ChangeRecord(
                                 entity_type = entity_type,
                                 entity_id = e_id,
-                                change_type = 'high_shift',
+                                change_type = 'changed',
                                 details = (f'start delta = {delta_start};\
                                         delta of deltas = {delta_shift};\
-                                            threshold = {threshold}')
+                                            threshold = {threshold}'),
+                                high_shift = True
                             )
                         )
                     # End threshold: if end coord > threshold
@@ -236,10 +238,11 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                             ChangeRecord(
                                 entity_type = entity_type,
                                 entity_id = e_id,
-                                change_type = 'high_shift',
+                                change_type = 'changed',
                                 details = (f'end delta = {delta_end};\
                                         delta of deltas = {delta_shift};\
-                                            threshold = {threshold}')
+                                            threshold = {threshold}'),
+                                high_shift = True
                             )
                         )
                     if start_and_end_exceeds:
@@ -247,11 +250,12 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                             ChangeRecord(
                                 entity_type = entity_type,
                                 entity_id = e_id,
-                                change_type = 'high_shift',
+                                change_type = 'changed',
                                 details = (f'start delta = {delta_start};\
                                            end delta = {delta_end};\
                                            delta of deltaas = {delta_shift};\
-                                           threshold = {threshold}')
+                                           threshold = {threshold}'),
+                                high_shift = True
                             )
                         )
                     # Signature differs but no threshold exceeded
@@ -262,6 +266,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                                 entity_id=e_id,
                                 change_type="changed",
                                 details=changed_details(a, b),
+                                high_shift = False
                             )
                         )
     return changes, added, removed, changed
