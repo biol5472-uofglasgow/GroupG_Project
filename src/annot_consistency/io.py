@@ -82,10 +82,10 @@ def write_summary_tsv(outdir: str,
                 file.write(f'{entity_type}\t{a}\t{r}\t{ch}\t{total}\n')
         if threshold is not None:
             all_total = all_added + all_removed + all_changed
-            file.write(f'All_Total\t{all_added}\t{all_removed}\t{all_changed}\t{all_high_shift}\t{all_total}')
+            file.write(f'All_Total\t{all_added}\t{all_removed}\t{all_changed}\t{all_high_shift}\t{all_total}\n')
         else:
             all_total = all_added + all_removed + all_changed
-            file.write(f'All_Total\t{all_added}\t{all_removed}\t{all_changed}\t{all_total}')
+            file.write(f'All_Total\t{all_added}\t{all_removed}\t{all_changed}\t{all_total}\n')
 
     return path, counts
 
