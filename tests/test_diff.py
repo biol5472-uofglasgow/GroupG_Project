@@ -1,6 +1,6 @@
 from annot_consistency.diff import changed_details, choose_entity_id, build_entities, deltas_coords, diff_entity, delta_of_deltas
 from annot_consistency.models import EntitySummary
-from typing import Mapping, Literal, List
+from typing import Mapping, Literal, List, Iterator, Any
 from dataclasses import dataclass
 
 #### tests for choosing the entity ID ####
@@ -16,7 +16,6 @@ def test_parent_fallback() -> None:
     attrs: Mapping[str, List[str]] = {"Parent": ["tx20", "", "tx1"]}
     e_id = choose_entity_id("mRNA", attrs, "chr1", 100, 200, "+")
     assert e_id == "mRNA|parent=tx1,tx20|chr1:100-200:+"
-
 # ID and parent not present; final fallback option
 def test_final_fallback() -> None:
     attrs: Mapping[str, List[str]] = {}
@@ -26,9 +25,9 @@ def test_final_fallback() -> None:
 #### Tests for building entity structure ####
 
 # create test DB and features
-# TestFeature = one row of GFF file
+# FeatureRow = one row of GFF file
 @dataclass
-class TestFeature:
+class FeatureRow:
     featuretype: str
     seqid: str
     start: int
@@ -41,10 +40,10 @@ class TestFeature:
 
 # TestDB  for gffutils.featureDB
 class TestDB:
-    def __init__(self, features: List[TestFeature]) -> None:
+    def __init__(self, features: List[FeatureRow]) -> None:
         self._features = features
 
-    def all_features(self, order_by: Any = None) -> Iterator[TestFeature]:
+    def all_features(self, order_by: Any = None) -> Iterator[FeatureRow]:
         # build_entities for order_by=("seqid","start");
         for feature in sorted(self._features, key=lambda x: (x.seqid, x.start)):
             yield feature
@@ -52,10 +51,10 @@ class TestDB:
 # Test for filtering, IDs/keys, parent handling and attrs joining as expecteed
 def test_expected_types_and_builds_summaries() -> None:
     features = [
-         TestFeature("gene", "chr1", 1, 100, "+", {"ID": ["gene1"]}, 0.0, 0, "fixture" ),     # a gene with a normal ID
-        TestFeature("mRNA", "chr1", 5, 80, "+", {"ID": ["tx1"], "Parent": ["gene1"]}, 0.0, 0, "fixture" ),   # transcript has ID and Parent
-        TestFeature("exon", "chr1", 5, 20, "+", {"Parent": ["tx1", "", "tx0"]}, 0.0, 0, "fixture" ), # exon has no ID, fallback is forced;  "" to check empty parents are filtered in the fallback key
-        TestFeature("CDS",  "chr1", 5, 20, "+", {"ID": ["cds1"], "Parent": ["tx1"]}, 0.0, 0, "fixture" ),    # ignores feature types outside
+        FeatureRow("gene", "chr1", 1, 100, "+", {"ID": ["gene1"]}, 0.0, 0, "fixture" ),     # a gene with a normal ID
+        FeatureRow("mRNA", "chr1", 5, 80, "+", {"ID": ["tx1"], "Parent": ["gene1"]}, 0.0, 0, "fixture" ),   # transcript has ID and Parent
+        FeatureRow("exon", "chr1", 5, 20, "+", {"Parent": ["tx1", "", "tx0"]}, 0.0, 0, "fixture" ), # exon has no ID, fallback is forced;  "" to check empty parents are filtered in the fallback key
+        FeatureRow("CDS",  "chr1", 5, 20, "+", {"ID": ["cds1"], "Parent": ["tx1"]}, 0.0, 0, "fixture" ),    # ignores feature types outside
     ]
     out = build_entities(TestDB(features))
 
@@ -131,6 +130,14 @@ def test_diff_entity() -> None:
                                                   "fixture"),
             "gene2": make_EntitySummary_instance("gene", "gene2", "chr2", 1, 20, "+", None,
                                                   {'ID':'gene2', 'Name':'GeneTwo'}, 0.0, 0,
+                                                  "fixture"),
+            
+            "gene3": make_EntitySummary_instance("gene", "gene3", "chr2", 47, 55, "-", None,
+                                                  {'ID':'gene3', 'Name':'GeneThree'}, 0.0, 0,
+                                                  "fixture"),
+
+            "gene4": make_EntitySummary_instance("gene", "gene4", "chr3", 92, 112, "-", None,
+                                                  {'ID':'gene4', 'Name':'GeneFour'}, 0.0, 0,
                                                   "fixture")
         },
         "mRNA" : {},
@@ -141,11 +148,17 @@ def test_diff_entity() -> None:
 
     b_entities = {
         "gene" : {
-            "gene2": make_EntitySummary_instance("gene", "gene2", "chr2", 1, 25, "+", None,
+            "gene2": make_EntitySummary_instance("gene", "gene2", "chr2", 1, 35, "+", None,
                                                   {'ID':'gene2', 'Name':'GeneTwo'}, 0.0, 0,
                                                   "fixture"),
             "gene3": make_EntitySummary_instance("gene", "gene3", "chr2", 36, 55, "-", None,
                                                   {'ID':'gene3', 'Name':'GeneThree'}, 0.0, 0,
+                                                  "fixture"),
+            "gene4": make_EntitySummary_instance("gene", "gene4", "chr3", 87, 120, "-", None,
+                                                  {'ID':'gene4', 'Name':'GeneFour'}, 0.0, 0,
+                                                  "fixture"),
+            "gene5": make_EntitySummary_instance("gene", "gene5", "chr3", 140, 155, "-", None,
+                                                  {'ID':'gene5', 'Name':'GeneFive'}, 0.0, 0,
                                                   "fixture")
         },
         "mRNA" : {},
@@ -154,19 +167,30 @@ def test_diff_entity() -> None:
     }
 
     # Applying the diff_entity function to the entities
-    changes, added, removed, changed = diff_entity(a_entities, b_entities)
+    changes, added, removed, changed = diff_entity(a_entities, b_entities, threshold=10)
 
     # Asserting length of the entities and checking for the correct added/changed/removed entity
     assert len(added) == 1
-    assert {e.entity_id for e in added} == {"gene3"}
+    assert {e.entity_id for e in added} == {"gene5"}
 
     assert len(removed) == 1
     assert {e.entity_id for e in removed} == {"gene1"}
 
-    assert len(changed) == 1
-    assert {e.entity_id for e in changed} == {"gene2"}
+    assert len(changed) == 3
+    assert {e.entity_id for e in changed} == {"gene2", "gene3", "gene4"}
 
-    assert len(changes) == 3
+    assert len(changes) == 5
+    assert {c.change_type for c in changes} == {"added", "removed", "changed", "changed", "changed"}
+
+    details = {c.details for c in changes}
+    
+    expected = {"Entity present only in release B", "Entity present only in release A" "end delta = 15; delta of deltas = 15; threshold = 10", 
+                                               "start delta = -11; delta of deltas = 11; threshold = 10",
+                                               "start delta = -5; end delta = 8; delta of deltas = 8; threshold = 10" }
+    assert expected.issubset(details)
+
+   
+    
 
 
     # Asserting the correct change types associated with the correct entities in the changes var
@@ -174,3 +198,4 @@ def test_diff_entity() -> None:
     assert ("gene1", "removed") in change_types
     assert ("gene2", "changed") in change_types
     assert ("gene3", "added")   in change_types
+
