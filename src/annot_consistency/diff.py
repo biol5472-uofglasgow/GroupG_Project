@@ -254,4 +254,14 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                                            threshold = {threshold}')
                             )
                         )
+                    # Signature differs but no threshold exceeded
+                    if not high_shift:
+                        changes.append(
+                            ChangeRecord(
+                                entity_type=entity_type,
+                                entity_id=e_id,
+                                change_type="changed",
+                                details=changed_details(a, b),
+                            )
+                        )
     return changes, added, removed, changed
