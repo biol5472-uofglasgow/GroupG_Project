@@ -37,8 +37,8 @@ class FeatureRow:
     end: int
     strand: str
     attributes: Mapping[str, list[str]]
-    score: float
-    frame: Literal[0,1,2]
+    score: str | None
+    frame: str | None
     source: str
 
 # DBTest  for gffutils.featureDB
@@ -95,7 +95,7 @@ def test_expected_types_and_builds_summaries() -> None:
 
 def make_entity_summary_instance(entity_type: str, entity_id: str, seqid:str, start:int,
                         end:int, strand:str, parent_id:str | None, attrs:Mapping[str,str],
-                        score:float, phase:Literal[0,1,2], source:str) -> EntitySummary:
+                        score:str|None, phase:str|None, source:str) -> EntitySummary:
 
     return EntitySummary(
         entity_type = entity_type,
