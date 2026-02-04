@@ -1,6 +1,6 @@
 from collections.abc import Iterator, Mapping
 from dataclasses import dataclass
-from typing import Any, Literal
+from typing import Any
 
 from annot_consistency.diff import build_entities, changed_details, choose_entity_id, diff_entity
 from annot_consistency.models import EntitySummary
