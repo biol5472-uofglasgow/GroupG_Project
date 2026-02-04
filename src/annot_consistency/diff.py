@@ -216,9 +216,9 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                     # Check threshold: based on user input for threshold
                     start_exceeds = abs(delta_start) > threshold
                     end_exceeds = abs(delta_end) > threshold
-                    start_and_end_exceeds = (abs(delta_start) + abs(delta_end)) > threshold
+                    start_and_end_exceeds = (abs(delta_shift)) > threshold
                     high_shift = start_exceeds or end_exceeds or start_and_end_exceeds
-                    high_shift_details: str | None 
+                    high_shift_details: str 
 
                     if start_exceeds:
                             high_shift_details = (
