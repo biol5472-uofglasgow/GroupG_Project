@@ -230,7 +230,6 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                                             threshold = {threshold}')
                             )
                         )
-
                     # End threshold: if end coord > threshold
                     if end_exceeds:
                         changes.append(
@@ -238,12 +237,9 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                                 entity_type = entity_type,
                                 entity_id = e_id,
                                 change_type = 'end_threshold',
-                                details = (f'Release A end delta = {delta_a_end};\
-                                        Release B end delta = {delta_b_end};\
+                                details = (f'end delta = {delta_end};\
                                         delta of deltas = {delta_shift};\
-                                            threshold = {threshold};\
-                                            differences = {changed_details(a, b)}'),
-                                high_shift = True
+                                            threshold = {threshold}')
                             )
                         )
                     if start_and_end_exceeds:
