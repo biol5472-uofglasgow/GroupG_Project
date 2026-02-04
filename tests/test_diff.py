@@ -56,20 +56,20 @@ def test_expected_types_and_builds_summaries() -> None:
     features = [
         # a gene with a normal ID
         FeatureRow("gene", "chr1", 1, 100, "+", {"ID": ["gene1"]},
-                                                0.0, 0, "fixture" ),
+                                                '0.0', '0', "fixture" ),
 
         # transcript has ID and Parent
         FeatureRow("mRNA", "chr1", 5, 80, "+", {"ID": ["tx1"], "Parent": ["gene1"]},
-                                                0.0, 0, "fixture"),
+                                                '0.0', '0', "fixture"),
 
         # exon has no ID, fallback is forced;
         # "" to check empty parents are filtered in the fallback key
         FeatureRow("exon", "chr1", 5, 20, "+", {"Parent": ["tx1", "", "tx0"]},
-                                                0.0, 0, "fixture" ),
+                                                '0.0', '0', "fixture" ),
 
         # ignores feature types outside
         FeatureRow("CDS",  "chr1", 5, 20, "+", {"ID": ["cds1"], "Parent": ["tx1"]},
-                                                0.0, 0, "fixture" ),
+                                                '0.0', '0', "fixture" ),
     ]
     out = build_entities(DBTest(features))
 
@@ -117,9 +117,9 @@ def test_changed_details() -> None:
 
     # Creating instances of the EntitySummary class to compare with each other
     a_instance = make_entity_summary_instance("mRNA", "tx1", "chr1", 5, 80, "+", "gene1",
-                                              {'ID':'tx1', 'Parent':'gene1'}, 0.0, 0, "fixture")
+                                              {'ID':'tx1', 'Parent':'gene1'}, '0.0', '0', "fixture")
     b_instance = make_entity_summary_instance("mRNA", "tx2", "chr2", 1, 20, "-", "gene2",
-                                              {'ID':'tx2', 'Parent':'gene2'}, 0.0, 0, "fixture")
+                                              {'ID':'tx2', 'Parent':'gene2'}, '0.0', '0', "fixture")
 
     # Applying the changed_details function to the instances
     change = changed_details(a_instance, b_instance)
@@ -141,18 +141,18 @@ def test_diff_entity() -> None:
     a_entities = {
         "gene" : {
             "gene1": make_entity_summary_instance("gene", "gene1", "chr1", 5, 80, "+", None,
-                                                  {'ID':'gene1', 'Name':'GeneOne'}, 0.0, 0,
+                                                  {'ID':'gene1', 'Name':'GeneOne'}, '0.0', '0',
                                                   "fixture"),
             "gene2": make_entity_summary_instance("gene", "gene2", "chr2", 1, 20, "+", None,
-                                                  {'ID':'gene2', 'Name':'GeneTwo'}, 0.0, 0,
+                                                  {'ID':'gene2', 'Name':'GeneTwo'}, '0.0', '0',
                                                   "fixture"),
 
             "gene3": make_entity_summary_instance("gene", "gene3", "chr2", 47, 55, "-", None,
-                                                  {'ID':'gene3', 'Name':'GeneThree'}, 0.0, 0,
+                                                  {'ID':'gene3', 'Name':'GeneThree'}, '0.0', '0',
                                                   "fixture"),
 
             "gene4": make_entity_summary_instance("gene", "gene4", "chr3", 92, 112, "-", None,
-                                                  {'ID':'gene4', 'Name':'GeneFour'}, 0.0, 0,
+                                                  {'ID':'gene4', 'Name':'GeneFour'}, '0.0', '0',
                                                   "fixture")
         },
         "mRNA" : {},
@@ -164,16 +164,16 @@ def test_diff_entity() -> None:
     b_entities = {
         "gene" : {
             "gene2": make_entity_summary_instance("gene", "gene2", "chr2", 1, 35, "+", None,
-                                                  {'ID':'gene2', 'Name':'GeneTwo'}, 0.0, 0,
+                                                  {'ID':'gene2', 'Name':'GeneTwo'}, '0.0', '0',
                                                   "fixture"),
             "gene3": make_entity_summary_instance("gene", "gene3", "chr2", 36, 55, "-", None,
-                                                  {'ID':'gene3', 'Name':'GeneThree'}, 0.0, 0,
+                                                  {'ID':'gene3', 'Name':'GeneThree'}, '0.0', '0',
                                                   "fixture"),
             "gene4": make_entity_summary_instance("gene", "gene4", "chr3", 87, 120, "-", None,
-                                                  {'ID':'gene4', 'Name':'GeneFour'}, 0.0, 0,
+                                                  {'ID':'gene4', 'Name':'GeneFour'}, '0.0', '0',
                                                   "fixture"),
             "gene5": make_entity_summary_instance("gene", "gene5", "chr3", 140, 155, "-", None,
-                                                  {'ID':'gene5', 'Name':'GeneFive'}, 0.0, 0,
+                                                  {'ID':'gene5', 'Name':'GeneFive'}, '0.0', '0',
                                                   "fixture")
         },
         "mRNA" : {},
