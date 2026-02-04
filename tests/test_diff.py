@@ -34,9 +34,9 @@ class TestFeature:
     start: int
     end: int
     strand: str
-    attributes: Mapping[str, List[str]]
+    attrs: Mapping[str, List[str]]
     score: float
-    frame: Literal[0,1,2]
+    phase: Literal[0,1,2]
     source: str
 
 # TestDB  for gffutils.featureDB
@@ -52,15 +52,15 @@ class TestDB:
 # Test for filtering, IDs/keys, parent handling and attrs joining as expecteed
 def test_expected_types_and_builds_summaries() -> None:
     features = [
-        TestFeature("gene", "chr1", 1, 100, "+", {"ID": ["gene1"]}, 0.0, 0, "fixture" ),     # a gene with a normal ID
-        TestFeature("mRNA", "chr1", 5, 80, "+", {"ID": ["tx1"], "Parent": ["gene1"]}, 0.0, 0, "fixture" ),   # transcript has ID and Parent
-        TestFeature("exon", "chr1", 5, 20, "+", {"Parent": ["tx1", "", "tx0"]}, 0.0, 0, "fixture" ), # exon has no ID, fallback is forced;  "" to check empty parents are filtered in the fallback key
-        TestFeature("CDS",  "chr1", 5, 20, "+", {"ID": ["cds1"], "Parent": ["tx1"]}, 0.0, 0, "fixture" ),    # ignores feature types outside
+        TestFeature("gene", "chr1", 1, 100, "+", "fixture", 0.0, 0, {"ID": ["gene1"]}),     # a gene with a normal ID
+        TestFeature("mRNA", "chr1", 5, 80, "+", "fixture", 0.0, 0, {"ID": ["tx1"], "Parent": ["gene1"]}),   # transcript has ID and Parent
+        TestFeature("exon", "chr1", 5, 20, "+", "fixture", 0.0, 0, {"Parent": ["tx1", "", "tx0"]}), # exon has no ID, fallback is forced;  "" to check empty parents are filtered in the fallback key
+        TestFeature("CDS",  "chr1", 5, 20, "+", "fixture", 0.0, 0, {"ID": ["cds1"], "Parent": ["tx1"]}),    # ignores feature types outside
     ]
     out = build_entities(TestDB(features))
 
     # check the overall structure is correct
-    assert {"gene", "mRNA", "exon", "CDS"} <=  set(out)
+    assert set(out) == {"gene", "mRNA", "exon"} 
 
     # gene was stored correctly
     assert "gene1" in out["gene"]
