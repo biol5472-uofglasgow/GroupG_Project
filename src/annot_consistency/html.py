@@ -131,7 +131,7 @@ def write_htmlreport(outdir: str,
         ch = counts[et].get("changed", 0)
         hs = counts[et].get("high_shift", 0)
         if has_high_shift:
-            html.append(f"<tr><td>{et}</td><td>{a}</td><td>{r}</td><td>{ch}</td><td>{hs}</td><td>{a+r+ch+hs}</td></tr>")
+            html.append(f"<tr><td>{et}</td><td>{a}</td><td>{r}</td><td>{ch}</td><td>{hs}</td><td>{a+r+ch}</td></tr>")
         else:
             html.append(f"<tr><td>{et}</td><td>{a}</td><td>{r}</td><td>{ch}</td><td>{a+r+ch}</td></tr>")
     html.append("</table>")
