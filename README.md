@@ -6,10 +6,10 @@ A two-release GFF3 annotation comparison tool (Release A vs Release B)
 Contributors: 
 | Name |
 |------|
-| Almarc Astorga | [HELLO] (https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)
-| Ishwar Bijumon | [I AM] (https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)
-| Krishna Sameer Krothapalli | [UNDER] (https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)
-| Saheshnu Sai Balaji Pillai | THE WATER (https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)
+| Almarc Astorga | [![Profile](logo.png)] (https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)
+| Ishwar Bijumon | [![Profile](logo.png)]  (https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)
+| Krishna Sameer Krothapalli | [![Profile](logo.png)]  (https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)
+| Saheshnu Sai Balaji Pillai | [![Profile](logo.png)]  (https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)
 
 ## Purpose of project
 This project compares two genome annotation releases of the same organism (Release A vs Release B) to identify differences; it will produce a HTML report which includes: a summary outputs describing additions; removals; and changes across entity types between releases.
