@@ -29,6 +29,8 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     p.add_argument("releaseB", help="Annotation release B in GFF3 format")
     p.add_argument("outDir", nargs="?", default=default_outdir,
                    help=f"Directory for output files (default: {default_outdir})")
+    p.add_argument("--threshold", type=int, default=None,
+                   help="If set, also classify coordinate shifts above threshold")
     return p.parse_args(argv)
 
 #validate input files
@@ -94,7 +96,9 @@ def main(argv: Sequence[str] | None = None) -> None:
 
     # differentiating entities
     log.info("Differentiating entities (A vs B)")
-    changes_all, added_all, removed_all, changed_all = diff_entity(a_entities, b_entities)
+    changes_all, added_all, removed_all, changed_all = diff_entity(a_entities,
+                                                                   b_entities,
+                                                                   threshold=args.threshold)
 
     log.info(
         "Totals: changes=%d (added=%d removed=%d changed=%d)",
@@ -115,7 +119,8 @@ def main(argv: Sequence[str] | None = None) -> None:
     # writing the summary
     try:
         log.info("Writing summary.tsv")
-        summary_file, counts= write_summary_tsv(str(outdir), changes_all, prefix)
+        summary_file, counts= write_summary_tsv(str(outdir), changes_all,
+                                                prefix, threshold = args.threshold)
         summary_result= (summary_file, counts)
     except Exception:
         log.exception("Failed writing summary.tsv")
@@ -136,7 +141,7 @@ def main(argv: Sequence[str] | None = None) -> None:
         log.info("Writing run.json")
         run_json_path = write_run_json(
             tool_name="gffacake",
-            tool_version="1.0",
+            tool_version="1.1",
             release_a=str(release_a),
             release_b=str(release_b),
             outdir=str(outdir),
