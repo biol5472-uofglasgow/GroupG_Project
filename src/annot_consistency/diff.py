@@ -207,7 +207,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                             details = changed_details(a,b)
                         )
                     )
-                else:    
+                else:
                     # Delta logic:
                     delta_start, delta_end = deltas_coords(a, b)
                     delta_shift= delta_of_deltas(delta_start, delta_end)
