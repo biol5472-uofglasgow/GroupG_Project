@@ -256,15 +256,6 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                         )
                     )
                 else:
-<<<<<<< HEAD
-                    changes.append(
-                        ChangeRecord(
-                            entity_type=entity_type,
-                            entity_id=e_id,
-                            change_type="changed",
-                            details=changed_details(a, b),
-                            high_shift=False,
-=======
                     # Delta logic:
                     delta_start, delta_end = deltas_coords(a, b)
                     delta_shift= delta_of_deltas(delta_start, delta_end)
@@ -315,7 +306,5 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                                 details=changed_details(a, b),
                                 high_shift=False,
                             )
->>>>>>> a5e007b1957dd924dd999f73a7973723d8b86bf4
                         )
-                    )
     return changes, added, removed, changed
