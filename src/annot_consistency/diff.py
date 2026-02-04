@@ -221,38 +221,35 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                 # Check threshold: based on user input for threshold
                 start_exceeds = abs(delta_start) > threshold
                 end_exceeds = abs(delta_end) > threshold
-                start_and_end_exceeds = (abs(delta_shift)) > threshold
                 high_shift = start_exceeds or end_exceeds
-                high_shift_details: str 
 
-                if start_exceeds:
-                        high_shift_details = (
-                            f"start_delta={delta_start};\
-                            threshold={threshold}"
-                        )
-                elif end_exceeds:
-                        high_shift_details = (
-                            f"end_delta={delta_end};\
-                            threshold={threshold}"
-                        )
-                elif start_and_end_exceeds:
-                        high_shift_details = (
+                if start_exceeds and end_exceeds:
+                        details = (
                             f"start_delta={delta_start};\
                                 end_delta={delta_end};\
                             delta_of_deltas={delta_shift};\
                             threshold={threshold}"
                         )
-                else:
-                        high_shift_details = changed_details(a, b)
-
-                if high_shift:
-                    changes.append(
-                        ChangeRecord(
-                            entity_type=entity_type,
-                            entity_id=e_id,
-                            change_type="changed",
-                            details=high_shift_details,
-                            high_shift=True,
+                elif end_exceeds:
+                        details = (
+                            f"end_delta={delta_end};\
+                            threshold={threshold}"
                         )
+                elif start_exceeds:
+                        details = (
+                            f"start_delta={delta_start};\
+                            threshold={threshold}"
+                        )
+                else:
+                        details = changed_details(a, b)
+                
+                changes.append(
+                    ChangeRecord(
+                        entity_type=entity_type,
+                        entity_id=e_id,
+                        change_type="changed",
+                        details=details,
+                        high_shift=high_shift,
                     )
+                )
     return changes, added, removed, changed
