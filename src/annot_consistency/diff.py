@@ -160,9 +160,8 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
         = high_shift True if either threshold exceeded
     - if signature differs but no threshold exceeded, continue with change_type="changed"
     '''
-    if threshold < 0:
+    if threshold is not None and threshold < 0:
         raise ValueError("threshold must be > 0 ")
-
     changes: list[ChangeRecord] = []
     added: list[EntitySummary] = []
     removed: list[EntitySummary] = []
@@ -186,7 +185,6 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                 entity_id = e_id,
                 change_type = 'added',
                 details = 'Entity present only in release B',
-                high_shift = False
                 )
             )
         # Removed entities: If the ID is present only in release A and not in release B
@@ -197,7 +195,6 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                 entity_id = e_id,
                 change_type = 'removed',
                 details = 'Entity present only in release A',
-                high_shift = False
                 )
             )
         # Changed entities: First check if the entities are present in both,
@@ -207,74 +204,72 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
             b = b_map[e_id]
             if a.signature() != b.signature():
                 changes.append(b)
-            # Delta logic:
-                delta_a_start, delta_b_start, delta_a_end, delta_b_end = deltas_coords(a, b)
-                delta_shift= delta_of_deltas(delta_a_start, delta_a_end)
-                start_and_end_exceeds = max(abs(a.start - b.start), abs(a.end - b.end)) > threshold
-
-                # Check threshold: based on user input for threshold
-                start_exceeds = abs(delta_a_start) > threshold
-                end_exceeds = abs(delta_a_end) > threshold
-                high_shift = start_exceeds or end_exceeds
-
-                # Start threshold: if start coord > threshold
-                if start_exceeds:
-                    changes.append(
-                        ChangeRecord(
-                            entity_type = entity_type,
-                            entity_id = e_id,
-                            change_type = 'start_threshold',
-                            details = (f'Release A start delta = {delta_a_start};\
-                                    Release B start delta = {delta_b_start};\
-                                    delta of deltas = {delta_shift};\
-                                        threshold = {threshold};\
-                                        differences = {changed_details(a, b)}'),
-                            high_shift = True
-                        )
-                    )
-
-                # End threshold: if end coord > threshold
-                if end_exceeds:
-                    changes.append(
-                        ChangeRecord(
-                            entity_type = entity_type,
-                            entity_id = e_id,
-                            change_type = 'end_threshold',
-                            details = (f'Release A end delta = {delta_a_end};\
-                                    Release B end delta = {delta_b_end};\
-                                    delta of deltas = {delta_shift};\
-                                        threshold = {threshold};\
-                                        differences = {changed_details(a, b)}'),
-                            high_shift = True
-                        )
-                    )
-                if start_and_end_exceeds:
-                    changes.append(
-                        ChangeRecord(
-                            entity_type = entity_type,
-                            entity_id = e_id,
-                            change_type = 'combined_threshold',
-                            details = (f'Release A end delta = {delta_a_end};\
-                                    Release B end delta = {delta_b_end};\
-                                    Release A start delta = {delta_a_start};\
-                                    Release B end delta = {delta_b_end};\
-                                    delta of deltas = {delta_shift};\
-                                        threshold = {threshold};\
-                                        differences = {changed_details(a, b)}'),
-                            high_shift = True
-                        )
-                    )
-
-
                 # No threshold exceeded: other signature changes
-                if not high_shift:
+                if threshold is None:
                     changes.append(
                         ChangeRecord(
                             entity_type = entity_type,
                             entity_id = e_id,
                             change_type = 'changed',
-                            details = changed_details(a,b),
-                            high_shift = False
+                            details = changed_details(a,b)
                         )
                     )
+                else:    
+                    # Delta logic:
+                    delta_a_start, delta_b_start, delta_a_end, delta_b_end = deltas_coords(a, b)
+                    delta_shift= delta_of_deltas(delta_a_start, delta_a_end)
+                    start_and_end_exceeds = max(abs(a.start - b.start), abs(a.end - b.end)) > threshold
+
+                    # Check threshold: based on user input for threshold
+                    start_exceeds = abs(delta_a_start) > threshold
+                    end_exceeds = abs(delta_a_end) > threshold
+                    high_shift = start_exceeds or end_exceeds
+
+                    # Start threshold: if start coord > threshold
+                    if start_exceeds:
+                        changes.append(
+                            ChangeRecord(
+                                entity_type = entity_type,
+                                entity_id = e_id,
+                                change_type = 'start_threshold',
+                                details = (f'Release A start delta = {delta_a_start};\
+                                        Release B start delta = {delta_b_start};\
+                                        delta of deltas = {delta_shift};\
+                                            threshold = {threshold};\
+                                            differences = {changed_details(a, b)}'),
+                                high_shift = True
+                            )
+                        )
+
+                    # End threshold: if end coord > threshold
+                    if end_exceeds:
+                        changes.append(
+                            ChangeRecord(
+                                entity_type = entity_type,
+                                entity_id = e_id,
+                                change_type = 'end_threshold',
+                                details = (f'Release A end delta = {delta_a_end};\
+                                        Release B end delta = {delta_b_end};\
+                                        delta of deltas = {delta_shift};\
+                                            threshold = {threshold};\
+                                            differences = {changed_details(a, b)}'),
+                                high_shift = True
+                            )
+                        )
+                    if start_and_end_exceeds:
+                        changes.append(
+                            ChangeRecord(
+                                entity_type = entity_type,
+                                entity_id = e_id,
+                                change_type = 'combined_threshold',
+                                details = (f'Release A end delta = {delta_a_end};\
+                                        Release B end delta = {delta_b_end};\
+                                        Release A start delta = {delta_a_start};\
+                                        Release B end delta = {delta_b_end};\
+                                        delta of deltas = {delta_shift};\
+                                            threshold = {threshold};\
+                                            differences = {changed_details(a, b)}'),
+                                high_shift = True
+                            )
+                        )
     return changes, added, removed, changed
