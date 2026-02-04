@@ -4,12 +4,12 @@
 A two-release GFF3 annotation comparison tool (Release A vs Release B)
 
 Contributors: 
-| Name | Role |
-|------|------|
-| Almarc Astorga | ...|
-| Ishwar Bijumon | ... |
-| Krishna Sameer Krothapalli | ...|
-| Saheshnu Sai Balaji Pillai | ... |
+| Name |
+|------|
+| Almarc Astorga | [HELLO] (https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)
+| Ishwar Bijumon | [I AM] (https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)
+| Krishna Sameer Krothapalli | [UNDER] (https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)
+| Saheshnu Sai Balaji Pillai | THE WATER (https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)
 
 ## Purpose of project
 This project compares two genome annotation releases of the same organism (Release A vs Release B) to identify differences; it will produce a HTML report which includes: a summary outputs describing additions; removals; and changes across entity types between releases.
@@ -134,8 +134,6 @@ Where:
 - outDir (optional) = directory for output files (default directory: ~/app/gffacake)
 
 
-<<<<<<< HEAD
-=======
 # How the software works
 ## Command line interface (CLI)
 
@@ -144,11 +142,19 @@ The user runs the program from the command line by providing:
 - Annotation release A (GFF/GFF3 file)
 - Annotation release B (GFF/GFF3 file)
 - An optional output directory
+- An optional threshold
 
-For example:
+
+Example fixture release command line:
 ```bash
-uv run gffACAKE releaseA.gff3 releaseB.gff3 results/
+uv run gffACAKE test/fixture_releases/release_A.gff3 path/fixture_releases/release_B.gff3 results/
 ```
+Example fixture release command line with threshold input and optional results:
+```bash
+uv run gffACAKE test/fixture_releases/release_A.gff3 path/fixture_releases/release_B.gff3 --threshold <N>
+```
+
+
 
 Main workflow done by the CLI:
 - Validates the input files
@@ -161,7 +167,6 @@ Throughout execution, the CLI:
 - Logs and reports errors during file writing or database creation
 - Writes a log file in the output directory 
 
->>>>>>> 2957258de2808e5ba6b927745c03130d77d43766
 ## How to run tests
 All tests are located in the `tests/` directory. These include:
 - **Unit tests** that validate individual functions and classes in isolation;
