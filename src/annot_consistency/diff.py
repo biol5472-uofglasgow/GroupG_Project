@@ -239,7 +239,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                             threshold={threshold}"
                         )
                 else:
-                        high_shift_details = None
+                        high_shift_details = changed_details(a, b)
 
                 if high_shift:
                     changes.append(
@@ -251,56 +251,4 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                             high_shift=True,
                         )
                     )
-                else:
-                    # Delta logic:
-                    delta_start, delta_end = deltas_coords(a, b)
-                    delta_shift= delta_of_deltas(delta_start, delta_end)
-
-                    # Check threshold: based on user input for threshold
-                    start_exceeds = abs(delta_start) > threshold
-                    end_exceeds = abs(delta_end) > threshold
-                    start_and_end_exceeds = (abs(delta_shift)) > threshold
-                    high_shift = start_exceeds or end_exceeds or start_and_end_exceeds
-                    high_shift_details: str 
-
-                    if start_exceeds:
-                            high_shift_details = (
-                                f"start_delta={delta_start};\
-                                threshold={threshold}"
-                            )
-                    elif end_exceeds:
-                            high_shift_details = (
-                                f"end_delta={delta_end};\
-                                threshold={threshold}"
-                            )
-                    elif start_and_end_exceeds:
-                            high_shift_details = (
-                                f"start_delta={delta_start};\
-                                    end_delta={delta_end};\
-                                delta_of_deltas={delta_shift};\
-                                threshold={threshold}"
-                            )
-                    else:
-                            high_shift_details = None
-
-                    if high_shift:
-                        changes.append(
-                            ChangeRecord(
-                                entity_type=entity_type,
-                                entity_id=e_id,
-                                change_type="changed",
-                                details=high_shift_details,
-                                high_shift=True,
-                            )
-                        )
-                    else:
-                        changes.append(
-                            ChangeRecord(
-                                entity_type=entity_type,
-                                entity_id=e_id,
-                                change_type="changed",
-                                details=changed_details(a, b),
-                                high_shift=False,
-                            )
-                        )
     return changes, added, removed, changed
