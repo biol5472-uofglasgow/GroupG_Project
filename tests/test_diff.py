@@ -95,7 +95,7 @@ def test_expected_types_and_builds_summaries() -> None:
 
 def make_entity_summary_instance(entity_type: str, entity_id: str, seqid:str, start:int,
                         end:int, strand:str, parent_id:str | None, attrs:Mapping[str,str],
-                        score:str|None, phase:str|None, source:str) -> EntitySummary:
+                        score:str|None, phase:str|None, source:str) -> type[EntitySummary]:
 
     return EntitySummary(
         entity_type = entity_type,
