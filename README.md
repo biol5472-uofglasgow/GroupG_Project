@@ -11,7 +11,6 @@ Contributors:
 | Krishna Sameer Krothapalli | [![GitHub](https://github.com/krishnask.png?size=40)](https://www.youtube.com/watch?v=dQw4w9WgXcQ) |
 | Saheshnu Sai Balaji Pillai | [![GitHub](https://github.com/saheshnusp.png?size=40)](https://www.youtube.com/watch?v=dQw4w9WgXcQ) |
 
-
 ## Purpose of project
 This project compares two genome annotation releases of the same organism (Release A vs Release B) to identify differences; it will produce a HTML report which includes: a summary outputs describing additions; removals; and changes across entity types between releases.
 
