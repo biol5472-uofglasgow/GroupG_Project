@@ -48,6 +48,8 @@ def write_summary_tsv(outdir: str,
                 counts[et] = {'added': 0, 'removed': 0, 'changed': 0}
         if c.change_type in counts[et]:
             counts[et][c.change_type] += 1
+        if threshold is not None and c.change_type == "changed" and c.high_shift:
+            counts[et]["high_shift"] += 1
 
     path = os.path.join(outdir, f'{prefix}_summary.tsv')
     with open(path, 'w', encoding = 'utf-8') as file:
