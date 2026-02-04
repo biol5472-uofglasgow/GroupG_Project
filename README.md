@@ -66,7 +66,7 @@ We track changes for:
 
 ### Option 2: Python + UV
 Required- Python 3.10+ and uv (python environment manager)
-1. Install Python
+#### Install Python
 
 To check if Python is installed, run the following command in terminal:
 ```bash
@@ -91,7 +91,7 @@ https://www.python.org/downloads/
 
 Make sure python or python3 works in your terminal after installation.
 
-2. Install uv
+#### Install uv
 
 To install uv using pip, run the following command in terminal:
 ```bash
@@ -101,7 +101,7 @@ To verify installation:
 ```bash
 uv --version
 ```
-3. Clone the repository 
+#### Clone the repository 
 
 Run the following command in terminal :
 ```bash
@@ -110,7 +110,7 @@ cd GroupG_Project
 ```
 or use SSH key : git@github.com:biol5472-uofglasgow/GroupG_Project.git
 
-4. Install dependencies
+#### Install dependencies
 
 Use uv to install dependencies from pyproject.toml . Run the following command in terminal :
 ```bash
@@ -118,7 +118,7 @@ uv sync
 ```
 This will create a virtual environment and install all required packages.
 
-5. Running the program from the command line
+#### Running the program from the command line
 
 Enter the following in the terminal:
 ```bash
@@ -131,7 +131,29 @@ Where:
 
 
 # How the software works
+## Command line interface (CLI)
 
+The user runs the program from the command line by providing:
+
+- Annotation release A (GFF/GFF3 file)
+- Annotation release B (GFF/GFF3 file)
+- An optional output directory
+
+For example:
+```bash
+uv run gffACAKE releaseA.gff3 releaseB.gff3 results/
+```
+
+Main workflow done by the CLI:
+- Validates the input files
+- Creates an output directory if it does not exist
+- Generates a prefix from the input filenames to uniquely label output files
+- Logs each step of execution to a log file for traceability
+
+Throughout execution, the CLI:
+- Logs key steps (loading data, building entities, writing outputs)
+- Logs and reports errors during file writing or database creation
+- Writes a log file in the output directory 
 
 ## How to run tests
 All tests are located in the `tests/` directory. These include:
