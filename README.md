@@ -6,10 +6,10 @@ A two-release GFF3 annotation comparison tool (Release A vs Release B)
 Contributors: 
 | Name | Profile |
 |------|---------|
-| Almarc Astorga | [![Profile](https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)] |
-| Ishwar Bijumon | [![Profile](https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)] |
-| Krishna Sameer Krothapalli | [![Profile](https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)] |
-| Saheshnu Sai Balaji Pillai | [![Profile](https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)] |
+| Almarc Astorga | [![GitHub](https://github.com/almarcastorga.png?size=40)](https://www.youtube.com/watch?v=dQw4w9WgXcQ) |
+| Ishwar Bijumon | [![GitHub](https://github.com/ishwarbijumon.png?size=40)](https://www.youtube.com/watch?v=dQw4w9WgXcQ) |
+| Krishna Sameer Krothapalli | [![GitHub](https://github.com/krishnask.png?size=40)](https://www.youtube.com/watch?v=dQw4w9WgXcQ) |
+| Saheshnu Sai Balaji Pillai | [![GitHub](https://github.com/saheshnusp.png?size=40)](https://www.youtube.com/watch?v=dQw4w9WgXcQ) |
 
 
 ## Purpose of project
