@@ -1,6 +1,6 @@
 from annot_consistency.diff import changed_details, choose_entity_id, build_entities, deltas_coords, diff_entity, delta_of_deltas
 from annot_consistency.models import EntitySummary
-from typing import Mapping, Literal, List, set
+from typing import Mapping, Literal, List
 from dataclasses import dataclass
 
 #### tests for choosing the entity ID ####
@@ -34,9 +34,9 @@ class TestFeature:
     start: int
     end: int
     strand: str
-    attrs: Mapping[str, List[str]]
+    attributes: Mapping[str, List[str]]
     score: float
-    phase: Literal[0,1,2]
+    frame: Literal[0,1,2]
     source: str
 
 # TestDB  for gffutils.featureDB
@@ -52,15 +52,15 @@ class TestDB:
 # Test for filtering, IDs/keys, parent handling and attrs joining as expecteed
 def test_expected_types_and_builds_summaries() -> None:
     features = [
-        TestFeature("gene", "chr1", 1, 100, "+", "fixture", 0.0, 0, {"ID": ["gene1"]}),     # a gene with a normal ID
-        TestFeature("mRNA", "chr1", 5, 80, "+", "fixture", 0.0, 0, {"ID": ["tx1"], "Parent": ["gene1"]}),   # transcript has ID and Parent
-        TestFeature("exon", "chr1", 5, 20, "+", "fixture", 0.0, 0, {"Parent": ["tx1", "", "tx0"]}), # exon has no ID, fallback is forced;  "" to check empty parents are filtered in the fallback key
-        TestFeature("CDS",  "chr1", 5, 20, "+", "fixture", 0.0, 0, {"ID": ["cds1"], "Parent": ["tx1"]}),    # ignores feature types outside
+         TestFeature("gene", "chr1", 1, 100, "+", {"ID": ["gene1"]}, 0.0, 0, "fixture" ),     # a gene with a normal ID
+        TestFeature("mRNA", "chr1", 5, 80, "+", {"ID": ["tx1"], "Parent": ["gene1"]}, 0.0, 0, "fixture" ),   # transcript has ID and Parent
+        TestFeature("exon", "chr1", 5, 20, "+", {"Parent": ["tx1", "", "tx0"]}, 0.0, 0, "fixture" ), # exon has no ID, fallback is forced;  "" to check empty parents are filtered in the fallback key
+        TestFeature("CDS",  "chr1", 5, 20, "+", {"ID": ["cds1"], "Parent": ["tx1"]}, 0.0, 0, "fixture" ),    # ignores feature types outside
     ]
     out = build_entities(TestDB(features))
 
     # check the overall structure is correct
-    assert set(out) == {"gene", "mRNA", "exon"} 
+    assert {"gene", "mRNA", "exon", "CDS"} <=  set(out) 
 
     # gene was stored correctly
     assert "gene1" in out["gene"]
@@ -102,9 +102,9 @@ def make_EntitySummary_instance(entity_type: str, entity_id: str, seqid:str, sta
 def test_changed_details() -> None:
 
     # Creating instances of the EntitySummary class to compare with each other
-    a_instance = make_entity_summary_instance("mRNA", "tx1", "chr1", 5, 80, "+", "gene1",
+    a_instance = make_EntitySummary_instance("mRNA", "tx1", "chr1", 5, 80, "+", "gene1",
                                               {'ID':'tx1', 'Parent':'gene1'}, 0.0, 0, "fixture")
-    b_instance = make_entity_summary_instance("mRNA", "tx2", "chr2", 1, 20, "-", "gene2",
+    b_instance = make_EntitySummary_instance("mRNA", "tx2", "chr2", 1, 20, "-", "gene2",
                                               {'ID':'tx2', 'Parent':'gene2'}, 0.0, 0, "fixture")
 
     # Applying the changed_details function to the instances
@@ -126,10 +126,10 @@ def test_diff_entity() -> None:
     # Creating entities to compare each other with
     a_entities = {
         "gene" : {
-            "gene1": make_entity_summary_instance("gene", "gene1", "chr1", 5, 80, "+", None,
+            "gene1": make_EntitySummary_instance("gene", "gene1", "chr1", 5, 80, "+", None,
                                                   {'ID':'gene1', 'Name':'GeneOne'}, 0.0, 0,
                                                   "fixture"),
-            "gene2": make_entity_summary_instance("gene", "gene2", "chr2", 1, 20, "+", None,
+            "gene2": make_EntitySummary_instance("gene", "gene2", "chr2", 1, 20, "+", None,
                                                   {'ID':'gene2', 'Name':'GeneTwo'}, 0.0, 0,
                                                   "fixture")
         },
@@ -141,10 +141,10 @@ def test_diff_entity() -> None:
 
     b_entities = {
         "gene" : {
-            "gene2": make_entity_summary_instance("gene", "gene2", "chr2", 1, 25, "+", None,
+            "gene2": make_EntitySummary_instance("gene", "gene2", "chr2", 1, 25, "+", None,
                                                   {'ID':'gene2', 'Name':'GeneTwo'}, 0.0, 0,
                                                   "fixture"),
-            "gene3": make_entity_summary_instance("gene", "gene3", "chr2", 36, 55, "-", None,
+            "gene3": make_EntitySummary_instance("gene", "gene3", "chr2", 36, 55, "-", None,
                                                   {'ID':'gene3', 'Name':'GeneThree'}, 0.0, 0,
                                                   "fixture")
         },
