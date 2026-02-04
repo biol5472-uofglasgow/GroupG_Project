@@ -66,7 +66,7 @@ def write_summary_tsv(outdir: str,
             ch = counts[entity_type]['changed']
             if threshold is not None:
                 hs = counts[entity_type]['high_shift']
-                total = a + r + ch + hs
+                total = a + r + ch
                 all_added += a
                 all_removed += r
                 all_changed += ch
