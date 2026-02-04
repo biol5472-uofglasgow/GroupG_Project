@@ -224,7 +224,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                             ChangeRecord(
                                 entity_type = entity_type,
                                 entity_id = e_id,
-                                change_type = 'start_threshold',
+                                change_type = 'high_shift',
                                 details = (f'start delta = {delta_start};\
                                         delta of deltas = {delta_shift};\
                                             threshold = {threshold}')
@@ -236,7 +236,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                             ChangeRecord(
                                 entity_type = entity_type,
                                 entity_id = e_id,
-                                change_type = 'end_threshold',
+                                change_type = 'high_shift',
                                 details = (f'end delta = {delta_end};\
                                         delta of deltas = {delta_shift};\
                                             threshold = {threshold}')
@@ -247,7 +247,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                             ChangeRecord(
                                 entity_type = entity_type,
                                 entity_id = e_id,
-                                change_type = 'combined_threshold',
+                                change_type = 'high_shift',
                                 details = (f'start delta = {delta_start};\
                                            end delta = {delta_end};\
                                            delta of deltaas = {delta_shift};\
