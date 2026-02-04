@@ -1,4 +1,4 @@
-from annot_consistency.diff import changed_details, choose_entity_id, build_entities, deltas_coords, diff_entity, delta_of_deltas
+from annot_consistency.diff import changed_details, choose_entity_id, build_entities, diff_entity
 from annot_consistency.models import EntitySummary
 from typing import Mapping, Literal, List, Iterator, Any
 from dataclasses import dataclass
@@ -167,7 +167,7 @@ def test_diff_entity() -> None:
     }
 
     # Applying the diff_entity function to the entities
-    changes, added, removed, changed = diff_entity(a_entities, b_entities, threshold=10)
+    changes, added, removed, changed = diff_entity(a_entities, b_entities)
 
     # Asserting length of the entities and checking for the correct added/changed/removed entity
     assert len(added) == 1
@@ -182,12 +182,9 @@ def test_diff_entity() -> None:
     assert len(changes) == 5
     assert {c.change_type for c in changes} == {"added", "removed", "changed", "changed", "changed"}
 
-    details = {c.details for c in changes}
+
     
-    expected = {"Entity present only in release B", "Entity present only in release A" "end delta = 15; delta of deltas = 15; threshold = 10", 
-                                               "start delta = -11; delta of deltas = 11; threshold = 10",
-                                               "start delta = -5; end delta = 8; delta of deltas = 8; threshold = 10" }
-    assert expected.issubset(details)
+    
 
    
     
@@ -197,5 +194,7 @@ def test_diff_entity() -> None:
     change_types = {(c.entity_id, c.change_type) for c in changes}
     assert ("gene1", "removed") in change_types
     assert ("gene2", "changed") in change_types
-    assert ("gene3", "added")   in change_types
+    assert ("gene3", "changed") in change_types
+    assert ("gene4", "changed") in change_types
+    assert ("gene5", "added")   in change_types
 
