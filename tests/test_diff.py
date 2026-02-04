@@ -1,6 +1,7 @@
-from src.annot_consistency.diff import changed_details
-from src.annot_consistency.models import EntitySummary
-from typing import Mapping, Literal
+from annot_consistency.diff import changed_details, choose_entity_id, build_entities, deltas_coords, diff_entity, delta_of_deltas
+from annot_consistency.models import EntitySummary
+from typing import Mapping, Literal, List
+from dataclasses import dataclass
 
 #### tests for choosing the entity ID ####
 # ID is present - priority
@@ -8,19 +9,19 @@ from typing import Mapping, Literal
 def test_first_id() -> None:
     attrs: Mapping[str, List[str]] = {"ID": ["exon123"], "Parent": ["tx10"]}
     e_id = choose_entity_id("exon", attrs, "chr1", 100, 200, "-")
-    assert e_id == "exon"
+    assert e_id == 'exon123'
 
 # ID not present; Parent taken as fall back
 def test_parent_fallback() -> None:
     attrs: Mapping[str, List[str]] = {"Parent": ["tx20", "", "tx1"]}
     e_id = choose_entity_id("mRNA", attrs, "chr1", 100, 200, "+")
-    assert e_id == "mRNA|parent=tx1,tx2|chr1:10-20:+"
+    assert e_id == "mRNA|parent=tx1,tx20|chr1:100-200:+"
 
 # ID and parent not present; final fallback option
 def test_final_fallback() -> None:
     attrs: Mapping[str, List[str]] = {}
     e_id = choose_entity_id("gene", attrs, "chrVII", 1000, 1000, "+")
-    assert e_id == "gene|chrVII:1-100:+"
+    assert e_id == "gene|chrVII:1000-1000:+"
 
 #### Tests for building entity structure ####
 
