@@ -89,7 +89,7 @@ To verify installation:
 
 uv --version
 
-3. Clone the Repository 
+3. Clone the repository 
 
 Run the following command in terminal :
 
@@ -98,7 +98,7 @@ cd GroupG_Project
 
 or use SSH key : git@github.com:biol5472-uofglasgow/GroupG_Project.git
 
-4. Install Dependencies
+4. Install dependencies
 
 Use uv to install dependencies from pyproject.toml . Run the following command in terminal :
 
@@ -116,6 +116,14 @@ releaseA.gff3 = first annotation file
 releaseB.gff3 = second annotation file
 outDir (optional) = directory for output files
 (default directory: ~/app/gffacake)
+
+The program produces:
+-TSV summary of changes
+-GFF3 genome browser tracks
+-JSON metadata file
+-HTML report with plots
+-Log file
+All outputs are prefixed using the input filenames
 
 
 
