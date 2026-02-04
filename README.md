@@ -4,12 +4,13 @@
 A two-release GFF3 annotation comparison tool (Release A vs Release B)
 
 Contributors: 
-| Name |
-|------|
-| Almarc Astorga | [![Profile](logo.png)] (https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)
-| Ishwar Bijumon | [![Profile](logo.png)]  (https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)
-| Krishna Sameer Krothapalli | [![Profile](logo.png)]  (https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)
-| Saheshnu Sai Balaji Pillai | [![Profile](logo.png)]  (https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)
+| Name | Profile |
+|------|---------|
+| Almarc Astorga | [![Profile](https://github.com/almarcastorga.png?size=40)](https://github.com/almarcastorga) |
+| Ishwar Bijumon | [![Profile](https://github.com/ishwarbijumon.png?size=40)](https://github.com/ishwarbijumon) |
+| Krishna Sameer Krothapalli | [![Profile](https://github.com/krishnask.png?size=40)](https://github.com/krishnask) |
+| Saheshnu Sai Balaji Pillai | [![Profile](https://github.com/saheshnusp.png?size=40)](https://github.com/saheshnusp) |
+
 
 ## Purpose of project
 This project compares two genome annotation releases of the same organism (Release A vs Release B) to identify differences; it will produce a HTML report which includes: a summary outputs describing additions; removals; and changes across entity types between releases.
