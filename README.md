@@ -21,14 +21,18 @@ In version 1.1, a live change request was implemented to update the changes outp
 - 'release_A.gff3': annotation release A in GFF3 format  
 - 'release_B.gff3': annotation release B in GFF3 format  
 ### Optional 
-- coordinate shift threshold: 
+- coordinate shift threshold: magnitude of genomic coordinate movement that should be considered biologically or analytically meaningful
 
 ### Outputs
 - 'changes.tsv': one row per difference (gene/transcript/exon; added/removed/changed)
+    - Entity Type, EntityID, Change Type, Details
 - 'run.json': metadata logging 
+- 'annotation consistency.log': log file for 
 - 'added.gff3': entities present in B but not A
 - 'removed.gff3': entities present in A but not B
-- 'changed.gff3': entities present in both but with signature differences
+- 'changed.gff3': 
+    - entities present in both but with signature differences
+    - optional threshold: genomic coordinate shift changes baased on user input
 - 'summary.tsv': change counts by category and entity type for reporting 
 - 'HTML page': includes provenance, overview, summary plot, counts table, artefacts and detailed changes
 
@@ -130,9 +134,6 @@ Where:
 - outDir (optional) = directory for output files (default directory: ~/app/gffacake)
 
 
-# How the software works
-
-
 ## How to run tests
 All tests are located in the `tests/` directory. These include:
 - **Unit tests** that validate individual functions and classes in isolation;
@@ -143,19 +144,19 @@ Tests can be run locally from the root of the repository once the project and it
 In the terminal, enter the following code for the full suite:
 
 ```bash
-python -m pytest
+uv run pytest
 ```
 
 For specific files, enter:
 
 ```bash
-python -m pytest tests/test_filename.py
+uv -run pytest tests/test_filename.py
 ```
 
 For coverage reporting:
 
 ```bash
-python -m pytest --cov=annot_consistency --cov-report=term-missing
+uv run pytest --cov=annot_consistency --cov-report=term-missing
 ```
 
 ### Requirements
