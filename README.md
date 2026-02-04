@@ -4,12 +4,13 @@
 A two-release GFF3 annotation comparison tool (Release A vs Release B)
 
 Contributors: 
-| Name | Role |
-|------|------|
-| Almarc Astorga | ...|
-| Ishwar Bijumon | ... |
-| Krishna Sameer Krothapalli | ...|
-| Saheshnu Sai Balaji Pillai | ... |
+| Name | Profile |
+|------|---------|
+| Almarc Astorga | [![Profile](https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)] |
+| Ishwar Bijumon | [![Profile](https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)] |
+| Krishna Sameer Krothapalli | [![Profile](https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)] |
+| Saheshnu Sai Balaji Pillai | [![Profile](https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1)] |
+
 
 ## Purpose of project
 This project compares two genome annotation releases of the same organism (Release A vs Release B) to identify differences; it will produce a HTML report which includes: a summary outputs describing additions; removals; and changes across entity types between releases.
@@ -21,14 +22,18 @@ In version 1.1, a live change request was implemented to update the changes outp
 - 'release_A.gff3': annotation release A in GFF3 format  
 - 'release_B.gff3': annotation release B in GFF3 format  
 ### Optional 
-- coordinate shift threshold: 
+- coordinate shift threshold: magnitude of genomic coordinate movement that should be considered biologically or analytically meaningful
 
 ### Outputs
 - 'changes.tsv': one row per difference (gene/transcript/exon; added/removed/changed)
+    - Entity Type, EntityID, Change Type, Details
 - 'run.json': metadata logging 
+- 'annotation consistency.log': log file for 
 - 'added.gff3': entities present in B but not A
 - 'removed.gff3': entities present in A but not B
-- 'changed.gff3': entities present in both but with signature differences
+- 'changed.gff3': 
+    - entities present in both but with signature differences
+    - optional threshold: genomic coordinate shift changes baased on user input
 - 'summary.tsv': change counts by category and entity type for reporting 
 - 'HTML page': includes provenance, overview, summary plot, counts table, artefacts and detailed changes
 
@@ -168,11 +173,19 @@ The user runs the program from the command line by providing:
 - Annotation release A (GFF/GFF3 file)
 - Annotation release B (GFF/GFF3 file)
 - An optional output directory
+- An optional threshold
 
-For example:
+
+Example fixture release command line:
 ```bash
-uv run gffACAKE releaseA.gff3 releaseB.gff3 results/
+uv run gffACAKE test/fixture_releases/release_A.gff3 path/fixture_releases/release_B.gff3 results/
 ```
+Example fixture release command line with threshold input and optional results:
+```bash
+uv run gffACAKE test/fixture_releases/release_A.gff3 path/fixture_releases/release_B.gff3 --threshold <N>
+```
+
+
 
 Main workflow done by the CLI:
 - Validates the input files
@@ -195,19 +208,19 @@ Tests can be run locally from the root of the repository once the project and it
 In the terminal, enter the following code for the full suite:
 
 ```bash
-python -m pytest
+uv run pytest
 ```
 
 For specific files, enter:
 
 ```bash
-python -m pytest tests/test_filename.py
+uv -run pytest tests/test_filename.py
 ```
 
 For coverage reporting:
 
 ```bash
-python -m pytest --cov=annot_consistency --cov-report=term-missing
+uv run pytest --cov=annot_consistency --cov-report=term-missing
 ```
 
 ### Requirements
