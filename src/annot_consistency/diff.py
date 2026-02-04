@@ -242,7 +242,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                         )
                 else:
                         details = changed_details(a, b)
-                
+
                 changes.append(
                     ChangeRecord(
                         entity_type=entity_type,
