@@ -61,17 +61,21 @@ Required- Python 3.10+ and uv (python environment manager)
 1. Install Python
 
 To check if Python is installed, run the following command in terminal:
-
+```bash
 python3 --version
-
+```
 If not installed:
 
 for macOS (Homebrew)-
+```bash
 brew install python
+```
 
 for Ubuntu/Debian-
+```bash
 sudo apt update
 sudo apt install python3 python3-venv python3-pip
+```
 
 for Windows-
 Download from:
@@ -82,47 +86,47 @@ Make sure python or python3 works in your terminal after installation.
 2. Install uv
 
 To install uv using pip, run the following command in terminal:
-
+```bash
 pip install uv
-
+```
 To verify installation:
-
+```bash
 uv --version
-
+```
 3. Clone the repository 
 
 Run the following command in terminal :
-
+```bash
 git clone https://github.com/biol5472-uofglasgow/GroupG_Project.git
 cd GroupG_Project
-
+```
 or use SSH key : git@github.com:biol5472-uofglasgow/GroupG_Project.git
 
 4. Install dependencies
 
 Use uv to install dependencies from pyproject.toml . Run the following command in terminal :
-
+```bash
 uv sync
-
+```
 This will create a virtual environment and install all required packages.
 
 5. Running the program from the command line
 
 Enter the following in the terminal:
+```bash
 uv run gffACAKE <releaseA.gff3> <releaseB.gff3> [outDir]
-
+```
 Where:
-releaseA.gff3 = first annotation file
-releaseB.gff3 = second annotation file
-outDir (optional) = directory for output files
-(default directory: ~/app/gffacake)
+- releaseA.gff3 = first annotation file
+- releaseB.gff3 = second annotation file
+- outDir (optional) = directory for output files (default directory: ~/app/gffacake)
 
 The program produces:
--TSV summary of changes
--GFF3 genome browser tracks
--JSON metadata file
--HTML report with plots
--Log file
+- TSV summary of changes
+- GFF3 genome browser tracks
+- JSON metadata file
+- HTML report with plots
+- Log file
 All outputs are prefixed using the input filenames
 
 
