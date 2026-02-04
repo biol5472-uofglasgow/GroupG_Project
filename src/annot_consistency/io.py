@@ -31,7 +31,8 @@ def write_changes_tsv(outdir: str, changes: list[ChangeRecord], prefix: str) -> 
 # Writing function to be used in cli.py to write summary.tsv file
 def write_summary_tsv(outdir: str,
                     changes: list[ChangeRecord],
-                    prefix: str,) -> tuple[str, dict[str, dict[str, int]]]:
+                    prefix: str,
+                    threshold: int | None,) -> tuple[str, dict[str, dict[str, int]]]:
     '''
     Gives the counts for number of changes by entity type and
     the type of changes along with the total number of
@@ -41,32 +42,48 @@ def write_summary_tsv(outdir: str,
     for c in changes:
         et = c.entity_type
         if et not in counts:
-            counts[et] = {'added': 0, 'removed': 0, 'changed': 0}
+            if threshold is not None:
+                counts[et] = {'added': 0, 'removed': 0, 'changed': 0, 'high_shift': 0}
+            else:
+                counts[et] = {'added': 0, 'removed': 0, 'changed': 0}
         if c.change_type in counts[et]:
             counts[et][c.change_type] += 1
 
     path = os.path.join(outdir, f'{prefix}_summary.tsv')
     with open(path, 'w', encoding = 'utf-8') as file:
-        file.write('Entity_Type\tAdded\tRemoved\tChanged\tTotal\n')
+        if threshold is not None:
+            file.write('Entity_Type\tAdded\tRemoved\tChanged\tHigh_Shift\tTotal\n')
+        else:
+            file.write('Entity_Type\tAdded\tRemoved\tChanged\tTotal\n')
         all_added = 0
         all_removed = 0
         all_changed = 0
+        all_high_shift = 0
 
         for entity_type in sorted(counts.keys()):
             a = counts[entity_type]['added']
             r = counts[entity_type]['removed']
             ch = counts[entity_type]['changed']
-            total = a + r + ch
-
-            all_added += a
-            all_removed += r
-            all_changed += ch
-
-            file.write(f'{entity_type}\t{a}\t{r}\t{ch}\t{total}\n')
-
-        all_total = all_added + all_removed + all_changed
-
-        file.write(f'All_Total\t{all_added}\t{all_removed}\t{all_changed}\t{all_total}')
+            if threshold is not None:
+                hs = counts[entity_type]['high_shift']
+                total = a + r + ch + hs
+                all_added += a
+                all_removed += r
+                all_changed += ch
+                all_high_shift += hs
+                file.write(f'{entity_type}\t{a}\t{r}\t{ch}\t{hs}\t{total}\n')
+            else:
+                total = a + r + ch
+                all_added += a
+                all_removed += r
+                all_changed += ch
+                file.write(f'{entity_type}\t{a}\t{r}\t{ch}\t{total}\n')
+        if threshold is not None:
+            all_total = all_added + all_removed + all_changed + all_high_shift
+            file.write(f'All_Total\t{all_added}\t{all_removed}\t{all_changed}\t{all_high_shift}\t{all_total}')
+        else:
+            all_total = all_added + all_removed + all_changed
+            file.write(f'All_Total\t{all_added}\t{all_removed}\t{all_changed}\t{all_total}')
 
     return path, counts
 
@@ -140,7 +157,7 @@ def write_run_json(tool_name: str,
     }
 
     with open(path, 'w', encoding = 'utf-8') as jsonfile:
-        json.dump(payload, jsonfile, indent = 2, sort_keys = True)
+        json.dump(payload, jsonfile, indent = 2)
         jsonfile.write('\n')
 
     return path
