@@ -223,15 +223,11 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                     if start_exceeds:
                             high_shift_details = (
                                 f"start_delta={delta_start};\
-                                    end_delta={delta_end};\
-                                delta_of_deltas={delta_shift};\
                                 threshold={threshold}"
                             )
                     elif end_exceeds:
                             high_shift_details = (
-                                f"start_delta={delta_start};\
-                                    end_delta={delta_end};\
-                                delta_of_deltas={delta_shift};\
+                                f"end_delta={delta_end};\
                                 threshold={threshold}"
                             )
                     elif start_and_end_exceeds:
