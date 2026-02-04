@@ -120,7 +120,7 @@ def main(argv: Sequence[str] | None = None) -> None:
     try:
         log.info("Writing summary.tsv")
         summary_file, counts= write_summary_tsv(str(outdir), changes_all,
-                                                prefix, args.threshold)
+                                                prefix, threshold = args.threshold)
         summary_result= (summary_file, counts)
     except Exception:
         log.exception("Failed writing summary.tsv")

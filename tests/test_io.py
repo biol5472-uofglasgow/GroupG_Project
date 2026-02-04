@@ -3,6 +3,8 @@
 
 import json
 from pathlib import Path
+from annot_consistency.cli import parse_args
+
 
 from annot_consistency.io import (
     ensure_outdir,
@@ -49,8 +51,8 @@ def test_write_summary_tsv(tmp_path: Path) -> None:
         ChangeRecord("exon", "exon1", "changed", "Coords changed"),
     ]
     prefix = "A_B"
-
-    path, counts = write_summary_tsv(str(tmp_path), changes, prefix)
+    args = parse_args
+    path, counts = write_summary_tsv(str(tmp_path), changes, prefix, args.threshold)
 
     p = Path(path)
     assert p.exists()
