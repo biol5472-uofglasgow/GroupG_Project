@@ -137,7 +137,7 @@ def main(argv: Sequence[str] | None = None) -> None:
         log.info("Writing run.json")
         run_json_path = write_run_json(
             tool_name="gffacake",
-            tool_version="1.0",
+            tool_version="1.1",
             release_a=str(release_a),
             release_b=str(release_b),
             outdir=str(outdir),
