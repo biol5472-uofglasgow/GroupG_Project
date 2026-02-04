@@ -61,7 +61,37 @@ We track changes for:
 # Installation
 ## How to install and run the software
 ### Option 1: Docker
+1. Make sure Docker is running
+ 
+(If you have not installed Docker, please install it from the following link: https://www.docker.com/products/docker-desktop/)
 
+2. Place the two GFF files in a single folder
+
+3. Open a terminal window (MacOS/Linux) or a Powershell window (Windows) in the folder containing the two input GFF files you wish to compare 
+
+4. Copy-Paste and run the following docker command onto the command line to run gffACAKE on your GFF files:
+
+   MacOS / Linux 
+
+   ```bash  
+   docker run --rm -v "$PWD:/data" saheshnu/gffacake:1.0.0 /data/<gff_A>.gff /data/<gff_B>.gff /data/output_files 
+   ```
+
+   For example,
+   ```bash
+   docker run --rm -v "$PWD:/data" saheshnu/gffacake:1.0.0 /data/ToxoDB-65_TgondiiME49.gff /data/ToxoDB-68_TgondiiME49.gff /data/output_files 
+   ```
+  --------------------------------------------------------------------------------------------------------------------------
+   Windows
+    
+   ```powershell
+   docker run --rm -v ${PWD}:/data saheshnu/gffacake:1.0.0 /data/<gff_A>.gff /data/<gff_B>.gff /data/output_files 
+   ```
+
+   For example,
+   ```powershell
+   docker run --rm -v ${PWD}:/data saheshnu/gffacake:1.0.0 /data/ToxoDB-65_TgondiiME49.gff /data/ToxoDB-68_TgondiiME49.gff /data/output_files 
+   ```
 
 
 ### Option 2: Python + UV
