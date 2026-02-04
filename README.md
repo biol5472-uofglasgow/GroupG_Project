@@ -6,10 +6,10 @@ A two-release GFF3 annotation comparison tool (Release A vs Release B)
 Contributors: 
 | Name | Profile |
 |------|---------|
-| Almarc Astorga | [![GitHub](https://github.com/almarcastorga.png?size=40)](https://www.youtube.com/watch?v=dQw4w9WgXcQ) |
-| Ishwar Bijumon | [![GitHub](https://github.com/ishwarbijumon.png?size=40)](https://www.youtube.com/watch?v=dQw4w9WgXcQ) |
-| Krishna Sameer Krothapalli | [![GitHub](https://github.com/krishnask.png?size=40)](https://www.youtube.com/watch?v=dQw4w9WgXcQ) |
-| Saheshnu Sai Balaji Pillai | [![GitHub](https://github.com/saheshnusp.png?size=40)](https://www.youtube.com/watch?v=dQw4w9WgXcQ) |
+| Almarc Astorga | [![GitHub](https://github.com/KaiserWaffles.png?size=40)](https://www.youtube.com/watch?v=dQw4w9WgXcQ) |
+| Ishwar Bijumon | [![GitHub](https://github.com/ishwarbiju.png?size=40)](https://www.youtube.com/watch?v=dQw4w9WgXcQ) |
+| Krishna Sameer Krothapalli | [![GitHub](https://github.com/kro7ks.png?size=40)](https://www.youtube.com/watch?v=dQw4w9WgXcQ) |
+| Saheshnu Sai Balaji Pillai | [![GitHub](https://github.com/Saheshnu.png?size=40)](https://www.youtube.com/watch?v=dQw4w9WgXcQ) |
 
 ## Purpose of project
 This project compares two genome annotation releases of the same organism (Release A vs Release B) to identify differences; it will produce a HTML report which includes: a summary outputs describing additions; removals; and changes across entity types between releases.
@@ -152,20 +152,7 @@ uv sync
 ```
 This will create a virtual environment and install all required packages.
 
-#### Running the program from the command line
-
-Enter the following in the terminal:
-```bash
-uv run gffACAKE <releaseA.gff3> <releaseB.gff3> [outDir]
-```
-Where:
-- releaseA.gff3 = first annotation file
-- releaseB.gff3 = second annotation file
-- outDir (optional) = directory for output files (default directory: ~/app/gffacake)
-
-
-# How the software works
-## Command line interface (CLI)
+#### Running the program from CLI
 
 The user runs the program from the command line by providing:
 
@@ -173,6 +160,12 @@ The user runs the program from the command line by providing:
 - Annotation release B (GFF/GFF3 file)
 - An optional output directory
 - An optional threshold
+
+Where:
+- releaseA.gff3 = first annotation file
+- releaseB.gff3 = second annotation file
+- outDir = directory for output files (default directory: ~/app/gffacake)
+- Threshold = user supplied input for genomic coordinate shift based on biological reference
 
 
 Example fixture release command line:
@@ -183,7 +176,6 @@ Example fixture release command line with threshold input and optional results:
 ```bash
 uv run gffACAKE test/fixture_releases/release_A.gff3 path/fixture_releases/release_B.gff3 --threshold <N>
 ```
-
 
 
 Main workflow done by the CLI:
