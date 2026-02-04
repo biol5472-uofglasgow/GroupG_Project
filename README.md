@@ -141,19 +141,22 @@ All tests are located in the `tests/` directory. These include:
 ### Running Tests Locally
 Tests can be run locally from the root of the repository once the project and its development dependencies have been installed.
 In the terminal, enter the following code for the full suite:
-'''bash
+
+```bash
 python -m pytest
-'''
+```
 
 For specific files, enter:
-'''bash
+
+```bash
 python -m pytest tests/test_filename.py
-'''
+```
 
 For coverage reporting:
-'''bash
+
+```bash
 python -m pytest --cov=annot_consistency --cov-report=term-missing
-'''
+```
 
 ### Requirements
 - Python >= ***3.12***
