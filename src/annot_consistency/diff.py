@@ -117,8 +117,27 @@ def changed_details(a: EntitySummary, b: EntitySummary) -> str:
 
     return '; '.join(parts)
 
+# Get delta coordinates
+def deltas_coords(a: EntitySummary, b: EntitySummary) -> tuple[int, int]:
+    """
+    get start and end deltas for release A and release B.
+    calculates coordinate displacement of the same genomic entity;
+    """
+    delta_start = b.start - a.start
+    delta_end = b.end - a.end
+    return delta_start, delta_end
+
+def delta_of_deltas(delta_start: int, delta_end: int) -> int:
+    """
+    The largest coordinate shift the entity has went between the two releases
+    applies absolute values to remove direction; selects the maximum of the two magnitude
+    """
+    return max(abs(delta_start), abs(delta_end))
+
+
 def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
-                b_entities: dict[str, dict[str, EntitySummary]]) -> tuple[
+                b_entities: dict[str, dict[str, EntitySummary]],
+                threshold: int | None = None) -> tuple[
                     list[ChangeRecord],
                     list[EntitySummary],
                     list[EntitySummary],
@@ -128,7 +147,18 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
     Compares the two extracted release files A and B, then two lists
     One list for the changes.tsv and
     another list for the tracks added, removed and changed gff files
+    Threshold:
+    - start_threshold if abs(start_B - start_A) > threshold
+    - end_threshold if abs(end_B - end_A) > threshold
+        = high_shift True if either threshold exceeded
+    - if signature differs but no threshold exceeded, continue with change_type="changed"
+    High shift logic (subset of "changed"):
+      - Only considered when threshold is provided (not None)
+      - high_shift=True if abs(delta_start) > threshold or abs(delta_end) > threshold
+      - The ChangeRecord remains change_type="changed" either way.
     '''
+    if threshold is not None and threshold < 0:
+        raise ValueError("threshold must be > 0 ")
     changes: list[ChangeRecord] = []
     added: list[EntitySummary] = []
     removed: list[EntitySummary] = []
@@ -151,9 +181,9 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                 entity_type = entity_type,
                 entity_id = e_id,
                 change_type = 'added',
-                details = 'Entity present only in release B')
+                details = 'Entity present only in release B',
                 )
-
+            )
         # Removed entities: If the ID is present only in release A and not in release B
         for e_id in a_id - b_id:
             removed.append(a_map[e_id])
@@ -161,22 +191,65 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                 entity_type = entity_type,
                 entity_id = e_id,
                 change_type = 'removed',
-                details = 'Entity present only in release A')
+                details = 'Entity present only in release A',
                 )
-
+            )
         # Changed entities: First check if the entities are present in both,
         # then see if signatures are different
         for e_id in (a_id & b_id):
             a = a_map[e_id]
             b = b_map[e_id]
-            if a.signature() != b.signature():
-                # Using the release B signatures for track output
-                changed.append(b)
-                changes.append(ChangeRecord(
-                    entity_type = entity_type,
-                    entity_id = e_id,
-                    change_type = 'changed',
-                    details = changed_details(a, b))
+            if a.signature() == b.signature():
+                continue
+            changed.append(b)
+            # No threshold exceeded: other signature changes
+            if threshold is None:
+                changes.append(
+                    ChangeRecord(
+                        entity_type = entity_type,
+                        entity_id = e_id,
+                        change_type = 'changed',
+                        details = changed_details(a,b),
+                        high_shift = False
                     )
+                )
+            else:
+                # Delta logic:
+                delta_start, delta_end = deltas_coords(a, b)
+                delta_shift= delta_of_deltas(delta_start, delta_end)
 
+                # Check threshold: based on user input for threshold
+                start_exceeds = abs(delta_start) > threshold
+                end_exceeds = abs(delta_end) > threshold
+                high_shift = start_exceeds or end_exceeds
+
+                if start_exceeds and end_exceeds:
+                        details = (
+                            f"start_delta={delta_start};\
+                                end_delta={delta_end};\
+                            delta_of_deltas={delta_shift};\
+                            threshold={threshold}"
+                        )
+                elif end_exceeds:
+                        details = (
+                            f"end_delta={delta_end};\
+                            threshold={threshold}"
+                        )
+                elif start_exceeds:
+                        details = (
+                            f"start_delta={delta_start};\
+                            threshold={threshold}"
+                        )
+                else:
+                        details = changed_details(a, b)
+
+                changes.append(
+                    ChangeRecord(
+                        entity_type=entity_type,
+                        entity_id=e_id,
+                        change_type="changed",
+                        details=details,
+                        high_shift=high_shift,
+                    )
+                )
     return changes, added, removed, changed
