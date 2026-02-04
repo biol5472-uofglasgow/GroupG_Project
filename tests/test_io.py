@@ -4,7 +4,6 @@
 import json
 from pathlib import Path
 
-
 from annot_consistency.io import (
     ensure_outdir,
     write_changes_tsv,
@@ -65,7 +64,7 @@ def test_write_summary_tsv(tmp_path: Path) -> None:
 
 
     lines = p.read_text(encoding="utf-8").splitlines()
-    assert lines[0] == "Entity_Type\tAdded\tRemoved\tChanged\tTotal"
+    assert lines[0] == "Entity_Type\tAdded\tRemoved\tChanged\tHigh_Shift\tTotal"
 
     assert lines[-1].startswith("All_Total\t")
 
