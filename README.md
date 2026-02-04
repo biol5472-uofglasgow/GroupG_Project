@@ -106,6 +106,17 @@ uv sync
 
 This will create a virtual environment and install all required packages.
 
+5. Running the program from the command line
+
+Enter the following in the terminal:
+uv run gffACAKE <releaseA.gff3> <releaseB.gff3> [outDir]
+
+Where:
+releaseA.gff3 = first annotation file
+releaseB.gff3 = second annotation file
+outDir (optional) = directory for output files
+(default directory: ~/app/gffacake)
+
 
 
 
