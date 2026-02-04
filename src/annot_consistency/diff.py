@@ -248,14 +248,10 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                                 entity_type = entity_type,
                                 entity_id = e_id,
                                 change_type = 'combined_threshold',
-                                details = (f'Release A end delta = {delta_a_end};\
-                                        Release B end delta = {delta_b_end};\
-                                        Release A start delta = {delta_a_start};\
-                                        Release B end delta = {delta_b_end};\
-                                        delta of deltas = {delta_shift};\
-                                            threshold = {threshold};\
-                                            differences = {changed_details(a, b)}'),
-                                high_shift = True
+                                details = (f'start delta = {delta_start};\
+                                           end delta = {delta_end};\
+                                           delta of deltaas = {delta_shift};\
+                                           threshold = {threshold}')
                             )
                         )
     return changes, added, removed, changed
