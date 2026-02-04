@@ -1,5 +1,5 @@
 # gFFACAKE
-***A two-release annotation comparison software (A vs B)***
+## ***A two-release annotation comparison software (A vs B)***
 
 Contributors: Almarc Astorga, Ishwar Bijumon, Krishna Sameer Krothapalli, Saheshnu Sai Balaji Pillai
 
@@ -124,9 +124,42 @@ Where:
 
 # How the software works
 
+## How to run tests
+All tests are located in the `tests/` directory. These include:
+- **Unit tests** that validate individual functions and classes in isolation;
+- **Integration-style tests** that validate higher level behaviour, including the command-line interface.
+
+### Running Tests Locally
+Tests can be run locally from the root of the repository once the project and its development dependencies have been installed.
+In the terminal, enter the following code for the full suite:
+'''bash
+python -m pytest
+'''
+
+For specific files, enter:
+'''bash
+python -m pytest tests/test_filename.py
+'''
+
+For coverage reporting:
+'''bash
+python -m pytest --cov=annot_consistency --cov-report=term-missing
+'''
 
 ### Requirements
-- Python 3.10+ recommended  
-- Docker Version 27.1.1
-- gffutils
+- Python >= **3.12**
+**Core Python Dependencies**
+ The following runtime dependencies are required and will be installed automatically when the package is installed:
+- gffutils >= **0.13**
+- matplotlib >= **3.10**
 
+ **Development and testing dependencies (optional)**  
+  Required only for development, testing, and static analysis:
+  - pytest **>= 7.4**
+  - pytest-cov **>= 4.1**
+  - mypy >= **1.6**
+  - ruff >= **0.4**
+
+**Docker (optional)**  
+  - Docker **>= 27.1.1** is recommended if running the software in a containerised environment or as part of a CI / reproducible execution workflow; Docker is not required for standard local installation and testing.
+Users who wish to run the tool locally only need Python ≥ 3.12 and the core dependencies, while developers contributing to the codebase should also install the optional development dependencies.
