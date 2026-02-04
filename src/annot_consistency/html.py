@@ -22,10 +22,11 @@ def plot_counts(outdir: str, counts: dict[str, dict[str, int]], prefix: str) -> 
     plt.bar(x, added, label = 'Added')
     plt.bar(x, removed, bottom=added, label="Removed")
     bottoms = [a + r for a, r in zip(added, removed)]
-    plt.bar(x, changed, bottom=bottoms, label="Changed")
-    bottoms2 = [b + c for b, c in zip(bottoms, changed)]
+    changed_non_shift = [max(0, c - hs) for c, hs in zip(changed, high_shift)]
+    plt.bar(x, changed_non_shift, bottom=bottoms, label="Changed")
+    bottoms2 = [b + cns for b, cns in zip(bottoms, changed_non_shift)]
     if any(high_shift):
-        plt.bar(x, high_shift, bottom=bottoms2, label= "High_Shift")
+        plt.bar(x, high_shift, bottom=bottoms2, label="High_Shift")
     plt.xticks(x, entity_types, rotation=45, ha="right")
     plt.ylabel("Count")
     plt.title("Change counts by entity type")
