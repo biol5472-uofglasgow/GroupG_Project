@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from annot_consistency.diff import build_entities, changed_details, choose_entity_id, diff_entity
-from annot_consistency.models import EntitySummary
+from annot_consistency.models import EntitySummary, EntityType
 
 
 #### tests for choosing the entity ID ####
@@ -95,7 +95,7 @@ def test_expected_types_and_builds_summaries() -> None:
 
 def make_entity_summary_instance(entity_type: str, entity_id: str, seqid:str, start:int,
                         end:int, strand:str, parent_id:str | None, attrs:Mapping[str,str],
-                        score:str|None, phase:str|None, source:str) -> type[EntitySummary]:
+                        score:str|None, phase:str|None, source:str) -> EntitySummary:
 
     return EntitySummary(
         entity_type = entity_type,
@@ -111,7 +111,6 @@ def make_entity_summary_instance(entity_type: str, entity_id: str, seqid:str, st
         source = source
 
     )
-
 # Function to test the changed_details function
 def test_changed_details() -> None:
 
