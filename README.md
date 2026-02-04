@@ -175,5 +175,7 @@ python -m pytest --cov=annot_consistency --cov-report=term-missing
 
 **Docker (optional)**  
   - Docker ***>= 27.1.1***
+
 Recommended if running the software in a containerised environment or as part of a CI / reproducible execution workflow; Docker is not required for standard local installation and testing.
+
 Users who wish to run the tool locally only need Python ≥ 3.12 and the core dependencies, while developers contributing to the codebase should also install the optional development dependencies.
