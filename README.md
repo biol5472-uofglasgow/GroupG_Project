@@ -6,10 +6,10 @@ A two-release GFF3 annotation comparison tool (Release A vs Release B)
 Contributors: 
 | Name | Profile |
 |------|---------|
-| Almarc Astorga | [![GitHub](https://github.com/KaiserWaffles.png?size=40)](https://www.youtube.com/watch?v=dQw4w9WgXcQ) |
-| Ishwar Bijumon | [![GitHub](https://github.com/ishwarbiju.png?size=40)](https://www.youtube.com/watch?v=dQw4w9WgXcQ) |
-| Krishna Sameer Krothapalli | [![GitHub](https://github.com/kro7ks.png?size=40)](https://www.youtube.com/watch?v=dQw4w9WgXcQ) |
-| Saheshnu Sai Balaji Pillai | [![GitHub](https://github.com/Saheshnu.png?size=40)](https://www.youtube.com/watch?v=dQw4w9WgXcQ) |
+| Almarc Astorga | <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://github.com/KaiserWaffles.png" width="40" height="40"></a> |
+| Ishwar Bijumon | <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://github.com/ishwarbiju.png" width="40" height="40"></a> |
+| Krishna Sameer Krothapalli | <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://github.com/kro7ks.png" width="40" height="40"></a> |
+| Saheshnu Sai Balaji Pillai | <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://github.com/Saheshnu.png" width="40" height="40"></a> |
 
 ## Purpose of project
 This project compares two genome annotation releases of the same organism (Release A vs Release B) to identify differences; it will produce a HTML report which includes: a summary outputs describing additions; removals; and changes across entity types between releases.
