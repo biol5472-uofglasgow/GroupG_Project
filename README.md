@@ -1,7 +1,15 @@
 # gFFACAKE
-## ***A two-release annotation comparison software (A vs B)***
+ **GFF Annotation Change Analysis Kit for Evaluation**
 
-Contributors: Almarc Astorga, Ishwar Bijumon, Krishna Sameer Krothapalli, Saheshnu Sai Balaji Pillai
+A two-release GFF3 annotation comparison tool (Release A vs Release B)
+
+Contributors: 
+| Name | Role |
+|------|------|
+| Almarc Astorga | ...|
+| Ishwar Bijumon | ... |
+| Krishna Sameer Krothapalli | ...|
+| Saheshnu Sai Balaji Pillai | ... |
 
 ## Purpose of project
 This project compares two genome annotation releases of the same organism (Release A vs Release B) to identify differences; it will produce a HTML report which includes: a summary outputs describing additions; removals; and changes across entity types between releases.
@@ -17,7 +25,7 @@ In version 1.1, a live change request was implemented to update the changes outp
 
 ### Outputs
 - 'changes.tsv': one row per difference (gene/transcript/exon; added/removed/changed)
-- 'run.json':
+- 'run.json': metadata logging 
 - 'added.gff3': entities present in B but not A
 - 'removed.gff3': entities present in A but not B
 - 'changed.gff3': entities present in both but with signature differences
@@ -124,6 +132,7 @@ Where:
 
 # How the software works
 
+
 ## How to run tests
 All tests are located in the `tests/` directory. These include:
 - **Unit tests** that validate individual functions and classes in isolation;
@@ -147,19 +156,21 @@ python -m pytest --cov=annot_consistency --cov-report=term-missing
 '''
 
 ### Requirements
-- Python >= **3.12**
+- Python >= ***3.12***
+
 **Core Python Dependencies**
  The following runtime dependencies are required and will be installed automatically when the package is installed:
-- gffutils >= **0.13**
-- matplotlib >= **3.10**
+- gffutils >= ***0.13***
+- matplotlib >= ***3.10***
 
  **Development and testing dependencies (optional)**  
   Required only for development, testing, and static analysis:
-  - pytest **>= 7.4**
-  - pytest-cov **>= 4.1**
-  - mypy >= **1.6**
-  - ruff >= **0.4**
+  - pytest ***>= 7.4***
+  - pytest-cov ***>= 4.1***
+  - mypy >= ***1.6***
+  - ruff >= ***0.4***
 
 **Docker (optional)**  
-  - Docker **>= 27.1.1** is recommended if running the software in a containerised environment or as part of a CI / reproducible execution workflow; Docker is not required for standard local installation and testing.
+  - Docker ***>= 27.1.1***
+Recommended if running the software in a containerised environment or as part of a CI / reproducible execution workflow; Docker is not required for standard local installation and testing.
 Users who wish to run the tool locally only need Python ≥ 3.12 and the core dependencies, while developers contributing to the codebase should also install the optional development dependencies.
