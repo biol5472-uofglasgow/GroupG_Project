@@ -3,7 +3,6 @@
 
 import json
 from pathlib import Path
-from annot_consistency.cli import parse_args
 
 
 from annot_consistency.io import (
@@ -46,13 +45,13 @@ def test_write_changes_tsv(tmp_path: Path) -> None:
 #test to check whether the function generates a summary file as well as the correct counts
 def test_write_summary_tsv(tmp_path: Path) -> None:
     changes = [
-        ChangeRecord("gene", "gene1", "added", "Added gene1"),
-        ChangeRecord("gene", "gene2", "removed", "Removed gene2"),
-        ChangeRecord("exon", "exon1", "changed", "Coords changed"),
+        ChangeRecord("gene", "gene1", "added", "Entity present only in release B"),
+        ChangeRecord("gene", "gene2", "removed", "Entity present only in release A"),
+        ChangeRecord("exon", "exon1", "changed", "Start: 100 -> 200; End: 300 -> 400"),
     ]
     prefix = "A_B"
-    args = parse_args
-    path, counts = write_summary_tsv(str(tmp_path), changes, prefix, args.threshold)
+    threshold = 5
+    path, counts = write_summary_tsv(str(tmp_path), changes, prefix, threshold)
 
     p = Path(path)
     assert p.exists()
