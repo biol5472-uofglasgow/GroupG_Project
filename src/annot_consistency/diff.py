@@ -152,6 +152,10 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
     - end_threshold if abs(end_B - end_A) > threshold
         = high_shift True if either threshold exceeded
     - if signature differs but no threshold exceeded, continue with change_type="changed"
+    High shift logic (subset of "changed"):
+      - Only considered when threshold is provided (not None)
+      - high_shift=True if abs(delta_start) > threshold or abs(delta_end) > threshold
+      - The ChangeRecord remains change_type="changed" either way.
     '''
     if threshold is not None and threshold < 0:
         raise ValueError("threshold must be > 0 ")
@@ -218,7 +222,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                 start_exceeds = abs(delta_start) > threshold
                 end_exceeds = abs(delta_end) > threshold
                 start_and_end_exceeds = (abs(delta_shift)) > threshold
-                high_shift = start_exceeds or end_exceeds or start_and_end_exceeds
+                high_shift = start_exceeds or end_exceeds
                 high_shift_details: str 
 
                 if start_exceeds:
