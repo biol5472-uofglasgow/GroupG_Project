@@ -118,7 +118,7 @@ def changed_details(a: EntitySummary, b: EntitySummary) -> str:
     return '; '.join(parts)
 
 # Get delta coordinates
-def deltas_coords(a: EntitySummary, b: EntitySummary) -> tuple[int, int, int, int]:
+def deltas_coords(a: EntitySummary, b: EntitySummary) -> tuple[int, int]:
     """
     get deltas for release A and release B; start and end.
     Returns 4 ints for downstream calculation:
@@ -127,11 +127,9 @@ def deltas_coords(a: EntitySummary, b: EntitySummary) -> tuple[int, int, int, in
       delta_A_end
       delta_B_end
     """
-    delta_a_start = b.start - a.start
-    delta_b_start = a.start - b.start
-    delta_a_end = b.end - a.end
-    delta_b_end = a.end - b.end
-    return delta_a_start, delta_b_start, delta_a_end, delta_b_end
+    delta_start = b.start - a.start
+    delta_end = b.end - a.end
+    return delta_start, delta_end
 
 def delta_of_deltas(delta_a_start: int, delta_a_end: int) -> int:
     """
