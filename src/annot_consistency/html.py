@@ -22,10 +22,11 @@ def plot_counts(outdir: str, counts: dict[str, dict[str, int]], prefix: str) -> 
     plt.bar(x, added, label = 'Added')
     plt.bar(x, removed, bottom=added, label="Removed")
     bottoms = [a + r for a, r in zip(added, removed)]
-    plt.bar(x, changed, bottom=bottoms, label="Changed")
-    bottoms2 = [b + c for b, c in zip(bottoms, changed)]
+    changed_non_shift = [max(0, c - hs) for c, hs in zip(changed, high_shift)]
+    plt.bar(x, changed_non_shift, bottom=bottoms, label="Changed")
+    bottoms2 = [b + cns for b, cns in zip(bottoms, changed_non_shift)]
     if any(high_shift):
-        plt.bar(x, high_shift, bottom=bottoms2, label= "High_Shift")
+        plt.bar(x, high_shift, bottom=bottoms2, label="High_Shift")
     plt.xticks(x, entity_types, rotation=45, ha="right")
     plt.ylabel("Count")
     plt.title("Change counts by entity type")
@@ -60,8 +61,6 @@ def write_htmlreport(outdir: str,
     total_changed = sum(counts[et].get('changed', 0) for et in entity_types)
     total_high_shift = sum(counts[et].get('high_shift', 0) for et in entity_types)
     total_all = total_added + total_removed + total_changed
-    if has_high_shift:
-        total_all += total_high_shift
 
     with open(run_json_path, encoding='utf-8') as file:
         run_meta = json.load(file)
@@ -132,7 +131,7 @@ def write_htmlreport(outdir: str,
         ch = counts[et].get("changed", 0)
         hs = counts[et].get("high_shift", 0)
         if has_high_shift:
-            html.append(f"<tr><td>{et}</td><td>{a}</td><td>{r}</td><td>{ch}</td><td>{a+r+ch+hs}</td></tr>")
+            html.append(f"<tr><td>{et}</td><td>{a}</td><td>{r}</td><td>{ch}</td><td>{hs}</td><td>{a+r+ch}</td></tr>")
         else:
             html.append(f"<tr><td>{et}</td><td>{a}</td><td>{r}</td><td>{ch}</td><td>{a+r+ch}</td></tr>")
     html.append("</table>")

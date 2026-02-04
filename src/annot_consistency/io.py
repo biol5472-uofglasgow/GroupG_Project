@@ -48,6 +48,8 @@ def write_summary_tsv(outdir: str,
                 counts[et] = {'added': 0, 'removed': 0, 'changed': 0}
         if c.change_type in counts[et]:
             counts[et][c.change_type] += 1
+        if threshold is not None and c.change_type == "changed" and c.high_shift:
+            counts[et]["high_shift"] += 1
 
     path = os.path.join(outdir, f'{prefix}_summary.tsv')
     with open(path, 'w', encoding = 'utf-8') as file:
@@ -66,7 +68,7 @@ def write_summary_tsv(outdir: str,
             ch = counts[entity_type]['changed']
             if threshold is not None:
                 hs = counts[entity_type]['high_shift']
-                total = a + r + ch + hs
+                total = a + r + ch
                 all_added += a
                 all_removed += r
                 all_changed += ch
@@ -79,7 +81,7 @@ def write_summary_tsv(outdir: str,
                 all_changed += ch
                 file.write(f'{entity_type}\t{a}\t{r}\t{ch}\t{total}\n')
         if threshold is not None:
-            all_total = all_added + all_removed + all_changed + all_high_shift
+            all_total = all_added + all_removed + all_changed
             file.write(f'All_Total\t{all_added}\t{all_removed}\t{all_changed}\t{all_high_shift}\t{all_total}')
         else:
             all_total = all_added + all_removed + all_changed
