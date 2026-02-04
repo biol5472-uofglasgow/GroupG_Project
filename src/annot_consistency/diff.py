@@ -203,7 +203,7 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
             a = a_map[e_id]
             b = b_map[e_id]
             if a.signature() != b.signature():
-                changes.append(b)
+                changed.append(b)
                 # No threshold exceeded: other signature changes
                 if threshold is None:
                     changes.append(
