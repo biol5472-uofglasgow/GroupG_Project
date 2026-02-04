@@ -209,14 +209,14 @@ def diff_entity(a_entities: dict[str, dict[str, EntitySummary]],
                     )
                 else:    
                     # Delta logic:
-                    delta_a_start, delta_b_start, delta_a_end, delta_b_end = deltas_coords(a, b)
-                    delta_shift= delta_of_deltas(delta_a_start, delta_a_end)
-                    start_and_end_exceeds = max(abs(a.start - b.start), abs(a.end - b.end)) > threshold
+                    delta_start, delta_end = deltas_coords(a, b)
+                    delta_shift= delta_of_deltas(delta_start, delta_end)
 
                     # Check threshold: based on user input for threshold
-                    start_exceeds = abs(delta_a_start) > threshold
-                    end_exceeds = abs(delta_a_end) > threshold
-                    high_shift = start_exceeds or end_exceeds
+                    start_exceeds = abs(delta_start) > threshold
+                    end_exceeds = abs(delta_end) > threshold
+                    start_and_end_exceeds = abs(delta_start + delta_end) > threshold
+                    high_shift = start_exceeds or end_exceeds or start_and_end_exceeds
 
                     # Start threshold: if start coord > threshold
                     if start_exceeds:
